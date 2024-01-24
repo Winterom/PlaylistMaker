@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/common_ll"
+    android:background="@color/white">
+
+    <TextView
+        style="@style/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:drawablePadding="12dp"
+        android:text="@string/settings"
+        android:textColor="@color/black1"
+        app:drawableLeftCompat="@drawable/return_svg" />
+
+    <LinearLayout style="@style/ll_settings_activity">
+
+        <TextView
+            style="@style/text_view_settings"
+            android:text="@string/black_theme" />
+
+        <View style="@style/view_divider_settings" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/ll_settings_activity">
+
+        <TextView
+            style="@style/text_view_settings"
+            android:text="@string/share" />
+
+        <View style="@style/view_divider_settings" />
+
+        <ImageView
+            style="@style/img_view_settings"
+            android:contentDescription="@string/share"
+            android:src="@drawable/share" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/ll_settings_activity">
+
+        <TextView
+            style="@style/text_view_settings"
+            android:text="@string/send_support" />
+
+        <View style="@style/view_divider_settings" />
+
+        <ImageView
+            style="@style/img_view_settings"
+            android:contentDescription="@string/send_support"
+            android:src="@drawable/support" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/ll_settings_activity">
+
+        <TextView
+            style="@style/text_view_settings"
+            android:text="@string/user_agreement" />
+
+        <View style="@style/view_divider_settings" />
+
+        <ImageView
+            style="@style/img_view_settings"
+            android:contentDescription="@string/send_support"
+            android:src="@drawable/right_arrow" />
+    </LinearLayout>
+</LinearLayout>
