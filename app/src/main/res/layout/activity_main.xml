@@ -24,7 +24,7 @@
         style="@style/button_main_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/mediateka"
+        android:text="@string/mediaLibrary"
         app:icon="@drawable/media_library"/>
 
     <Button

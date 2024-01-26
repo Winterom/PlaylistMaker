@@ -6,7 +6,7 @@
         <item name="android:orientation">vertical</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingTop">16dp</item>
     </style>
     <style name="header">
         <item name="android:textSize">22sp</item>
@@ -14,12 +14,12 @@
         <item name="android:lineHeight">26sp</item>
         <item name="android:fontFamily">"@font/ys_display_medium"</item>
         <item name="android:paddingBottom">12dp</item>
-        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingTop">16dp</item>
         <item name="android:paddingRight">62dp</item>
         <item name="android:layout_marginBottom">24dp</item>
     </style>
     <style name="button_main_activity">
-        <item name="android:layout_weight">3</item>
+        <item name="android:layout_weight">1</item>
         <item name="cornerRadius">16dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="iconGravity">textStart</item>
@@ -28,27 +28,8 @@
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/black1</item>
     </style>
-    <style name="ll_settings_activity">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">61dp</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
     <style name="text_view_settings">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/black2</item>
-    </style>
-    <style name="view_divider_settings">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">777</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
-    <style name="img_view_settings">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:clickable">true</item>
-        <item name="android:layout_gravity">center_vertical</item>
     </style>
 </resources>

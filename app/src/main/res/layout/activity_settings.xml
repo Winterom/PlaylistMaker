@@ -16,59 +16,78 @@
         android:textColor="@color/black1"
         app:drawableLeftCompat="@drawable/return_svg" />
 
-    <LinearLayout style="@style/ll_settings_activity">
+    <FrameLayout
+        android:layout_height="64dp"
+        android:layout_width="match_parent">
 
         <TextView
             style="@style/text_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:text="@string/black_theme" />
-
-        <View style="@style/view_divider_settings" />
 
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout style="@style/ll_settings_activity">
+    <FrameLayout
+        android:layout_height="64dp"
+        android:layout_width="match_parent">
 
         <TextView
             style="@style/text_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:text="@string/share" />
 
-        <View style="@style/view_divider_settings" />
-
         <ImageView
-            style="@style/img_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
             android:contentDescription="@string/share"
             android:src="@drawable/share" />
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout style="@style/ll_settings_activity">
+    <FrameLayout
+        android:layout_height="64dp"
+        android:layout_width="match_parent">
 
         <TextView
             style="@style/text_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:text="@string/send_support" />
 
-        <View style="@style/view_divider_settings" />
-
         <ImageView
-            style="@style/img_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
             android:contentDescription="@string/send_support"
             android:src="@drawable/support" />
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout style="@style/ll_settings_activity">
+    <FrameLayout
+        android:layout_height="64dp"
+        android:layout_width="match_parent">
 
         <TextView
             style="@style/text_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:text="@string/user_agreement" />
 
-        <View style="@style/view_divider_settings" />
-
         <ImageView
-            style="@style/img_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
             android:contentDescription="@string/send_support"
             android:src="@drawable/right_arrow" />
-    </LinearLayout>
+    </FrameLayout>
 </LinearLayout>
