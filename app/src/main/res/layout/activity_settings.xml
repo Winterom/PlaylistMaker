@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/common_ll"
+    android:background="@color/white">
+
+    <TextView
+        style="@style/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:drawablePadding="12dp"
+        android:text="@string/settings"
+        android:textColor="@color/black1"
+        app:drawableLeftCompat="@drawable/return_svg" />
+
+    <FrameLayout
+        android:layout_height="64dp"
+        android:layout_width="match_parent">
+
+        <TextView
+            style="@style/text_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/black_theme" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_height="64dp"
+        android:layout_width="match_parent">
+
+        <TextView
+            style="@style/text_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/share" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/share"
+            android:src="@drawable/share" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_height="64dp"
+        android:layout_width="match_parent">
+
+        <TextView
+            style="@style/text_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/send_support" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/send_support"
+            android:src="@drawable/support" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_height="64dp"
+        android:layout_width="match_parent">
+
+        <TextView
+            style="@style/text_view_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/user_agreement" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/send_support"
+            android:src="@drawable/right_arrow" />
+    </FrameLayout>
+</LinearLayout>
