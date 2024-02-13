@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="common_ll">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -9,15 +8,12 @@
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">16dp</item>
     </style>
-
     <style name="common_ll.mainActivity">
-        <item name="android:background">@color/yp_blue</item>
+        <item name="android:background">@color/yp_black</item>
     </style>
-
     <style name="common_ll.settingsActivity">
-        <item name="android:background">@color/yp_white</item>
+        <item name="android:background">@color/yp_black</item>
     </style>
-
     <style name="header">
         <item name="android:textSize">22sp</item>
         <item name="android:lineHeight">26sp</item>
@@ -27,15 +23,12 @@
         <item name="android:paddingRight">62dp</item>
         <item name="android:layout_marginBottom">24dp</item>
     </style>
-
     <style name="header.MainActivity">
         <item name="android:textColor">@color/yp_white</item>
     </style>
-
     <style name="header.settingsActivity">
-        <item name="android:textColor">@color/yp_black</item>
+        <item name="android:textColor">@color/yp_white</item>
     </style>
-
     <style name="button_main_activity">
         <item name="android:layout_weight">1</item>
         <item name="cornerRadius">16dp</item>
@@ -46,20 +39,9 @@
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/yp_black</item>
     </style>
-
     <style name="text_view_settings">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/yp_black</item>
+        <item name="android:textColor">@color/yp_white</item>
     </style>
 
-    <style name="backgroundMainActivity">
-        <item name="background">@color/yp_black</item>
-    </style>
-
-    <style name="search_field">
-        <item name="android:background">@drawable/search_field</item>
-        <item name="android:inputType">text</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:lines">1</item>
-    </style>
 </resources>
