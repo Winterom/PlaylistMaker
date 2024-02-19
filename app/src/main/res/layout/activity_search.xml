@@ -12,7 +12,7 @@
         android:drawablePadding="12dp"
         android:text="@string/search"
         app:drawableLeftCompat="@drawable/return_svg"/>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:orientation="horizontal">
@@ -25,10 +25,22 @@
             android:hint="@string/search_hint"
             android:imeOptions="actionSearch"
             android:paddingStart="10sp"
-            android:paddingEnd="10sp"
+            android:paddingEnd="16sp"
+            android:singleLine="true"
             android:drawableStart="@drawable/search_icon"
-            android:drawableEnd="@drawable/close"
+            android:maxLength="255"
             android:importantForAutofill="no" />
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/clear_text"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/close"
+            android:layout_marginStart="-24dp"
+            app:tint="@color/yp_black"
+
+            android:visibility="gone"
+             />
+    </RelativeLayout>
 
 </LinearLayout>
