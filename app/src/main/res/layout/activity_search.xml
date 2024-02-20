@@ -2,17 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/common_ll.settingsActivity">
-
-    <TextView
-        style="@style/header.settingsActivity"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:clickable="true"
-        android:drawablePadding="12dp"
-        android:text="@string/search"
-        app:drawableLeftCompat="@drawable/return_svg"/>
-    <RelativeLayout
+        android:paddingTop="16dp">
+        <ImageView
+            android:id="@+id/return_to_main"
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="12dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:src="@drawable/return_svg" />
+        <TextView
+            style="@style/header.settingsActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:clickable="true"
+            android:text="@string/search" />
+    </LinearLayout>
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:orientation="horizontal">
@@ -24,23 +35,27 @@
             android:layout_height="match_parent"
             android:hint="@string/search_hint"
             android:imeOptions="actionSearch"
-            android:paddingStart="10sp"
-            android:paddingEnd="16sp"
+            android:paddingStart="36sp"
+            android:paddingEnd="40dp"
             android:singleLine="true"
-            android:drawableStart="@drawable/search_icon"
             android:maxLength="255"
             android:importantForAutofill="no" />
         <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_gravity="start|center_vertical"
+            android:src="@drawable/search_icon"
+            app:tint="@color/yp_text_gray"/>
+        <ImageView
             android:id="@+id/clear_text"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_gravity="end|center_vertical"
             android:src="@drawable/close"
-            android:layout_marginStart="-24dp"
-            app:tint="@color/yp_black"
-
-            android:visibility="gone"
-             />
-    </RelativeLayout>
+            app:tint="@color/yp_text_gray"
+            android:visibility="visible" />
+    </FrameLayout>
 
 </LinearLayout>

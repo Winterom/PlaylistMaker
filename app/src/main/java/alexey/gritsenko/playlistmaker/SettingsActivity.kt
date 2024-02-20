@@ -10,23 +10,34 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
+        val returnButton: ImageView = findViewById(R.id.return_to_main)
+        returnButton.setOnClickListener {
+            finish()
+        }
         val shareButton: ImageView = findViewById(R.id.share_button)
         shareButton.setOnClickListener {
-            val sendIntent: Intent = Intent().apply {
+            val message = getString(R.string.share_app_content)
+            val shareIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, R.string.share_app_content)
+                putExtra(Intent.EXTRA_TEXT, message)
                 type = "text/plain"
             }
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
+            startActivity(Intent.createChooser(shareIntent,"Share"))
+
         }
         val supportButton: ImageView = findViewById(R.id.support_button)
         supportButton.setOnClickListener {
-            val supportIntent = Intent(Intent.ACTION_SENDTO)
-            supportIntent.data = Uri.parse("mailto:")
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("winterov@yandex.ru"))
-            startActivity(supportIntent)
+            Intent(Intent.ACTION_SENDTO).apply {
+                val message = getString(R.string.settings_support_message)
+                val subject = getString(R.string.settings_support_subject)
+                val mail = getString(R.string.settings_support_mail)
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+                putExtra(Intent.EXTRA_SUBJECT, subject)
+                putExtra(Intent.EXTRA_TEXT, message)
+                startActivity(this)
+            }
+
         }
         val offerButton: ImageView = findViewById(R.id.offer_button)
         offerButton.setOnClickListener {
