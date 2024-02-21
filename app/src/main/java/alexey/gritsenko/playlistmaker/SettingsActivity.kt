@@ -40,10 +40,10 @@ class SettingsActivity : AppCompatActivity() {
         val offerButton: ImageView = findViewById(R.id.offer_button)
         offerButton.setOnClickListener {
             val uri = resources.getString(R.string.yandex_offer)
-           Intent(Intent.ACTION_VIEW).apply {
-                Uri.parse(uri)
-                startActivity(this)
+            Intent(Intent.ACTION_VIEW,Uri.parse(uri)).apply {
+                    startActivity(this)
             }
+
         }
     }
 }
