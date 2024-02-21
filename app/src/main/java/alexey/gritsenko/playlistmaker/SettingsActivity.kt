@@ -17,13 +17,11 @@ class SettingsActivity : AppCompatActivity() {
         val shareButton: ImageView = findViewById(R.id.share_button)
         shareButton.setOnClickListener {
             val message = getString(R.string.share_app_content)
-            val shareIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
+            Intent(Intent.ACTION_SEND).apply {
                 putExtra(Intent.EXTRA_TEXT, message)
                 type = "text/plain"
+                startActivity(Intent.createChooser(this,"Share"))
             }
-            startActivity(Intent.createChooser(shareIntent,"Share"))
-
         }
         val supportButton: ImageView = findViewById(R.id.support_button)
         supportButton.setOnClickListener {
@@ -42,11 +40,10 @@ class SettingsActivity : AppCompatActivity() {
         val offerButton: ImageView = findViewById(R.id.offer_button)
         offerButton.setOnClickListener {
             val uri = resources.getString(R.string.yandex_offer)
-            val urlIntent = Intent(
-                Intent.ACTION_VIEW,
+           Intent(Intent.ACTION_VIEW).apply {
                 Uri.parse(uri)
-            )
-            startActivity(urlIntent)
+                startActivity(this)
+            }
         }
     }
 }
