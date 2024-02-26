@@ -1,5 +1,7 @@
-package alexey.gritsenko.playlistmaker
+package alexey.gritsenko.playlistmaker.activity
 
+import alexey.gritsenko.playlistmaker.R.id
+import alexey.gritsenko.playlistmaker.R.layout
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,10 +18,10 @@ class SearchActivity : AppCompatActivity() {
     private var searchText: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-        val returnButton: ImageView = findViewById(R.id.return_to_main)
-        val searchField: EditText = findViewById(R.id.searchField)
-        val clearButton = findViewById<ImageView>(R.id.clear_text)
+        setContentView(layout.activity_search)
+        val returnButton: ImageView = findViewById(id.return_to_main)
+        val searchField: EditText = findViewById(id.searchField)
+        val clearButton = findViewById<ImageView>(id.clear_text)
         returnButton.setOnClickListener {
             finish()
         }

@@ -26,7 +26,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
 
         <EditText
             style="@style/search_field"
@@ -57,5 +58,10 @@
             app:tint="@color/yp_text_gray"
             android:visibility="visible" />
     </FrameLayout>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/track_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 </LinearLayout>
