@@ -12,7 +12,7 @@
         android:layout_gravity="start|center_vertical"
         android:layout_marginStart="13dp"
         android:scaleType="fitCenter"
-        tools:src="@drawable/settings"/>
+        tools:src="@drawable/placeholder"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,40 +20,31 @@
         android:layout_marginTop="14dp"
         android:layout_marginStart="66dp">
         <TextView
+            style="@style/track_item_name"
             android:id="@+id/track_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="19dp"
-            android:fontFamily="@font/ys_display_regular"
-            android:textSize="16sp"
-            android:lineHeight="18.75dp"
-            android:textColor="@color/yp_black"
-            tools:text="Very important news text"/>
+            tools:text="Track name"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:layout_height="13dp">
             <TextView
+                style="@style/track_item_author"
                 android:id="@+id/artist_name_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/ys_display_regular"
-                android:textSize="11sp"
-                android:lineHeight="12.89dp"
-                android:textColor="@color/yp_text_gray"
-                tools:text="Very important news text"/>
+                tools:text="Artist name"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic"/>
             <TextView
+                style="@style/track_item_author"
                 android:id="@+id/track_time_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/ys_display_regular"
-                android:textSize="11sp"
-                android:lineHeight="12.89dp"
-                android:textColor="@color/yp_text_gray"
                 tools:text="Track time"/>
         </LinearLayout>
 
