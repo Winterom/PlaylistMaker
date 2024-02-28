@@ -5,6 +5,7 @@ import alexey.gritsenko.playlistmaker.services.models.Track
 
 class TrackServiceImpl:TrackService {
     private val cache:MutableList<Track>
+    private val virtualSize = 100
     init {
         cache = ArrayList(5)
         cache.add(Track("Smells Like Teen Spirit","Nirvana","5:01",
@@ -19,10 +20,10 @@ class TrackServiceImpl:TrackService {
             "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"))
     }
     override fun getTrackByPosition(position: Int): Track {
-        return cache[position]
+        return cache[(position+1)%cache.size]
     }
 
     override fun getCount(): Int {
-        return cache.size
+        return virtualSize
     }
 }
