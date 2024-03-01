@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class SearchTrackAdapter(private val trackService: TrackService) :
@@ -27,7 +28,6 @@ class SearchTrackAdapter(private val trackService: TrackService) :
     override fun onBindViewHolder(holder: TrackListViewHolder, position: Int) {
         val track = trackService.getTrackByPosition(position)
         holder.bind(track)
-
     }
 
 }
@@ -43,7 +43,7 @@ class TrackListViewHolder(parent: ViewGroup,
         trackTimeTextView.text = track.trackTime
         Glide.with(itemView)
             .load(track.artworkUrl)
-            .transform(RoundedCorners(2))
+            .transform(FitCenter(),RoundedCorners(2))
             .placeholder(R.drawable.placeholder)
             .into(artworkImageView)
     }
