@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class SearchTrackAdapter(private val trackService: TrackService) :
-    RecyclerView.Adapter<SearchTrackAdapter.TrackListViewHolder>() {
+    RecyclerView.Adapter<TrackListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListViewHolder {
         return TrackListViewHolder(parent)
@@ -30,21 +30,21 @@ class SearchTrackAdapter(private val trackService: TrackService) :
 
     }
 
-    class TrackListViewHolder(parent: ViewGroup,
-        itemView: View = LayoutInflater.from(parent.context).inflate(layout.track_item, parent, false) ) : RecyclerView.ViewHolder(itemView) {
-        private val trackNameTextView: TextView = itemView.findViewById(R.id.track_name_text_view)
-        private val artistNameTextView: TextView = itemView.findViewById(R.id.artist_name_text_view)
-        private val trackTimeTextView: TextView = itemView.findViewById(R.id.track_time_text_view)
-        private val artworkImageView: ImageView = itemView.findViewById(R.id.artwork_image_view)
-        fun bind(track:Track){
-            trackNameTextView.text = track.trackName
-            artistNameTextView.text = track.artistName
-            trackTimeTextView.text = track.trackTime
-            Glide.with(itemView)
-                .load(track.artworkUrl)
-                .transform(RoundedCorners(2))
-                .placeholder(R.drawable.placeholder)
-                .into(artworkImageView)
-        }
+}
+class TrackListViewHolder(parent: ViewGroup,
+    itemView: View = LayoutInflater.from(parent.context).inflate(layout.track_item, parent, false) ) : RecyclerView.ViewHolder(itemView) {
+    private val trackNameTextView: TextView = itemView.findViewById(R.id.track_name_text_view)
+    private val artistNameTextView: TextView = itemView.findViewById(R.id.artist_name_text_view)
+    private val trackTimeTextView: TextView = itemView.findViewById(R.id.track_time_text_view)
+    private val artworkImageView: ImageView = itemView.findViewById(R.id.artwork_image_view)
+    fun bind(track:Track){
+        trackNameTextView.text = track.trackName
+        artistNameTextView.text = track.artistName
+        trackTimeTextView.text = track.trackTime
+        Glide.with(itemView)
+            .load(track.artworkUrl)
+            .transform(RoundedCorners(2))
+            .placeholder(R.drawable.placeholder)
+            .into(artworkImageView)
     }
 }
