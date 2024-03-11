@@ -1,24 +1,34 @@
 package alexey.gritsenko.playlistmaker.view
 
+import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.services.SearchTrackViewModel
-import alexey.gritsenko.playlistmaker.services.impl.SearchTrackViewModelImpl
+import alexey.gritsenko.playlistmaker.services.SearchTrackService
+import alexey.gritsenko.playlistmaker.services.impl.SearchTrackServiceImpl
+import alexey.gritsenko.playlistmaker.view.RequestStatus.EMPTY
+import alexey.gritsenko.playlistmaker.view.RequestStatus.NETWORK_ERROR
+import alexey.gritsenko.playlistmaker.view.RequestStatus.OK
+import alexey.gritsenko.playlistmaker.view.RequestStatus.SERVER_ERROR
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class SearchActivity : AppCompatActivity(),DataChangedObserver {
-    private val searchTrackViewModel: SearchTrackViewModel = SearchTrackViewModelImpl()
+class SearchActivity : AppCompatActivity(),TrackListChangedListener {
+    private val searchTrackService: SearchTrackService = SearchTrackServiceImpl()
     private lateinit var recyclerView: RecyclerView
+    private lateinit var emptySearchLayout:LinearLayout
     companion object {
         const val TEXT_STORED_KEY = "searchText"
     }
@@ -27,13 +37,14 @@ class SearchActivity : AppCompatActivity(),DataChangedObserver {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_search)
-        searchTrackViewModel.addListener(this)
+        searchTrackService.addListener(this)
+        recyclerView = findViewById(id.track_recycle_view)
+        emptySearchLayout = findViewById(id.empty_search_layout)
         val returnButton = findViewById<ImageView>(id.return_to_main)
         val searchField = findViewById<EditText>(id.searchField)
         val clearButton = findViewById<ImageView>(id.clear_text)
-        recyclerView = findViewById(id.track_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = SearchTrackAdapter(searchTrackViewModel)
+        recyclerView.adapter = SearchTrackAdapter(searchTrackService)
         returnButton.setOnClickListener {
             finish()
         }
@@ -61,9 +72,9 @@ class SearchActivity : AppCompatActivity(),DataChangedObserver {
         searchField.setOnEditorActionListener{_, actionId, _ ->
             if(actionId== EditorInfo.IME_ACTION_DONE){
                 if(searchField.text.toString().isNotBlank()){
-                    searchTrackViewModel.findTrack(searchField.text.toString())
+                    searchTrackService.findTrack(searchField.text.toString())
                 }else{
-
+                    showToast(getString(R.string.empty_search_field))
                 }
             }
             true
@@ -89,12 +100,40 @@ class SearchActivity : AppCompatActivity(),DataChangedObserver {
         )
     }
 
-    override fun dataIsChanged() {
+    override fun dataIsChanged(status: RequestStatus) {
+        when(status){
+            OK -> okSearchResult()
+            EMPTY -> emptySearchResult()
+            NETWORK_ERROR -> TODO()
+            SERVER_ERROR -> TODO()
+        }
         this.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onDestroy() {
-        searchTrackViewModel.deleteListener(this)
+        searchTrackService.deleteListener(this)
         super.onDestroy()
     }
+
+    private fun showToast(text:String){
+        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
+        toast.setGravity(
+            Gravity.TOP or Gravity.CENTER,
+            0,
+            0
+        )
+        toast.show()
+    }
+
+    private fun emptySearchResult(){
+        this.recyclerView.visibility = View.GONE
+        this.emptySearchLayout.visibility = View.VISIBLE
+
+    }
+
+    private fun okSearchResult(){
+        this.recyclerView.visibility = View.VISIBLE
+        this.emptySearchLayout.visibility = View.GONE
+    }
+
 }

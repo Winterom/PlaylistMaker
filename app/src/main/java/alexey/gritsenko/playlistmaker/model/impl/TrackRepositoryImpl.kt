@@ -12,12 +12,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class TrackRepositoryImpl : TrackRepository {
     private var trackNetworkClient: TrackNetworkClient
+    companion object {
+        const val BASE_URL: String = "https://itunes.apple.com"
+        const val SEARCH_TRACK_URL: String ="/search?entity=song"
+    }
     init {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(TrackRepository.BASE_URL)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
@@ -26,7 +30,12 @@ class TrackRepositoryImpl : TrackRepository {
 
 
     override fun findTrack(searchString: List<String>): Call<TrackSearchResponseDto> {
-        return trackNetworkClient.findTrack(searchString.joinToString { "+" })
+        val search:String = if(searchString.size>1){
+            searchString.joinToString { "+" }
+        }else{
+            searchString[0]
+        }
+        return trackNetworkClient.findTrack(search)
     }
 
 

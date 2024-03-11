@@ -9,15 +9,14 @@ data class Track(
     val trackName: String,
     val artistName: String,
     val trackTime: String,
-    val artworkUrl100: String){
+    val artworkUrl100: String?){
     companion object{
         fun convertDtoToEntity(dtoResult: TrackSearchResponseDto.SearchResult):Track{
             val trackName:String = dtoResult.trackName?:""
             val artistName: String = dtoResult.artistName?:""
-            val artworkUrl100: String = dtoResult.artworkUrl100?:"about:blank"
             val trackTime = SimpleDateFormat("mm:ss", Locale.getDefault())
                 .format(dtoResult.trackTimeMillis)
-            return Track(trackName,artistName,trackTime,artworkUrl100)
+            return Track(trackName,artistName,trackTime,dtoResult.artworkUrl100)
         }
     }
 }

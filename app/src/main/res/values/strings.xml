@@ -16,6 +16,9 @@
     <string name="settings_support_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="settings_support_mail">winterov@yandex.ru</string>
     <string name="search_hint">Поиск</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_search_result">Ничего не нашлось</string>
+    <string name="empty_search_field">Пустой запрос</string>
+    <string name="network_not_available_title">Проблемы со связью</string>
+    <string name="network_not_available_text">Загрузка не удалась. Проверьте подключение к интернету</string>
 </resources>

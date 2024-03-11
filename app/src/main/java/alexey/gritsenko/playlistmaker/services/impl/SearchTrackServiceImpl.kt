@@ -4,29 +4,37 @@ package alexey.gritsenko.playlistmaker.services.impl
 import alexey.gritsenko.playlistmaker.model.TrackRepository
 import alexey.gritsenko.playlistmaker.model.dto.TrackSearchResponseDto
 import alexey.gritsenko.playlistmaker.model.impl.TrackRepositoryImpl
-import alexey.gritsenko.playlistmaker.services.SearchTrackViewModel
+import alexey.gritsenko.playlistmaker.services.SearchTrackService
 import alexey.gritsenko.playlistmaker.services.entity.Track
-import alexey.gritsenko.playlistmaker.view.DataChangedObserver
+import alexey.gritsenko.playlistmaker.view.RequestStatus.EMPTY
+import alexey.gritsenko.playlistmaker.view.RequestStatus.NETWORK_ERROR
+import alexey.gritsenko.playlistmaker.view.RequestStatus.OK
+import alexey.gritsenko.playlistmaker.view.RequestStatus.SERVER_ERROR
+import alexey.gritsenko.playlistmaker.view.TrackListChangedListener
+
+
 
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.HttpException
 import retrofit2.Response
 import java.util.LinkedList
 
-class SearchTrackViewModelImpl:SearchTrackViewModel {
+class SearchTrackServiceImpl:SearchTrackService {
     private val trackRepository: TrackRepository = TrackRepositoryImpl()
     private var tracks:List<Track> = LinkedList<Track>()
-    private val listeners = LinkedList<DataChangedObserver>()
-    override fun addListener(activity: DataChangedObserver) {
+    private val listeners = LinkedList<TrackListChangedListener>()
+    override fun addListener(activity: TrackListChangedListener) {
         this.listeners.add(activity)
     }
 
-    override fun deleteListener(activity: DataChangedObserver) {
+    override fun deleteListener(activity: TrackListChangedListener) {
         this.listeners.remove(activity)
     }
 
     override fun findTrack(searchString: String) {
-        trackRepository.findTrack(searchString.split(" "))
+        val rawStrings = searchString.split(" ")
+        trackRepository.findTrack(rawStrings)
             .enqueue(object: Callback<TrackSearchResponseDto>{
                 override fun onResponse(
                     call: Call<TrackSearchResponseDto>,
@@ -35,15 +43,22 @@ class SearchTrackViewModelImpl:SearchTrackViewModel {
                     if(response.code() == 200){
                         if (response.body()?.results?.isNotEmpty() == true){
                             tracks= response.body()!!.results.map {Track.convertDtoToEntity(it)}
+                            listeners.forEach{it.dataIsChanged(OK)}
+                        }else{
+                            tracks = emptyList()
+                            listeners.forEach{it.dataIsChanged(EMPTY)}
                         }
                     }else{
                         tracks = emptyList()
+                        listeners.forEach{it.dataIsChanged(SERVER_ERROR)}
                     }
-                    listeners.forEach{it.dataIsChanged()}
                 }
                 override fun onFailure(call: Call<TrackSearchResponseDto>, t: Throwable) {
-                    tracks = emptyList()
-                    listeners.forEach{it.dataIsChanged()}
+                    if (t is HttpException){
+                        tracks = emptyList()
+                        listeners.forEach{it.dataIsChanged(NETWORK_ERROR)}
+                    }
+
                 }
 
             })
@@ -56,4 +71,5 @@ class SearchTrackViewModelImpl:SearchTrackViewModel {
     override fun getCount(): Int {
         return tracks.size
     }
+
 }
