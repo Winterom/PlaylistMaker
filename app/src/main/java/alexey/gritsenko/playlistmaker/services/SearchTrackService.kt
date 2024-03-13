@@ -9,6 +9,7 @@ interface SearchTrackService{
     fun addListener(activity: TrackListChangedListener)
     fun deleteListener(activity: TrackListChangedListener)
     fun findTrack(searchString: String)
+    fun clearTracks()
     fun getTrackByPosition(position: Int):Track
     fun getCount():Int
 }

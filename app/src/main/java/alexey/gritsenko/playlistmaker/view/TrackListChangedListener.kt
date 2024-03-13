@@ -5,5 +5,5 @@ interface TrackListChangedListener {
 }
 
 enum class RequestStatus{
-    OK, EMPTY, NETWORK_ERROR, SERVER_ERROR
+    OK, EMPTY, CLEAR, NETWORK_ERROR, SERVER_ERROR
 }
