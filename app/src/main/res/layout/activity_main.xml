@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/mediaLibrary"
-        app:icon="@drawable/media_library"/>
+        app:icon="@drawable/media_library" />
 
     <Button
         android:id="@+id/settings_button"
@@ -32,5 +32,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/settings"
-        app:icon="@drawable/settings"/>
+        app:icon="@drawable/settings" />
 </LinearLayout>

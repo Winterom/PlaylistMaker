@@ -13,7 +13,6 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,26 +33,19 @@ android {
         jvmTarget = "1.8"
     }
 }
-val androidxCoreVersion = "1.10.1"
-val appCompatVersion ="1.6.1"
-val materialVersion = "1.9.0"
-val glideVersion = "4.16.0"
-val retrofit2Version = "2.9.0"
-val gsonVersion="2.10.1"
+
 dependencies {
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
 
-    implementation("androidx.core:core-ktx:$androidxCoreVersion")
-    implementation("androidx.appcompat:appcompat:$appCompatVersion")
-    implementation("com.google.android.material:material:$materialVersion")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
-    implementation("com.github.bumptech.glide:glide:$glideVersion")
-    annotationProcessor("com.github.bumptech.glide:compiler:$glideVersion")
-
-    implementation("com.google.code.gson:gson:$gsonVersion")
-    implementation("com.squareup.retrofit2:retrofit:$retrofit2Version")
-    implementation ("com.squareup.retrofit2:converter-gson:$retrofit2Version")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
