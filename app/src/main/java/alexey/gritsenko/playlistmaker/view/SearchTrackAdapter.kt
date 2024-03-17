@@ -1,9 +1,9 @@
-package alexey.gritsenko.playlistmaker.activity
+package alexey.gritsenko.playlistmaker.view
 
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.services.TrackService
-import alexey.gritsenko.playlistmaker.services.models.Track
+import alexey.gritsenko.playlistmaker.services.SearchTrackService
+import alexey.gritsenko.playlistmaker.services.entity.Track
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class SearchTrackAdapter(private val trackService: TrackService) :
+class SearchTrackAdapter(private val searchTrackService: SearchTrackService) :
     RecyclerView.Adapter<TrackListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListViewHolder {
@@ -22,11 +22,11 @@ class SearchTrackAdapter(private val trackService: TrackService) :
     }
 
     override fun getItemCount(): Int {
-        return trackService.getCount()
+        return searchTrackService.getCount()
     }
 
     override fun onBindViewHolder(holder: TrackListViewHolder, position: Int) {
-        val track = trackService.getTrackByPosition(position)
+        val track = searchTrackService.getTrackByPosition(position)
         holder.bind(track)
     }
 
@@ -41,10 +41,15 @@ class TrackListViewHolder(parent: ViewGroup,
         trackNameTextView.text = track.trackName
         artistNameTextView.text = track.artistName
         trackTimeTextView.text = track.trackTime
-        Glide.with(itemView)
-            .load(track.artworkUrl)
-            .transform(FitCenter(),RoundedCorners(2))
-            .placeholder(R.drawable.placeholder)
-            .into(artworkImageView)
+        if(track.artworkUrl100==null){
+            artworkImageView.setImageResource(R.drawable.placeholder)
+        }else{
+            Glide.with(itemView)
+                .load(track.artworkUrl100)
+                .transform(FitCenter(),RoundedCorners(2))
+                .placeholder(R.drawable.placeholder)
+                .into(artworkImageView)
+        }
+
     }
 }

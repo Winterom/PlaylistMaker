@@ -6,28 +6,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="@dimen/dimen24dp"
         android:paddingTop="16dp">
 
         <ImageView
             android:id="@+id/return_to_main"
-            android:layout_width="24dp"
+            android:layout_width="@dimen/dimen24dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="12dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/dimen12dp"
             android:clickable="true"
             android:src="@drawable/return_svg" />
+
         <TextView
             style="@style/header.settingsActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="@dimen/dimen12dp"
             android:clickable="true"
             android:text="@string/settings" />
     </LinearLayout>
+
     <FrameLayout
-        android:layout_height="64dp"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen64dp">
+
         <TextView
             style="@style/text_view_settings"
             android:layout_width="wrap_content"
@@ -43,8 +46,8 @@
     </FrameLayout>
 
     <FrameLayout
-        android:layout_height="64dp"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen64dp">
 
         <TextView
             style="@style/text_view_settings"
@@ -64,8 +67,8 @@
     </FrameLayout>
 
     <FrameLayout
-        android:layout_height="64dp"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen64dp">
 
         <TextView
             style="@style/text_view_settings"
@@ -76,17 +79,17 @@
 
         <ImageView
             android:id="@+id/support_button"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
+            android:clickable="true"
             android:contentDescription="@string/send_support"
             android:src="@drawable/support" />
     </FrameLayout>
 
     <FrameLayout
-        android:layout_height="64dp"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen64dp">
 
         <TextView
             style="@style/text_view_settings"
@@ -97,10 +100,10 @@
 
         <ImageView
             android:id="@+id/offer_button"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
+            android:clickable="true"
             android:contentDescription="@string/send_support"
             android:src="@drawable/right_arrow" />
     </FrameLayout>
