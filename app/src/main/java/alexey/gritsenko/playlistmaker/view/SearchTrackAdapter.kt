@@ -2,7 +2,7 @@ package alexey.gritsenko.playlistmaker.view
 
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.services.SearchTrackService
+import alexey.gritsenko.playlistmaker.services.TrackStoreForAdapter
 import alexey.gritsenko.playlistmaker.services.entity.Track
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class SearchTrackAdapter(private val searchTrackService: SearchTrackService) :
+class SearchTrackAdapter(private val trackStoreForAdapter: TrackStoreForAdapter) :
     RecyclerView.Adapter<TrackListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListViewHolder {
@@ -22,11 +22,11 @@ class SearchTrackAdapter(private val searchTrackService: SearchTrackService) :
     }
 
     override fun getItemCount(): Int {
-        return searchTrackService.getCount()
+        return trackStoreForAdapter.getCount()
     }
 
     override fun onBindViewHolder(holder: TrackListViewHolder, position: Int) {
-        val track = searchTrackService.getTrackByPosition(position)
+        val track = trackStoreForAdapter.getTrackByPosition(position)
         holder.bind(track)
     }
 
