@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity(),TrackListChangedListener {
-    private val searchTrackService: SearchTrackService = SearchTrackServiceImpl
+    private val searchTrackService: SearchTrackService = SearchTrackServiceImpl()
     private lateinit var recyclerView: RecyclerView
     private val emptySearchViews = ArrayList<View>()
     private val networkNotAvailableViews= ArrayList<View>()
