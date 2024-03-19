@@ -20,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 class SearchTrackServiceImpl : SearchTrackService {
     private val trackRepository: TrackRepository = TrackRepositoryImpl()
-    private val tracks: MutableList<Track> = CopyOnWriteArrayList()// Callback -> CompletableFuture
+    private val tracks: MutableList<Track> = ArrayList()
     private val listeners = LinkedList<TrackListChangedListener>()
     override fun addListener(activity: TrackListChangedListener) {
         this.listeners.add(activity)

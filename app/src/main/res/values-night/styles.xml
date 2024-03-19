@@ -49,7 +49,7 @@
         <item name="android:textSize">@dimen/dimen16sp</item>
         <item name="android:textColor">@color/yp_white</item>
     </style>
-    <style name="update_button">
+    <style name="app_button">
         <item name="android:textColor">@color/yp_black</item>
     </style>
     <style name="searchActivity">

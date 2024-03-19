@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 class PlayListMakerApp : Application() {
     companion object {
         const val APP_PREFERENCES = "play_list_preferences"
+        const val TRACK_HISTORY_KEY = "track_history"
         const val THEME_KEY = "darkTheme"
     }
 

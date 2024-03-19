@@ -1,40 +1,45 @@
-ext {
-    android = [
-            compileSdk               : 33,
-            minSdk                   : 29,
-            targetSdk                : 33,
-            versionCode              : 1,
-            versionName              : "1.0.0",
-            testInstrumentationRunner: "androidx.test.runner.AndroidJUnitRunner",
-            /*consumerProguardFiles : "consumer-rules.pro"*/
+class extParam {
 
-    ]
+    class Android {
+        val compileSdk = 33
+        val minSdk = 29
+        val targetSdk = 33
+        val versionCode = 1
+        val versionName = "1.0.0"
+        val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-    version = [
-            androidxCoreVersion: "1.10.1",
-            appCompatVersion   : "1.6.1",
-            materialVersion    : "1.9.0",
-            glideVersion       : "4.16.0",
-            retrofit2Version   : "2.9.0",
-            gsonVersion        : "2.10.1",
-            loggingInterceptorVersion: "4.12.0",
-            junitVersion:"4.13.2",
-            testJunitVersion: "1.1.5",
-            espressoVersion:"3.5.1"
-    ]
+    }
+    class dependencies{
+        val androidxCoreVersion = "1.10.1"
+        val appCompatVersion = "1.6.1"
+        val materialVersion = "1.9.0"
+        val glideVersion = "4.16.0"
+        val retrofit2Version = "2.9.0"
+        val gsonVersion = "2.10.1"
+        val loggingInterceptorVersion = "4.12.0"
+        val junitVersion = "4.13.2"
+        val testJunitVersion = "1.1.5"
+        val espressoVersion = "3.5.1"
+
+
+    }
+
+
+
 
     dependencies = [
-            coreKtx  : "androidx.core:core-ktx:$version.androidxCoreVersion",
-            appcompat: "androidx.appcompat:appcompat:$version.appCompatVersion",
-            material : "com.google.android.material:material:$version.materialVersion",
-            glide    : "com.github.bumptech.glide:glide:$version.glideVersion",
-            glideAnnotation:"com.github.bumptech.glide:compiler:$version.glideVersion",
-            gson : "com.google.code.gson:gson:$version.gsonVersion",
-            retrofit:"com.squareup.retrofit2:retrofit:$version.retrofit2Version",
-            retrofitGson: "com.squareup.retrofit2:converter-gson:$version.retrofit2Version",
-            loggingInterceptor:"com.squareup.okhttp3:logging-interceptor:$version.loggingInterceptorVersion",
-            junit: "junit:junit:$version.junitVersion",
-            testJunit: "androidx.test.ext:junit:$version.testJunitVersion",
-            espresso: "androidx.test.espresso:espresso-core:$version.espressoVersion"
+    coreKtx : " androidx.core:core-ktx: $ version.androidxCoreVersion ",
+    appcompat : " androidx.appcompat:appcompat: $ version.appCompatVersion ",
+    material : " com.google.android.material:material: $ version.materialVersion ",
+    glide : " com.github.bumptech.glide:glide: $ version.glideVersion ",
+    glideAnnotation : " com.github.bumptech.glide:compiler: $ version.glideVersion ",
+    gson : " com.google.code.gson:gson: $ version.gsonVersion ",
+    retrofit : " com.squareup.retrofit2:retrofit: $ version.retrofit2Version ",
+    retrofitGson : " com.squareup.retrofit2:converter-gson: $ version.retrofit2Version ",
+    loggingInterceptor : " com.squareup.okhttp3:logging-interceptor: $
+    version.loggingInterceptorVersion ",
+    junit : " junit:junit: $ version.junitVersion ",
+    testJunit : " androidx.test.ext:junit: $ version.testJunitVersion ",
+    espresso : " androidx.test.espresso:espresso-core: $ version.espressoVersion "
     ]
 }
