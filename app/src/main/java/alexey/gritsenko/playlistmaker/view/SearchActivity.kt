@@ -21,12 +21,14 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.view.marginTop
@@ -43,7 +45,7 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
     private lateinit var adapter: SearchTrackAdapter
     private lateinit var searchField:EditText
     private lateinit var clearButton:ImageView
-    private lateinit var updateButton:Button
+    private lateinit var updateNetNotAvailableButton:Button
 
     companion object {
         const val TEXT_STORED_KEY = "searchText"
@@ -64,7 +66,7 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
         initReturnButton()
         initClearButton()
         initSearchField()
-        initUpdateButton()
+        initUpdateNetNotAvailableButton()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -179,9 +181,9 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
             closeKeyboard()
         }
     }
-    private fun initUpdateButton(){
-        updateButton = findViewById(id.internet_not_available_button_update)
-        updateButton.setOnClickListener{
+    private fun initUpdateNetNotAvailableButton(){
+        updateNetNotAvailableButton = findViewById(id.internet_not_available_button_update)
+        updateNetNotAvailableButton.setOnClickListener{
             if(searchField.text.toString().isNotBlank()){
                 searchTrackService.findTrack(searchField.text.toString())
             }else{
@@ -206,6 +208,8 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
         val clearHistoryButton = findViewById<Button>(id.clear_history_button)
         clearHistoryButton.setOnClickListener {
             historyService.clearHistory()
+            adapter.notifyDataSetChanged()
+            historyHide()
         }
         historyViews.add(clearHistoryButton)
 
@@ -222,6 +226,7 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
     private fun okSearchResult(){
         showKeyboard()
         this.adapter.setShowMode(SHOW_SEARCH_RESULT)
+        setTopMargin(this.recyclerView,R.dimen.dimen120dp)
         this.recyclerView.marginTop
         this.recyclerView.isVisible = true
         this.emptySearchViews.forEach{it.isVisible = false}
@@ -239,9 +244,9 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
     private fun historyShow(){
         if(historyService.getCount()==0) return
         showKeyboard()
-        (this.recyclerView.adapter as SearchTrackAdapter).setShowMode(SHOW_HISTORY)
+        this.adapter.setShowMode(SHOW_HISTORY)
+        setTopMargin(this.recyclerView,R.dimen.dimen160dp)
         this.recyclerView.isVisible = true
-
         this.emptySearchViews.forEach{it.isVisible = false}
         this.networkNotAvailableViews.forEach{it.isVisible = false}
         this.historyViews.forEach { it.isVisible=true }
@@ -254,4 +259,11 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
         showToast("Что то пошло не так!")
         emptySearchResult()
     }
+
+    private fun setTopMargin(view: View, @DimenRes id:Int){
+        val layoutParams=view.layoutParams as MarginLayoutParams
+        val dp= resources.getDimensionPixelSize(id)
+        layoutParams.setMargins(0,dp,0,0)
+    }
+
 }
