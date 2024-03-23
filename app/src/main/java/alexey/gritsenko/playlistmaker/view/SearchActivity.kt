@@ -30,10 +30,13 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.core.view.marginTop
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
 
 class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListChangedListener {
     private val searchTrackService: SearchTrackService = SearchTrackServiceImpl()
@@ -46,6 +49,7 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
     private lateinit var searchField:EditText
     private lateinit var clearButton:ImageView
     private lateinit var updateNetNotAvailableButton:Button
+    private lateinit var mConstrainLayout:ConstraintLayout
 
     companion object {
         const val TEXT_STORED_KEY = "searchText"
@@ -59,6 +63,7 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
         historyService = TrackHistoryServiceImpl(getSharedPreferences(PlayListMakerApp.APP_PREFERENCES,
             Context.MODE_PRIVATE))
         historyService.addListener(this)
+        initLayout()
         initNetworkNotAvailableViews()
         initEmptySearchViews()
         initHistoryViews()
@@ -123,7 +128,9 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
         )
         toast.show()
     }
-
+    private  fun initLayout(){
+        mConstrainLayout  = findViewById(id.search_layout)
+    }
     private fun initRecycleView(){
         recyclerView = findViewById(id.track_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -138,6 +145,7 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
     }
     private fun initSearchField(){
         searchField = findViewById(id.searchField)
+        searchField.requestFocus()
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -224,9 +232,9 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
         this.historyViews.forEach { it.isVisible=false }
     }
     private fun okSearchResult(){
-        showKeyboard()
         this.adapter.setShowMode(SHOW_SEARCH_RESULT)
         setTopMargin(this.recyclerView,R.dimen.dimen120dp)
+        setHeightConstraint(R.dimen.dimen0dp)
         this.recyclerView.marginTop
         this.recyclerView.isVisible = true
         this.emptySearchViews.forEach{it.isVisible = false}
@@ -245,7 +253,8 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
         if(historyService.getCount()==0) return
         showKeyboard()
         this.adapter.setShowMode(SHOW_HISTORY)
-        setTopMargin(this.recyclerView,R.dimen.dimen160dp)
+        setTopMargin(this.recyclerView,R.dimen.dimen172dp)
+        setHeightConstraint(R.dimen.dimen240dp)
         this.recyclerView.isVisible = true
         this.emptySearchViews.forEach{it.isVisible = false}
         this.networkNotAvailableViews.forEach{it.isVisible = false}
@@ -264,6 +273,14 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
         val layoutParams=view.layoutParams as MarginLayoutParams
         val dp= resources.getDimensionPixelSize(id)
         layoutParams.setMargins(0,dp,0,0)
+    }
+
+    private fun setHeightConstraint(@DimenRes height:Int){
+        val constraint = ConstraintSet()
+        constraint.clone(mConstrainLayout)
+        val dp= resources.getDimensionPixelSize(height)
+        constraint.constrainMaxHeight(id.track_recycle_view,dp)
+        constraint.applyTo(mConstrainLayout)
     }
 
 }

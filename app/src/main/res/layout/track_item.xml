@@ -24,24 +24,26 @@
     <TextView
         android:id="@+id/track_name_text_view"
         style="@style/track_item_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen8dp"
         android:layout_marginTop="@dimen/dimen16dp"
         android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintStart_toEndOf="@+id/artwork_image_view"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Track name"
         tools:visibility="visible" />
 
     <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="@dimen/dimen24dp"
         android:layout_height="@dimen/dimen24dp"
+        android:layout_marginTop="@dimen/dimen18dp"
+        android:layout_marginEnd="@dimen/dimen20dp"
         android:src="@drawable/right_arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/dimen18dp"
-        android:layout_marginEnd="@dimen/dimen20dp"
         tools:visibility="visible" />
 
     <TextView

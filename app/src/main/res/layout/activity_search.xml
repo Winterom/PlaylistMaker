@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/searchActivity"
+    android:id="@+id/search_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -69,10 +70,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/track_recycle_view"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/dimen120dp"
+        app:layout_constrainedHeight="true"
+        android:scrollbars="vertical"
         tools:visibility="visible" />
 
     <ImageView
