@@ -49,7 +49,9 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
     private lateinit var searchField:EditText
     private lateinit var clearButton:ImageView
     private lateinit var updateNetNotAvailableButton:Button
-    private lateinit var mConstrainLayout:ConstraintLayout
+    private val mConstrainLayout:ConstraintLayout by lazy {
+        findViewById(id.search_layout)
+    }
 
     companion object {
         const val TEXT_STORED_KEY = "searchText"
@@ -63,7 +65,6 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
         historyService = TrackHistoryServiceImpl(getSharedPreferences(PlayListMakerApp.APP_PREFERENCES,
             Context.MODE_PRIVATE))
         historyService.addListener(this)
-        initLayout()
         initNetworkNotAvailableViews()
         initEmptySearchViews()
         initHistoryViews()
@@ -127,9 +128,6 @@ class SearchActivity : AppCompatActivity(),TrackListChangedListener,HistoryListC
             0
         )
         toast.show()
-    }
-    private  fun initLayout(){
-        mConstrainLayout  = findViewById(id.search_layout)
     }
     private fun initRecycleView(){
         recyclerView = findViewById(id.track_recycle_view)
