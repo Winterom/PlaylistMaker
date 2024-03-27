@@ -25,4 +25,6 @@
         подключение к интернету
     </string>
     <string name="update_button_label">Обновить</string>
+    <string name="history_title">Вы искали</string>
+    <string name="clear_history_label_button">Очистить историю</string>
 </resources>
