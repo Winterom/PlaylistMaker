@@ -19,6 +19,7 @@
     <dimen name="dimen110dp">110dp</dimen>
     <dimen name="dimen120dp">120dp</dimen>
     <dimen name="dimen172dp">172dp</dimen>
+    <dimen name="dimen312dp">312dp</dimen>
     <dimen name="dimen240dp">440dp</dimen>
     <dimen name="dimen10sp">10sp</dimen>
     <dimen name="dimen14sp">14sp</dimen>
