@@ -23,6 +23,7 @@ class TrackSearchResponseDto {
         val artworkUrl100: String? = null
         val collectionPrice: String? = null
         val trackPrice: String? = null
+        val releaseDate: String? = null
         val collectionExplicitness: String? = null
         val trackExplicitness: String? = null
         val discCount: Int? = null

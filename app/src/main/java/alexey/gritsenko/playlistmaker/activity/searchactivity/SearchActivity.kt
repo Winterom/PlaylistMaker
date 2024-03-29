@@ -132,7 +132,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
     private fun initRecycleView(){
         recyclerView = findViewById(id.track_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        this.adapter= SearchTrackAdapter(searchTrackService, historyService)
+        this.adapter= SearchTrackAdapter(searchTrackService, historyService,this)
         recyclerView.adapter = adapter
     }
     private fun initReturnButton(){
