@@ -3,7 +3,7 @@ package alexey.gritsenko.playlistmaker.services.impl
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.services.TrackHistoryService
 import alexey.gritsenko.playlistmaker.services.entity.Track
-import alexey.gritsenko.playlistmaker.view.HistoryListChangedListener
+import alexey.gritsenko.playlistmaker.activity.searchactivity.HistoryListChangedListener
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

@@ -1,7 +1,7 @@
 package alexey.gritsenko.playlistmaker.services
 
 import alexey.gritsenko.playlistmaker.services.entity.Track
-import alexey.gritsenko.playlistmaker.view.TrackListChangedListener
+import alexey.gritsenko.playlistmaker.activity.searchactivity.TrackListChangedListener
 
 
 

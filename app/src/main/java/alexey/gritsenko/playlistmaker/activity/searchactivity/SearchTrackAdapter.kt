@@ -1,12 +1,12 @@
-package alexey.gritsenko.playlistmaker.view
+package alexey.gritsenko.playlistmaker.activity.searchactivity
 
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.layout
 import alexey.gritsenko.playlistmaker.services.SearchTrackService
 import alexey.gritsenko.playlistmaker.services.TrackHistoryService
 import alexey.gritsenko.playlistmaker.services.entity.Track
-import alexey.gritsenko.playlistmaker.view.ShowMode.SHOW_HISTORY
-import alexey.gritsenko.playlistmaker.view.ShowMode.SHOW_SEARCH_RESULT
+import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_HISTORY
+import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_SEARCH_RESULT
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +27,7 @@ class SearchTrackAdapter(private val searchTrackService: SearchTrackService,
         showMode=newShowMode
         notifyDataSetChanged()
     }
-    fun getShowMode():ShowMode{
+    fun getShowMode(): ShowMode {
         return showMode
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListViewHolder {
