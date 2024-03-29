@@ -1,7 +1,10 @@
-package alexey.gritsenko.playlistmaker.view
+package alexey.gritsenko.playlistmaker.activity.mainactivity
 
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.R.layout
+import alexey.gritsenko.playlistmaker.activity.mediaactivity.MediaLibraryActivity
+import alexey.gritsenko.playlistmaker.activity.searchactivity.SearchActivity
+import alexey.gritsenko.playlistmaker.activity.settingactivity.SettingsActivity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

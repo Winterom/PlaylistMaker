@@ -5,18 +5,17 @@ import alexey.gritsenko.playlistmaker.model.dto.TrackSearchResponseDto
 import alexey.gritsenko.playlistmaker.model.impl.TrackRepositoryImpl
 import alexey.gritsenko.playlistmaker.services.SearchTrackService
 import alexey.gritsenko.playlistmaker.services.entity.Track
-import alexey.gritsenko.playlistmaker.view.RequestStatus.CLEAR
-import alexey.gritsenko.playlistmaker.view.RequestStatus.EMPTY
-import alexey.gritsenko.playlistmaker.view.RequestStatus.NETWORK_ERROR
-import alexey.gritsenko.playlistmaker.view.RequestStatus.OK
-import alexey.gritsenko.playlistmaker.view.RequestStatus.SERVER_ERROR
-import alexey.gritsenko.playlistmaker.view.TrackListChangedListener
+import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.CLEAR
+import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.EMPTY
+import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.NETWORK_ERROR
+import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.OK
+import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.SERVER_ERROR
+import alexey.gritsenko.playlistmaker.activity.searchactivity.TrackListChangedListener
 
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.LinkedList
-import java.util.concurrent.CopyOnWriteArrayList
 
 class SearchTrackServiceImpl : SearchTrackService {
     private val trackRepository: TrackRepository = TrackRepositoryImpl()

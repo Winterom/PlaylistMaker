@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.view
+package alexey.gritsenko.playlistmaker.activity.mediaactivity
 
 import alexey.gritsenko.playlistmaker.R.layout
 import androidx.appcompat.app.AppCompatActivity
