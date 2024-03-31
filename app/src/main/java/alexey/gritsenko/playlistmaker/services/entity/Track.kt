@@ -1,14 +1,10 @@
 package alexey.gritsenko.playlistmaker.services.entity
 
 import alexey.gritsenko.playlistmaker.model.dto.TrackSearchResponseDto
-import android.net.Uri
 import java.io.Serializable
-import java.sql.Date
 
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.ZoneId
 import java.util.Locale
 
 data class Track(
@@ -23,8 +19,13 @@ data class Track(
     val artworkUrl100: String?):Serializable{
     companion object{
         fun convertDtoToEntity(dtoResult: TrackSearchResponseDto.SearchResult):Track{
-            println(dtoResult)
-            val releaseDate = LocalDateTime.parse(dtoResult.releaseDate, DateTimeFormatter.ISO_INSTANT).year.toString()
+            val releaseDate = when{
+                dtoResult.releaseDate==null ->""
+                else -> {dtoResult.releaseDate.
+                toInstant().
+                    atZone(ZoneId.of("UTC"))
+                        .year.toString()}
+            }
             val trackTime = SimpleDateFormat("mm:ss", Locale.getDefault())
                 .format(dtoResult.trackTimeMillis)
             return Track(dtoResult.trackId,

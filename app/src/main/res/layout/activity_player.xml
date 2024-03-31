@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/activity_background"
     tools:context=".activity.playeractivity.PlayerActivity">
 
     <ImageView
@@ -98,6 +99,7 @@
         android:layout_height="83dp"
         android:layout_marginTop="@dimen/dimen64dp"
         android:src="@drawable/pause"
+        android:background="@drawable/round_button"
         app:layout_constraintEnd_toStartOf="@+id/add_to_playlist_button"
         app:layout_constraintStart_toEndOf="@+id/hz_chto_za_button"
         app:layout_constraintTop_toBottomOf="@+id/track_name_text_view" />

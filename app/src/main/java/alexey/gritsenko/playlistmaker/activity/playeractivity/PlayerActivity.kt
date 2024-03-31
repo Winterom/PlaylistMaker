@@ -7,13 +7,14 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var track: Track
     private lateinit var timerTextView:TextView
+    private lateinit var messageTextView:TextView
     companion object{
         const val TRACK ="TRACK"
     }
@@ -30,6 +31,7 @@ class PlayerActivity : AppCompatActivity() {
         initAlbumGroup()
         initYearTextView()
         initCountryTextView()
+        initMessageTextView()
     }
 
     private fun initTrack() {
@@ -82,5 +84,9 @@ class PlayerActivity : AppCompatActivity() {
     private fun initCountryTextView(){
         val country = findViewById<TextView>(id.track_country_text_view)
         country.text=track.country
+    }
+    private fun initMessageTextView(){
+        messageTextView = findViewById(id.playlist_is_created_text_view)
+        messageTextView.isVisible=false
     }
 }
