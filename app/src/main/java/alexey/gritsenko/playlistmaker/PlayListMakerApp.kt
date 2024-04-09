@@ -19,10 +19,9 @@ class PlayListMakerApp : Application() {
     override fun onCreate() {
         super.onCreate()
         sharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        val savedThemeKey = sharedPreferences.getBoolean(THEME_KEY, false)
-        if (savedThemeKey){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
+        val systemTheme = isDarkThemeEnabled()
+        val savedThemeKey = sharedPreferences.getBoolean(THEME_KEY, systemTheme)
+        switchTheme(savedThemeKey)
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
