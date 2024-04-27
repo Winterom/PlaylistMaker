@@ -17,7 +17,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.LinkedList
 
-class SearchTrackServiceImpl : SearchTrackService {
+open class SearchTrackServiceImpl : SearchTrackService {
     private val trackRepository: TrackRepository = TrackRepositoryImpl()
     private val tracks: MutableList<Track> = ArrayList()
     private val listeners = LinkedList<TrackListChangedListener>()

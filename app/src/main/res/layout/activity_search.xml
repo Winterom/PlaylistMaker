@@ -89,6 +89,15 @@
         app:layout_constraintTop_toBottomOf="@+id/searchField"
         tools:visibility="gone" />
 
+    <ProgressBar android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:indeterminateTint="@color/yp_blue"
+        app:layout_constraintTop_toBottomOf="@+id/searchField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/dimen140dp"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/empty_search_text"
         android:layout_width="wrap_content"

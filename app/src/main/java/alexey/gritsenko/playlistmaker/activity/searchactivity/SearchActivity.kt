@@ -15,6 +15,7 @@ import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.OK
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.SERVER_ERROR
 import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_HISTORY
 import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_SEARCH_RESULT
+import alexey.gritsenko.playlistmaker.services.impl.SearchTrackServiceDebounceWrapper
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -27,6 +28,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
@@ -39,13 +41,14 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryListChangedListener {
-    private val searchTrackService: SearchTrackService = SearchTrackServiceImpl()
+    private val searchTrackService: SearchTrackService = SearchTrackServiceDebounceWrapper()
     private lateinit var historyService: TrackHistoryService
     private lateinit var recyclerView: RecyclerView
     private val emptySearchViews = ArrayList<View>()
     private val networkNotAvailableViews= ArrayList<View>()
     private val historyViews= ArrayList<View>()
     private lateinit var adapter: SearchTrackAdapter
+    private lateinit var progressBar: ProgressBar
     private lateinit var searchField:EditText
     private lateinit var clearButton:ImageView
     private lateinit var updateNetNotAvailableButton:Button
@@ -65,6 +68,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         historyService = TrackHistoryServiceImpl(getSharedPreferences(PlayListMakerApp.APP_PREFERENCES,
             Context.MODE_PRIVATE))
         historyService.addListener(this)
+        initProgressBar()
         initNetworkNotAvailableViews()
         initEmptySearchViews()
         initHistoryViews()
@@ -150,11 +154,13 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val empty = s.isNullOrEmpty()
+                val empty = searchField.text.isNullOrEmpty()
                 clearButton.isVisible = !empty
                 if (empty) {
                     closeKeyboard()
                     searchTrackService.clearTracks()
+                }else{
+                    search(searchField.text.toString())
                 }
                 if(searchField.hasFocus()&&s?.isEmpty() == true)historyShow() else historyHide()
             }
@@ -169,7 +175,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
             if(actionId== EditorInfo.IME_ACTION_DONE){
                 if(searchField.text.toString().isNotBlank()){
                     closeKeyboard()
-                    searchTrackService.findTrack(searchField.text.toString())
+                    search(searchField.text.toString())
                 }else{
                     showToast(getString(R.string.empty_search_field))
                 }
@@ -184,6 +190,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         clearButton = findViewById(id.clear_text)
         clearButton.setOnClickListener {
             searchField.setText("")
+            searchTrackService.findTrack("")
             closeKeyboard()
         }
     }
@@ -221,8 +228,12 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
 
     }
 
+    private fun initProgressBar(){
+        this.progressBar = findViewById(id.progressBar)
+    }
 
     private fun emptySearchResult(){
+        this.progressBar.isVisible=false
         showKeyboard()
         this.recyclerView.isVisible = false
         this.emptySearchViews.forEach{it.isVisible = true}
@@ -230,6 +241,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         this.historyViews.forEach { it.isVisible=false }
     }
     private fun okSearchResult(){
+        this.progressBar.isVisible=false
         this.adapter.setShowMode(SHOW_SEARCH_RESULT)
         setTopMargin(this.recyclerView,R.dimen.dimen120dp)
         setHeightConstraint(R.dimen.dimen0dp)
@@ -240,6 +252,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         this.historyViews.forEach { it.isVisible=false }
     }
     private fun networkNotAvailable(){
+        this.progressBar.isVisible=false
         closeKeyboard()
         this.recyclerView.isVisible = false
         this.emptySearchViews.forEach{it.isVisible = false}
@@ -279,6 +292,10 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         val dp= resources.getDimensionPixelSize(height)
         constraint.constrainMaxHeight(id.track_recycle_view,dp)
         constraint.applyTo(mConstrainLayout)
+    }
+    private fun search(searchString: String){
+        this.progressBar.isVisible=true
+        searchTrackService.findTrack(searchString)
     }
 
 }
