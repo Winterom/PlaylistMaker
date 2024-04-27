@@ -16,6 +16,7 @@ data class Track(
     val releaseDate: String,
     val primaryGenreName: String,
     val country: String,
+    val previewUrl:String?,
     val artworkUrl100: String?):Serializable{
     companion object{
         fun convertDtoToEntity(dtoResult: TrackSearchResponseDto.SearchResult):Track{
@@ -36,6 +37,7 @@ data class Track(
                 releaseDate,
                 dtoResult.primaryGenreName?:"",
                 dtoResult.country?:"",
+                dtoResult.previewUrl,
                 dtoResult.artworkUrl100)
         }
     }

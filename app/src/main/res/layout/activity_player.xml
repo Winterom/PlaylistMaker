@@ -97,7 +97,6 @@
         android:layout_height="83dp"
         android:layout_marginBottom="@dimen/dimen12dp"
         android:background="@drawable/round_button"
-        android:src="@drawable/pause"
         app:layout_constraintBottom_toTopOf="@+id/track_timer_text_view"
         app:layout_constraintEnd_toStartOf="@+id/add_to_playlist_button"
         app:layout_constraintStart_toEndOf="@+id/hz_chto_za_button" />
@@ -159,6 +158,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dimen16dp"
         android:textSize="@dimen/dimen14sp"
+        android:maxLines="1"
+        android:maxWidth="@dimen/dimen120dp"
+        android:textAlignment="textEnd"
         app:layout_constraintBottom_toTopOf="@+id/track_year_text_view"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         tools:text="Yesterday (Remastered 2009)"
@@ -204,6 +206,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dimen16dp"
         android:textSize="@dimen/dimen14sp"
+        android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/track_country_text_view"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         tools:text="Rock" />
@@ -226,6 +229,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dimen20dp"
         android:textSize="@dimen/dimen14sp"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         tools:text="Великобритания" />
