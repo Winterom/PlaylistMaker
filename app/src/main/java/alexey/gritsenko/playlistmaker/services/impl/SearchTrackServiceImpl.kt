@@ -1,17 +1,16 @@
 package alexey.gritsenko.playlistmaker.services.impl
 
-import alexey.gritsenko.playlistmaker.model.TrackRepository
-import alexey.gritsenko.playlistmaker.model.dto.TrackSearchResponseDto
-import alexey.gritsenko.playlistmaker.model.impl.TrackRepositoryImpl
-import alexey.gritsenko.playlistmaker.services.SearchTrackService
-import alexey.gritsenko.playlistmaker.services.entity.Track
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.CLEAR
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.EMPTY
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.NETWORK_ERROR
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.OK
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.SERVER_ERROR
 import alexey.gritsenko.playlistmaker.activity.searchactivity.TrackListChangedListener
-
+import alexey.gritsenko.playlistmaker.model.TrackRepository
+import alexey.gritsenko.playlistmaker.model.dto.TrackSearchResponseDto
+import alexey.gritsenko.playlistmaker.model.impl.TrackRepositoryImpl
+import alexey.gritsenko.playlistmaker.services.SearchTrackService
+import alexey.gritsenko.playlistmaker.services.entity.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

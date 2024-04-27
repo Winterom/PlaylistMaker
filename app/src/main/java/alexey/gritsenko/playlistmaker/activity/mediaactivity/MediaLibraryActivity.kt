@@ -1,8 +1,8 @@
 package alexey.gritsenko.playlistmaker.activity.mediaactivity
 
 import alexey.gritsenko.playlistmaker.R.layout
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 class MediaLibraryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

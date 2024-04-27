@@ -4,10 +4,6 @@ import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.services.SearchTrackService
-import alexey.gritsenko.playlistmaker.services.TrackHistoryService
-import alexey.gritsenko.playlistmaker.services.impl.SearchTrackServiceImpl
-import alexey.gritsenko.playlistmaker.services.impl.TrackHistoryServiceImpl
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.CLEAR
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.EMPTY
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.NETWORK_ERROR
@@ -15,7 +11,10 @@ import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.OK
 import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.SERVER_ERROR
 import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_HISTORY
 import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_SEARCH_RESULT
+import alexey.gritsenko.playlistmaker.services.SearchTrackService
+import alexey.gritsenko.playlistmaker.services.TrackHistoryService
 import alexey.gritsenko.playlistmaker.services.impl.SearchTrackServiceDebounceWrapper
+import alexey.gritsenko.playlistmaker.services.impl.TrackHistoryServiceImpl
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -38,7 +37,6 @@ import androidx.core.view.isVisible
 import androidx.core.view.marginTop
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 
 class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryListChangedListener {
     private val searchTrackService: SearchTrackService = SearchTrackServiceDebounceWrapper()
@@ -136,7 +134,8 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
     private fun initRecycleView(){
         recyclerView = findViewById(id.track_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        this.adapter= SearchTrackAdapter(searchTrackService, historyService,this)
+        val startPlayerActivityByDebounce = StartPlayerActivityByDebounce(this)
+        this.adapter= SearchTrackAdapter(searchTrackService, historyService,startPlayerActivityByDebounce)
         recyclerView.adapter = adapter
     }
     private fun initReturnButton(){

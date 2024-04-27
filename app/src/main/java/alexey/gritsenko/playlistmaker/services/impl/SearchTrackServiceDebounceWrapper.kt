@@ -7,8 +7,9 @@ import android.os.Looper
 class SearchTrackServiceDebounceWrapper: SearchTrackServiceImpl() {
     companion object{
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val token = Any()
+
     }
+    private val token = Any()
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var search:String
     private var  searchRunnable: Runnable=Runnable{super.findTrack(search)}

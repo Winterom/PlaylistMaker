@@ -1,8 +1,7 @@
 package alexey.gritsenko.playlistmaker.services
 
-import alexey.gritsenko.playlistmaker.services.entity.Track
 import alexey.gritsenko.playlistmaker.activity.searchactivity.HistoryListChangedListener
-
+import alexey.gritsenko.playlistmaker.services.entity.Track
 
 interface TrackHistoryService {
     fun addListener(activity: HistoryListChangedListener)
