@@ -1,4 +1,8 @@
 package alexey.gritsenko.playlistmaker.model.dto
+
+
+import java.util.Date
+
 //https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/Searching.html#//apple_ref/doc/uid/TP40017632-CH5-SW1
 class TrackSearchResponseDto {
     val resultCount: Int=0
@@ -23,6 +27,7 @@ class TrackSearchResponseDto {
         val artworkUrl100: String? = null
         val collectionPrice: String? = null
         val trackPrice: String? = null
+        val releaseDate: Date? = null
         val collectionExplicitness: String? = null
         val trackExplicitness: String? = null
         val discCount: Int? = null

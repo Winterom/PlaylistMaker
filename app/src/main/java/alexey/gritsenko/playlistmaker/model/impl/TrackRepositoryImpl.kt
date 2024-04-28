@@ -3,6 +3,7 @@ package alexey.gritsenko.playlistmaker.model.impl
 import alexey.gritsenko.playlistmaker.model.TrackNetworkClient
 import alexey.gritsenko.playlistmaker.model.TrackRepository
 import alexey.gritsenko.playlistmaker.model.dto.TrackSearchResponseDto
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -20,9 +21,12 @@ class TrackRepositoryImpl : TrackRepository {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .create()
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
         trackNetworkClient = retrofit.create(TrackNetworkClient::class.java)

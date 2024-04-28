@@ -52,7 +52,10 @@
     <style name="app_button">
         <item name="android:textColor">@color/yp_black</item>
     </style>
-    <style name="searchActivity">
+    <style name="activity_background">
         <item name="android:background">@color/yp_black</item>
+    </style>
+    <style name="app_black_to_white">
+        <item name="android:textColor">@color/yp_white</item>
     </style>
 </resources>
