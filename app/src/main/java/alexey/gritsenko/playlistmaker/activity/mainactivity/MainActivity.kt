@@ -6,9 +6,9 @@ import alexey.gritsenko.playlistmaker.activity.mediaactivity.MediaLibraryActivit
 import alexey.gritsenko.playlistmaker.activity.searchactivity.SearchActivity
 import alexey.gritsenko.playlistmaker.activity.settingactivity.SettingsActivity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -3,7 +3,9 @@ package alexey.gritsenko.playlistmaker.activity.playeractivity
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.services.entity.Track
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +14,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 
 class PlayerActivity : AppCompatActivity() {
+
     private lateinit var track: Track
-    private lateinit var timerTextView:TextView
+    private lateinit var playButton: ImageButton
+    private lateinit var timerTextView:TimerView
     private lateinit var messageTextView:TextView
     private lateinit var image:ImageView
     private lateinit var duration:TextView
@@ -24,8 +28,14 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var trackYear:TextView
     private lateinit var trackCountry:TextView
     private lateinit var trackGenre:TextView
+    private var mediaPlayer = MediaPlayer()
+    private var playerState = STATE_DEFAULT
     companion object{
         const val TRACK ="TRACK"
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +43,7 @@ class PlayerActivity : AppCompatActivity() {
         initTrack()
         initViews()
         completeViews()
+        initPlayer()
     }
 
     private fun initTrack() {
@@ -43,7 +54,7 @@ class PlayerActivity : AppCompatActivity() {
            .setOnClickListener {
             finish() }
         image = findViewById(id.placeholder_image_view)
-        timerTextView = findViewById(id.track_timer_text_view)
+        timerTextView = TimerView(findViewById(id.track_timer_text_view),mediaPlayer)
         duration = findViewById(id.track_duration_text_view)
         albumName = findViewById(id.track_album_text_view)
         albumNameTitle = findViewById(id.track_album_title_text_view)
@@ -54,6 +65,18 @@ class PlayerActivity : AppCompatActivity() {
         messageTextView = findViewById(id.playlist_is_created_text_view)
         trackGenre = findViewById(id.track_genre_text_view)
         messageTextView.isVisible=false
+        playButton = findViewById(id.pause_start_button)
+        playButton.setImageResource(R.drawable.play)
+        playButton.setOnClickListener {
+            when(playerState) {
+                STATE_PLAYING -> {
+                    pausePlayer()
+                }
+                STATE_PREPARED, STATE_PAUSED -> {
+                    startPlayer()
+                }
+            }
+        }
     }
 
     private fun completeViews(){
@@ -72,7 +95,6 @@ class PlayerActivity : AppCompatActivity() {
         artistName.text=track.artistName
         trackYear.text=track.releaseDate
         trackCountry.text=track.country
-        timerTextView.text = track.trackTime
         trackGenre.text = track.primaryGenreName
         if(track.collectionName==null){
             albumNameTitle.isVisible=false
@@ -82,4 +104,35 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    private fun initPlayer(){
+        mediaPlayer.setDataSource(track.previewUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            playerState = STATE_PREPARED
+            playButton.setImageResource(R.drawable.play)
+        }
+        mediaPlayer.setOnCompletionListener {
+            playerState = STATE_PREPARED
+            playButton.setImageResource(R.drawable.play)
+            timerTextView.stop()
+        }
+    }
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playerState = STATE_PLAYING
+        playButton.setImageResource(R.drawable.pause)
+        timerTextView.start()
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        playerState = STATE_PAUSED
+        playButton.setImageResource(R.drawable.play)
+        timerTextView.stop()
+    }
+    override fun onDestroy() {
+        mediaPlayer.stop()
+        timerTextView.stop()
+        super.onDestroy()
+    }
 }
