@@ -54,7 +54,7 @@ class PlayerActivity : AppCompatActivity() {
            .setOnClickListener {
             finish() }
         image = findViewById(id.placeholder_image_view)
-        timerTextView = TimerView(findViewById(id.track_timer_text_view))
+        timerTextView = TimerView(findViewById(id.track_timer_text_view),mediaPlayer)
         duration = findViewById(id.track_duration_text_view)
         albumName = findViewById(id.track_album_text_view)
         albumNameTitle = findViewById(id.track_album_title_text_view)
@@ -114,7 +114,7 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.setOnCompletionListener {
             playerState = STATE_PREPARED
             playButton.setImageResource(R.drawable.play)
-            timerTextView.pause()
+            timerTextView.stop()
         }
     }
     private fun startPlayer() {
@@ -128,10 +128,11 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.pause()
         playerState = STATE_PAUSED
         playButton.setImageResource(R.drawable.play)
-        timerTextView.pause()
+        timerTextView.stop()
     }
     override fun onDestroy() {
         mediaPlayer.stop()
+        timerTextView.stop()
         super.onDestroy()
     }
 }
