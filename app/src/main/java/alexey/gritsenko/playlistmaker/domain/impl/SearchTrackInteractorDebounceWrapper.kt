@@ -1,10 +1,10 @@
-package alexey.gritsenko.playlistmaker.services.impl
+package alexey.gritsenko.playlistmaker.domain.impl
 
 
 import android.os.Handler
 import android.os.Looper
 
-class SearchTrackServiceDebounceWrapper: SearchTrackServiceImpl() {
+class SearchTrackInteractorDebounceWrapper: SearchTrackInteractorImpl() {
     companion object{
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
 

@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.activity.settingactivity
+package alexey.gritsenko.playlistmaker.presentation.settingactivity
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.R.id

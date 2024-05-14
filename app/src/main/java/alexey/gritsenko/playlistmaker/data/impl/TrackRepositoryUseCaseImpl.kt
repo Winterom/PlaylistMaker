@@ -1,8 +1,8 @@
-package alexey.gritsenko.playlistmaker.model.impl
+package alexey.gritsenko.playlistmaker.data.impl
 
-import alexey.gritsenko.playlistmaker.model.TrackNetworkClient
-import alexey.gritsenko.playlistmaker.model.TrackRepository
-import alexey.gritsenko.playlistmaker.model.dto.TrackSearchResponseDto
+import alexey.gritsenko.playlistmaker.data.TrackNetworkClientUseCase
+import alexey.gritsenko.playlistmaker.data.TrackRepositoryUseCase
+import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,8 +11,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class TrackRepositoryImpl : TrackRepository {
-    private var trackNetworkClient: TrackNetworkClient
+class TrackRepositoryUseCaseImpl : TrackRepositoryUseCase {
+    private var trackNetworkClientUseCase: TrackNetworkClientUseCase
     companion object {
         const val BASE_URL: String = "https://itunes.apple.com"
         const val SEARCH_TRACK_URL: String ="/search?entity=song"
@@ -29,17 +29,17 @@ class TrackRepositoryImpl : TrackRepository {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
-        trackNetworkClient = retrofit.create(TrackNetworkClient::class.java)
+        trackNetworkClientUseCase = retrofit.create(TrackNetworkClientUseCase::class.java)
     }
 
 
-    override fun findTrack(searchString: List<String>): Call<TrackSearchResponseDto> {
+    override fun execute(searchString: List<String>): Call<TrackSearchResponseDto> {
         val search:String = if(searchString.size>1){
             searchString.joinToString { "+" }
         }else{
             searchString[0]
         }
-        return trackNetworkClient.findTrack(search)
+        return trackNetworkClientUseCase.execute(search)
     }
 
 

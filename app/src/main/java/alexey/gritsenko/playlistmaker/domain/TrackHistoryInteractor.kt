@@ -1,9 +1,9 @@
-package alexey.gritsenko.playlistmaker.services
+package alexey.gritsenko.playlistmaker.domain
 
-import alexey.gritsenko.playlistmaker.activity.searchactivity.HistoryListChangedListener
-import alexey.gritsenko.playlistmaker.services.entity.Track
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.HistoryListChangedListener
+import alexey.gritsenko.playlistmaker.domain.entity.Track
 
-interface TrackHistoryService {
+interface TrackHistoryInteractor {
     fun addListener(activity: HistoryListChangedListener)
 
     fun deleteListener(activity: HistoryListChangedListener)

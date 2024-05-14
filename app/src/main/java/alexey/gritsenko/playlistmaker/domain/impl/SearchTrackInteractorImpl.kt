@@ -1,23 +1,23 @@
-package alexey.gritsenko.playlistmaker.services.impl
+package alexey.gritsenko.playlistmaker.domain.impl
 
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.CLEAR
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.EMPTY
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.NETWORK_ERROR
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.OK
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.SERVER_ERROR
-import alexey.gritsenko.playlistmaker.activity.searchactivity.TrackListChangedListener
-import alexey.gritsenko.playlistmaker.model.TrackRepository
-import alexey.gritsenko.playlistmaker.model.dto.TrackSearchResponseDto
-import alexey.gritsenko.playlistmaker.model.impl.TrackRepositoryImpl
-import alexey.gritsenko.playlistmaker.services.SearchTrackService
-import alexey.gritsenko.playlistmaker.services.entity.Track
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.CLEAR
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.EMPTY
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.NETWORK_ERROR
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.OK
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.SERVER_ERROR
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.TrackListChangedListener
+import alexey.gritsenko.playlistmaker.data.TrackRepositoryUseCase
+import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
+import alexey.gritsenko.playlistmaker.data.impl.TrackRepositoryUseCaseImpl
+import alexey.gritsenko.playlistmaker.domain.SearchTrackInteractor
+import alexey.gritsenko.playlistmaker.domain.entity.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.LinkedList
 
-open class SearchTrackServiceImpl : SearchTrackService {
-    private val trackRepository: TrackRepository = TrackRepositoryImpl()
+open class SearchTrackInteractorImpl : SearchTrackInteractor {
+    private val trackRepositoryUseCase: TrackRepositoryUseCase = TrackRepositoryUseCaseImpl()
     private val tracks: MutableList<Track> = ArrayList()
     private val listeners = LinkedList<TrackListChangedListener>()
     override fun addListener(activity: TrackListChangedListener) {
@@ -30,7 +30,7 @@ open class SearchTrackServiceImpl : SearchTrackService {
 
     override fun findTrack(searchString: String) {
         val rawStrings = searchString.split(" ")
-        trackRepository.findTrack(rawStrings)
+        trackRepositoryUseCase.execute(rawStrings)
             .enqueue(object : Callback<TrackSearchResponseDto> {
                 override fun onResponse(
                     call: Call<TrackSearchResponseDto>,

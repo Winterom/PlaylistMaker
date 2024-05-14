@@ -1,17 +1,17 @@
-package alexey.gritsenko.playlistmaker.services.impl
+package alexey.gritsenko.playlistmaker.domain.impl
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
-import alexey.gritsenko.playlistmaker.activity.searchactivity.HistoryListChangedListener
-import alexey.gritsenko.playlistmaker.services.TrackHistoryService
-import alexey.gritsenko.playlistmaker.services.entity.Track
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.HistoryListChangedListener
+import alexey.gritsenko.playlistmaker.domain.TrackHistoryInteractor
+import alexey.gritsenko.playlistmaker.domain.entity.Track
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.util.LinkedList
 
-class TrackHistoryServiceImpl(private val sharedPreferences: SharedPreferences) :
-    TrackHistoryService {
+class TrackHistoryInteractorImpl(private val sharedPreferences: SharedPreferences) :
+    TrackHistoryInteractor {
     companion object {
         private const val HISTORY_CAPACITY = 10
     }

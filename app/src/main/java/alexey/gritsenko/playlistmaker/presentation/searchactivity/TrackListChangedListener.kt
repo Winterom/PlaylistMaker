@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.activity.searchactivity
+package alexey.gritsenko.playlistmaker.presentation.searchactivity
 
 interface TrackListChangedListener {
     fun dataIsChanged(status: RequestStatus)

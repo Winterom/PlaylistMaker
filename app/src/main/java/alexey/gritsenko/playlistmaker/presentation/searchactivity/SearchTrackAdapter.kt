@@ -1,12 +1,12 @@
-package alexey.gritsenko.playlistmaker.activity.searchactivity
+package alexey.gritsenko.playlistmaker.presentation.searchactivity
 
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_HISTORY
-import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_SEARCH_RESULT
-import alexey.gritsenko.playlistmaker.services.SearchTrackService
-import alexey.gritsenko.playlistmaker.services.TrackHistoryService
-import alexey.gritsenko.playlistmaker.services.entity.Track
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_HISTORY
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_SEARCH_RESULT
+import alexey.gritsenko.playlistmaker.domain.SearchTrackInteractor
+import alexey.gritsenko.playlistmaker.domain.TrackHistoryInteractor
+import alexey.gritsenko.playlistmaker.domain.entity.Track
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +18,8 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class SearchTrackAdapter(
-    private val searchTrackService: SearchTrackService,
-    private val historyTrackService: TrackHistoryService,
+    private val searchTrackInteractor: SearchTrackInteractor,
+    private val historyTrackService: TrackHistoryInteractor,
     private val startPlayerActivityByDebounce: StartPlayerActivityByDebounce,
 
     ) :
@@ -42,7 +42,7 @@ class SearchTrackAdapter(
 
     override fun getItemCount(): Int {
         return when (showMode) {
-            SHOW_SEARCH_RESULT -> searchTrackService.getCount()
+            SHOW_SEARCH_RESULT -> searchTrackInteractor.getCount()
             SHOW_HISTORY -> historyTrackService.getCount()
         }
     }
@@ -50,7 +50,7 @@ class SearchTrackAdapter(
     override fun onBindViewHolder(holder: TrackListViewHolder, position: Int) {
         val track: Track =
             when (showMode) {
-                SHOW_SEARCH_RESULT -> searchTrackService.getTrackByPosition(position)
+                SHOW_SEARCH_RESULT -> searchTrackInteractor.getTrackByPosition(position)
                 SHOW_HISTORY -> historyTrackService.getTrackByPosition(position)
             }
         holder.bind(track)

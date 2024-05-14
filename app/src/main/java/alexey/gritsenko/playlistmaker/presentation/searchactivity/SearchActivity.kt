@@ -1,20 +1,20 @@
-package alexey.gritsenko.playlistmaker.activity.searchactivity
+package alexey.gritsenko.playlistmaker.presentation.searchactivity
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.CLEAR
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.EMPTY
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.NETWORK_ERROR
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.OK
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.SERVER_ERROR
-import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_HISTORY
-import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_SEARCH_RESULT
-import alexey.gritsenko.playlistmaker.services.SearchTrackService
-import alexey.gritsenko.playlistmaker.services.TrackHistoryService
-import alexey.gritsenko.playlistmaker.services.impl.SearchTrackServiceDebounceWrapper
-import alexey.gritsenko.playlistmaker.services.impl.TrackHistoryServiceImpl
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.CLEAR
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.EMPTY
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.NETWORK_ERROR
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.OK
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.SERVER_ERROR
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_HISTORY
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_SEARCH_RESULT
+import alexey.gritsenko.playlistmaker.domain.SearchTrackInteractor
+import alexey.gritsenko.playlistmaker.domain.TrackHistoryInteractor
+import alexey.gritsenko.playlistmaker.domain.impl.SearchTrackInteractorDebounceWrapper
+import alexey.gritsenko.playlistmaker.domain.impl.TrackHistoryInteractorImpl
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -39,8 +39,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryListChangedListener {
-    private val searchTrackService: SearchTrackService = SearchTrackServiceDebounceWrapper()
-    private lateinit var historyService: TrackHistoryService
+    private val searchTrackInteractor: SearchTrackInteractor = SearchTrackInteractorDebounceWrapper()
+    private lateinit var historyService: TrackHistoryInteractor
     private lateinit var recyclerView: RecyclerView
     private val emptySearchViews = ArrayList<View>()
     private val networkNotAvailableViews= ArrayList<View>()
@@ -62,8 +62,8 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_search)
-        searchTrackService.addListener(this)
-        historyService = TrackHistoryServiceImpl(getSharedPreferences(PlayListMakerApp.APP_PREFERENCES,
+        searchTrackInteractor.addListener(this)
+        historyService = TrackHistoryInteractorImpl(getSharedPreferences(PlayListMakerApp.APP_PREFERENCES,
             Context.MODE_PRIVATE))
         historyService.addListener(this)
         initProgressBar()
@@ -119,7 +119,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         }
     }
     override fun onDestroy() {
-        searchTrackService.deleteListener(this)
+        searchTrackInteractor.deleteListener(this)
         super.onDestroy()
     }
     private fun showToast(text:String){
@@ -135,7 +135,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         recyclerView = findViewById(id.track_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val startPlayerActivityByDebounce = StartPlayerActivityByDebounce(this)
-        this.adapter= SearchTrackAdapter(searchTrackService, historyService,startPlayerActivityByDebounce)
+        this.adapter= SearchTrackAdapter(searchTrackInteractor, historyService,startPlayerActivityByDebounce)
         recyclerView.adapter = adapter
     }
     private fun initReturnButton(){
@@ -157,7 +157,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
                 clearButton.isVisible = !empty
                 if (empty) {
                     closeKeyboard()
-                    searchTrackService.clearTracks()
+                    searchTrackInteractor.clearTracks()
                 }else{
                     search(searchField.text.toString())
                 }
@@ -189,7 +189,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         clearButton = findViewById(id.clear_text)
         clearButton.setOnClickListener {
             searchField.setText("")
-            searchTrackService.findTrack("")
+            searchTrackInteractor.findTrack("")
             closeKeyboard()
         }
     }
@@ -197,7 +197,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         updateNetNotAvailableButton = findViewById(id.internet_not_available_button_update)
         updateNetNotAvailableButton.setOnClickListener{
             if(searchField.text.toString().isNotBlank()){
-                searchTrackService.findTrack(searchField.text.toString())
+                searchTrackInteractor.findTrack(searchField.text.toString())
             }else{
                 showToast(getString(R.string.empty_search_field))
             }
@@ -294,7 +294,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
     }
     private fun search(searchString: String){
         this.progressBar.isVisible=true
-        searchTrackService.findTrack(searchString)
+        searchTrackInteractor.findTrack(searchString)
     }
 
 }

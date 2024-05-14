@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.activity.playeractivity
+package alexey.gritsenko.playlistmaker.presentation.playeractivity
 
 import android.media.MediaPlayer
 import android.os.Handler
