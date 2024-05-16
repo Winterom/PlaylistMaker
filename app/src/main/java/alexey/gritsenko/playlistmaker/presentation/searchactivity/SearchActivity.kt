@@ -4,17 +4,18 @@ import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.CLEAR
-import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.EMPTY
-import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.NETWORK_ERROR
-import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.OK
-import alexey.gritsenko.playlistmaker.presentation.searchactivity.RequestStatus.SERVER_ERROR
-import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_HISTORY
-import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_SEARCH_RESULT
+import alexey.gritsenko.playlistmaker.domain.RequestStatus
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.CLEAR
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.EMPTY
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.NETWORK_ERROR
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.OK
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.SERVER_ERROR
 import alexey.gritsenko.playlistmaker.domain.SearchTrackInteractor
 import alexey.gritsenko.playlistmaker.domain.TrackHistoryInteractor
 import alexey.gritsenko.playlistmaker.domain.impl.SearchTrackInteractorDebounceWrapper
 import alexey.gritsenko.playlistmaker.domain.impl.TrackHistoryInteractorImpl
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_HISTORY
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_SEARCH_RESULT
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -38,7 +39,7 @@ import androidx.core.view.marginTop
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryListChangedListener {
+class SearchActivity : AppCompatActivity(){
     private val searchTrackInteractor: SearchTrackInteractor = SearchTrackInteractorDebounceWrapper()
     private lateinit var historyService: TrackHistoryInteractor
     private lateinit var recyclerView: RecyclerView
@@ -62,10 +63,8 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_search)
-        searchTrackInteractor.addListener(this)
         historyService = TrackHistoryInteractorImpl(getSharedPreferences(PlayListMakerApp.APP_PREFERENCES,
             Context.MODE_PRIVATE))
-        historyService.addListener(this)
         initProgressBar()
         initNetworkNotAvailableViews()
         initEmptySearchViews()
@@ -104,7 +103,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         }
     }
 
-    override fun dataIsChanged(status: RequestStatus) {
+    private fun dataIsChanged(status: RequestStatus) {
             when(status){
                 OK,CLEAR -> okSearchResult()
                 EMPTY -> emptySearchResult()
@@ -113,15 +112,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
             }
         this.adapter.notifyDataSetChanged()
     }
-    override fun historyIsChanged() {
-        if(adapter.getShowMode() == SHOW_HISTORY){
-            this.adapter.notifyDataSetChanged()
-        }
-    }
-    override fun onDestroy() {
-        searchTrackInteractor.deleteListener(this)
-        super.onDestroy()
-    }
+
     private fun showToast(text:String){
         val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
         toast.setGravity(
@@ -158,6 +149,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
                 if (empty) {
                     closeKeyboard()
                     searchTrackInteractor.clearTracks()
+                    adapter.notifyDataSetChanged()
                 }else{
                     search(searchField.text.toString())
                 }
@@ -189,7 +181,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         clearButton = findViewById(id.clear_text)
         clearButton.setOnClickListener {
             searchField.setText("")
-            searchTrackInteractor.findTrack("")
+            searchTrackInteractor.findTrack("",::dataIsChanged)
             closeKeyboard()
         }
     }
@@ -197,7 +189,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         updateNetNotAvailableButton = findViewById(id.internet_not_available_button_update)
         updateNetNotAvailableButton.setOnClickListener{
             if(searchField.text.toString().isNotBlank()){
-                searchTrackInteractor.findTrack(searchField.text.toString())
+                searchTrackInteractor.findTrack(searchField.text.toString(),::dataIsChanged)
             }else{
                 showToast(getString(R.string.empty_search_field))
             }
@@ -264,7 +256,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         showKeyboard()
         this.adapter.setShowMode(SHOW_HISTORY)
         setTopMargin(this.recyclerView,R.dimen.dimen172dp)
-        setHeightConstraint(R.dimen.dimen240dp)
+        setHeightConstraint(R.dimen.dimen400dp)
         this.recyclerView.isVisible = true
         this.emptySearchViews.forEach{it.isVisible = false}
         this.networkNotAvailableViews.forEach{it.isVisible = false}
@@ -294,7 +286,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
     }
     private fun search(searchString: String){
         this.progressBar.isVisible=true
-        searchTrackInteractor.findTrack(searchString)
+        searchTrackInteractor.findTrack(searchString,::dataIsChanged)
     }
 
 }

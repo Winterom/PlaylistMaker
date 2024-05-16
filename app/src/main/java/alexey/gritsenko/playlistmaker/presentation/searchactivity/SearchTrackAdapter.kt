@@ -2,11 +2,11 @@ package alexey.gritsenko.playlistmaker.presentation.searchactivity
 
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_HISTORY
-import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_SEARCH_RESULT
 import alexey.gritsenko.playlistmaker.domain.SearchTrackInteractor
 import alexey.gritsenko.playlistmaker.domain.TrackHistoryInteractor
 import alexey.gritsenko.playlistmaker.domain.entity.Track
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_HISTORY
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_SEARCH_RESULT
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +32,6 @@ class SearchTrackAdapter(
         notifyDataSetChanged()
     }
 
-    fun getShowMode(): ShowMode {
-        return showMode
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListViewHolder {
         return TrackListViewHolder(parent)
@@ -57,6 +54,7 @@ class SearchTrackAdapter(
         holder.itemView.setOnClickListener {
             historyTrackService.addTrackToHistory(track)
             startPlayerActivityByDebounce.start(track)
+            notifyDataSetChanged()
         }
     }
 }
