@@ -22,6 +22,7 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".presentation.searchactivity.SearchActivity"
+            android:windowSoftInputMode="stateVisible"
             android:exported="false" />
         <activity
             android:screenOrientation="portrait"

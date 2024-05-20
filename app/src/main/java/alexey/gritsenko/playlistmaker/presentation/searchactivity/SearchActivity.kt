@@ -65,77 +65,27 @@ class SearchActivity : AppCompatActivity(){
         setContentView(layout.activity_search)
         historyService = TrackHistoryInteractorImpl(getSharedPreferences(PlayListMakerApp.APP_PREFERENCES,
             Context.MODE_PRIVATE))
-        initProgressBar()
-        initNetworkNotAvailableViews()
-        initEmptySearchViews()
-        initHistoryViews()
-        initRecycleView()
-        initReturnButton()
-        initClearButton()
-        initSearchField()
-        initUpdateNetNotAvailableButton()
+        initView()
+        setVisibility()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(TEXT_STORED_KEY, searchText)
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString(TEXT_STORED_KEY) ?: ""
-    }
-
-    private fun closeKeyboard() {
-        val inputManager =
-            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(
-            currentFocus?.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS
-        )
-
-    }
-    private fun showKeyboard(){
-        if (searchField.requestFocus()) {
-            val inputManager =
-                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT)
-        }
-    }
-
-    private fun dataIsChanged(status: RequestStatus) {
-            when(status){
-                OK,CLEAR -> okSearchResult()
-                EMPTY -> emptySearchResult()
-                NETWORK_ERROR -> networkNotAvailable()
-                SERVER_ERROR -> serverErrorMessage()
-            }
-        this.adapter.notifyDataSetChanged()
-    }
-
-    private fun showToast(text:String){
-        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
-        toast.setGravity(
-            Gravity.TOP or Gravity.CENTER,
-            0,
-            0
-        )
-        toast.show()
-    }
-    private fun initRecycleView(){
+    private fun initView() {
         recyclerView = findViewById(id.track_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val startPlayerActivityByDebounce = StartPlayerActivityByDebounce(this)
         this.adapter= SearchTrackAdapter(searchTrackInteractor, historyService,startPlayerActivityByDebounce)
         recyclerView.adapter = adapter
-    }
-    private fun initReturnButton(){
         val returnButton = findViewById<ImageView>(id.return_to_main)
         returnButton.setOnClickListener {
             finish()
         }
-    }
-    private fun initSearchField(){
+        clearButton = findViewById(id.clear_text)
+        clearButton.setOnClickListener {
+            searchField.setText("")
+            searchTrackInteractor.findTrack("",::dataIsChanged)
+            closeKeyboard()
+        }
+        this.progressBar = findViewById(id.progressBar)
         searchField = findViewById(id.searchField)
         searchField.requestFocus()
         val simpleTextWatcher = object : TextWatcher {
@@ -176,16 +126,20 @@ class SearchActivity : AppCompatActivity(){
         searchField.setOnFocusChangeListener { _, hasFocus ->
             if(hasFocus && searchField.text.isEmpty())historyShow() else historyHide()
         }
-    }
-    private fun initClearButton(){
-        clearButton = findViewById(id.clear_text)
-        clearButton.setOnClickListener {
-            searchField.setText("")
-            searchTrackInteractor.findTrack("",::dataIsChanged)
-            closeKeyboard()
+
+        networkNotAvailableViews.add(findViewById(id.internet_not_available_button_update))
+        networkNotAvailableViews.add(findViewById(id.internet_not_available_image))
+        networkNotAvailableViews.add(findViewById(id.internet_not_available_text))
+        emptySearchViews.add(findViewById(id.empty_search_image))
+        emptySearchViews.add(findViewById(id.empty_search_text))
+        historyViews.add(findViewById(id.you_history_text))
+        val clearHistoryButton = findViewById<Button>(id.clear_history_button)
+        clearHistoryButton.setOnClickListener {
+            historyService.clearHistory()
+            adapter.notifyDataSetChanged()
+            historyHide()
         }
-    }
-    private fun initUpdateNetNotAvailableButton(){
+        historyViews.add(clearHistoryButton)
         updateNetNotAvailableButton = findViewById(id.internet_not_available_button_update)
         updateNetNotAvailableButton.setOnClickListener{
             if(searchField.text.toString().isNotBlank()){
@@ -196,31 +150,52 @@ class SearchActivity : AppCompatActivity(){
         }
     }
 
-    private fun initEmptySearchViews(){
-        emptySearchViews.add(findViewById(id.empty_search_image))
-        emptySearchViews.add(findViewById(id.empty_search_text))
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(TEXT_STORED_KEY, searchText)
+        super.onSaveInstanceState(outState)
     }
 
-    private fun initNetworkNotAvailableViews(){
-        networkNotAvailableViews.add(findViewById(id.internet_not_available_button_update))
-        networkNotAvailableViews.add(findViewById(id.internet_not_available_image))
-        networkNotAvailableViews.add(findViewById(id.internet_not_available_text))
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        searchText = savedInstanceState.getString(TEXT_STORED_KEY) ?: ""
     }
 
-    private fun initHistoryViews(){
-        historyViews.add(findViewById(id.you_history_text))
-        val clearHistoryButton = findViewById<Button>(id.clear_history_button)
-        clearHistoryButton.setOnClickListener {
-            historyService.clearHistory()
-            adapter.notifyDataSetChanged()
-            historyHide()
+    private fun closeKeyboard() {
+        val inputManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(
+            currentFocus?.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
+        println("keyboard hide")
+    }
+    private fun showKeyboard(){
+        if (searchField.requestFocus()) {
+            val inputManager =
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT)
+            println("keyboard show")
         }
-        historyViews.add(clearHistoryButton)
-
     }
 
-    private fun initProgressBar(){
-        this.progressBar = findViewById(id.progressBar)
+    private fun dataIsChanged(status: RequestStatus) {
+            when(status){
+                OK,CLEAR -> okSearchResult()
+                EMPTY -> emptySearchResult()
+                NETWORK_ERROR -> networkNotAvailable()
+                SERVER_ERROR -> serverErrorMessage()
+            }
+        this.adapter.notifyDataSetChanged()
+    }
+
+    private fun showToast(text:String){
+        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
+        toast.setGravity(
+            Gravity.TOP or Gravity.CENTER,
+            0,
+            0
+        )
+        toast.show()
     }
 
     private fun emptySearchResult(){
@@ -287,6 +262,18 @@ class SearchActivity : AppCompatActivity(){
     private fun search(searchString: String){
         this.progressBar.isVisible=true
         searchTrackInteractor.findTrack(searchString,::dataIsChanged)
+    }
+
+    private fun setVisibility(){
+        if(historyService.getCount()==0){
+            historyHide()
+            showKeyboard()
+        }else{
+            historyShow()
+        }
+        this.emptySearchViews.forEach{it.isVisible = false}
+        this.networkNotAvailableViews.forEach{it.isVisible = false}
+
     }
 
 }
