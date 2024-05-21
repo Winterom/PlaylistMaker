@@ -1,6 +1,6 @@
-package alexey.gritsenko.playlistmaker.services.entity
+package alexey.gritsenko.playlistmaker.domain.entity
 
-import alexey.gritsenko.playlistmaker.model.dto.TrackSearchResponseDto
+import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
 import java.io.Serializable
 
 import java.text.SimpleDateFormat

@@ -1,7 +1,7 @@
-package alexey.gritsenko.playlistmaker.activity.searchactivity
+package alexey.gritsenko.playlistmaker.presentation.searchactivity
 
-import alexey.gritsenko.playlistmaker.activity.playeractivity.PlayerActivity
-import alexey.gritsenko.playlistmaker.services.entity.Track
+import alexey.gritsenko.playlistmaker.domain.entity.Track
+import alexey.gritsenko.playlistmaker.presentation.playeractivity.PlayerActivity
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper

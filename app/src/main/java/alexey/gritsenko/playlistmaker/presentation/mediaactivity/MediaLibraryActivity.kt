@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.activity.mediaactivity
+package alexey.gritsenko.playlistmaker.presentation.mediaactivity
 
 import alexey.gritsenko.playlistmaker.R.layout
 import android.os.Bundle

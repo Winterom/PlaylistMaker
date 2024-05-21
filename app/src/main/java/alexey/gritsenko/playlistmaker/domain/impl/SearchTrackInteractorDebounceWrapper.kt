@@ -1,10 +1,11 @@
-package alexey.gritsenko.playlistmaker.services.impl
+package alexey.gritsenko.playlistmaker.domain.impl
 
 
+import alexey.gritsenko.playlistmaker.domain.RequestStatus
 import android.os.Handler
 import android.os.Looper
 
-class SearchTrackServiceDebounceWrapper: SearchTrackServiceImpl() {
+class SearchTrackInteractorDebounceWrapper: SearchTrackInteractorImpl() {
     companion object{
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
 
@@ -12,9 +13,10 @@ class SearchTrackServiceDebounceWrapper: SearchTrackServiceImpl() {
     private val token = Any()
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var search:String
-    private var  searchRunnable: Runnable=Runnable{super.findTrack(search)}
+    private lateinit var  searchRunnable: Runnable
 
-    override fun findTrack(searchString: String) {
+    override fun findTrack(searchString: String,callbackFunction: (status: RequestStatus) -> Unit) {
+        searchRunnable=Runnable{super.findTrack(search,callbackFunction)}
         if(searchString.isEmpty()){
             cancelSearchRequest()
             return

@@ -1,20 +1,21 @@
-package alexey.gritsenko.playlistmaker.activity.searchactivity
+package alexey.gritsenko.playlistmaker.presentation.searchactivity
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.CLEAR
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.EMPTY
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.NETWORK_ERROR
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.OK
-import alexey.gritsenko.playlistmaker.activity.searchactivity.RequestStatus.SERVER_ERROR
-import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_HISTORY
-import alexey.gritsenko.playlistmaker.activity.searchactivity.ShowMode.SHOW_SEARCH_RESULT
-import alexey.gritsenko.playlistmaker.services.SearchTrackService
-import alexey.gritsenko.playlistmaker.services.TrackHistoryService
-import alexey.gritsenko.playlistmaker.services.impl.SearchTrackServiceDebounceWrapper
-import alexey.gritsenko.playlistmaker.services.impl.TrackHistoryServiceImpl
+import alexey.gritsenko.playlistmaker.domain.RequestStatus
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.CLEAR
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.EMPTY
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.NETWORK_ERROR
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.OK
+import alexey.gritsenko.playlistmaker.domain.RequestStatus.SERVER_ERROR
+import alexey.gritsenko.playlistmaker.domain.SearchTrackInteractor
+import alexey.gritsenko.playlistmaker.domain.TrackHistoryInteractor
+import alexey.gritsenko.playlistmaker.domain.impl.SearchTrackInteractorDebounceWrapper
+import alexey.gritsenko.playlistmaker.domain.impl.TrackHistoryInteractorImpl
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_HISTORY
+import alexey.gritsenko.playlistmaker.presentation.searchactivity.ShowMode.SHOW_SEARCH_RESULT
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -38,9 +39,9 @@ import androidx.core.view.marginTop
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryListChangedListener {
-    private val searchTrackService: SearchTrackService = SearchTrackServiceDebounceWrapper()
-    private lateinit var historyService: TrackHistoryService
+class SearchActivity : AppCompatActivity(){
+    private val searchTrackInteractor: SearchTrackInteractor = SearchTrackInteractorDebounceWrapper()
+    private lateinit var historyService: TrackHistoryInteractor
     private lateinit var recyclerView: RecyclerView
     private val emptySearchViews = ArrayList<View>()
     private val networkNotAvailableViews= ArrayList<View>()
@@ -62,89 +63,29 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_search)
-        searchTrackService.addListener(this)
-        historyService = TrackHistoryServiceImpl(getSharedPreferences(PlayListMakerApp.APP_PREFERENCES,
+        historyService = TrackHistoryInteractorImpl(getSharedPreferences(PlayListMakerApp.APP_PREFERENCES,
             Context.MODE_PRIVATE))
-        historyService.addListener(this)
-        initProgressBar()
-        initNetworkNotAvailableViews()
-        initEmptySearchViews()
-        initHistoryViews()
-        initRecycleView()
-        initReturnButton()
-        initClearButton()
-        initSearchField()
-        initUpdateNetNotAvailableButton()
+        initView()
+        setVisibility()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(TEXT_STORED_KEY, searchText)
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString(TEXT_STORED_KEY) ?: ""
-    }
-
-    private fun closeKeyboard() {
-        val inputManager =
-            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(
-            currentFocus?.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS
-        )
-
-    }
-    private fun showKeyboard(){
-        if (searchField.requestFocus()) {
-            val inputManager =
-                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT)
-        }
-    }
-
-    override fun dataIsChanged(status: RequestStatus) {
-            when(status){
-                OK,CLEAR -> okSearchResult()
-                EMPTY -> emptySearchResult()
-                NETWORK_ERROR -> networkNotAvailable()
-                SERVER_ERROR -> serverErrorMessage()
-            }
-        this.adapter.notifyDataSetChanged()
-    }
-    override fun historyIsChanged() {
-        if(adapter.getShowMode() == SHOW_HISTORY){
-            this.adapter.notifyDataSetChanged()
-        }
-    }
-    override fun onDestroy() {
-        searchTrackService.deleteListener(this)
-        super.onDestroy()
-    }
-    private fun showToast(text:String){
-        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
-        toast.setGravity(
-            Gravity.TOP or Gravity.CENTER,
-            0,
-            0
-        )
-        toast.show()
-    }
-    private fun initRecycleView(){
+    private fun initView() {
         recyclerView = findViewById(id.track_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val startPlayerActivityByDebounce = StartPlayerActivityByDebounce(this)
-        this.adapter= SearchTrackAdapter(searchTrackService, historyService,startPlayerActivityByDebounce)
+        this.adapter= SearchTrackAdapter(searchTrackInteractor, historyService,startPlayerActivityByDebounce)
         recyclerView.adapter = adapter
-    }
-    private fun initReturnButton(){
         val returnButton = findViewById<ImageView>(id.return_to_main)
         returnButton.setOnClickListener {
             finish()
         }
-    }
-    private fun initSearchField(){
+        clearButton = findViewById(id.clear_text)
+        clearButton.setOnClickListener {
+            searchField.setText("")
+            searchTrackInteractor.findTrack("",::dataIsChanged)
+            closeKeyboard()
+        }
+        this.progressBar = findViewById(id.progressBar)
         searchField = findViewById(id.searchField)
         searchField.requestFocus()
         val simpleTextWatcher = object : TextWatcher {
@@ -157,7 +98,8 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
                 clearButton.isVisible = !empty
                 if (empty) {
                     closeKeyboard()
-                    searchTrackService.clearTracks()
+                    searchTrackInteractor.clearTracks()
+                    adapter.notifyDataSetChanged()
                 }else{
                     search(searchField.text.toString())
                 }
@@ -184,38 +126,12 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         searchField.setOnFocusChangeListener { _, hasFocus ->
             if(hasFocus && searchField.text.isEmpty())historyShow() else historyHide()
         }
-    }
-    private fun initClearButton(){
-        clearButton = findViewById(id.clear_text)
-        clearButton.setOnClickListener {
-            searchField.setText("")
-            searchTrackService.findTrack("")
-            closeKeyboard()
-        }
-    }
-    private fun initUpdateNetNotAvailableButton(){
-        updateNetNotAvailableButton = findViewById(id.internet_not_available_button_update)
-        updateNetNotAvailableButton.setOnClickListener{
-            if(searchField.text.toString().isNotBlank()){
-                searchTrackService.findTrack(searchField.text.toString())
-            }else{
-                showToast(getString(R.string.empty_search_field))
-            }
-        }
-    }
 
-    private fun initEmptySearchViews(){
-        emptySearchViews.add(findViewById(id.empty_search_image))
-        emptySearchViews.add(findViewById(id.empty_search_text))
-    }
-
-    private fun initNetworkNotAvailableViews(){
         networkNotAvailableViews.add(findViewById(id.internet_not_available_button_update))
         networkNotAvailableViews.add(findViewById(id.internet_not_available_image))
         networkNotAvailableViews.add(findViewById(id.internet_not_available_text))
-    }
-
-    private fun initHistoryViews(){
+        emptySearchViews.add(findViewById(id.empty_search_image))
+        emptySearchViews.add(findViewById(id.empty_search_text))
         historyViews.add(findViewById(id.you_history_text))
         val clearHistoryButton = findViewById<Button>(id.clear_history_button)
         clearHistoryButton.setOnClickListener {
@@ -224,11 +140,62 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
             historyHide()
         }
         historyViews.add(clearHistoryButton)
-
+        updateNetNotAvailableButton = findViewById(id.internet_not_available_button_update)
+        updateNetNotAvailableButton.setOnClickListener{
+            if(searchField.text.toString().isNotBlank()){
+                searchTrackInteractor.findTrack(searchField.text.toString(),::dataIsChanged)
+            }else{
+                showToast(getString(R.string.empty_search_field))
+            }
+        }
     }
 
-    private fun initProgressBar(){
-        this.progressBar = findViewById(id.progressBar)
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(TEXT_STORED_KEY, searchText)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        searchText = savedInstanceState.getString(TEXT_STORED_KEY) ?: ""
+    }
+
+    private fun closeKeyboard() {
+        val inputManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(
+            currentFocus?.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
+        println("keyboard hide")
+    }
+    private fun showKeyboard(){
+        if (searchField.requestFocus()) {
+            val inputManager =
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT)
+            println("keyboard show")
+        }
+    }
+
+    private fun dataIsChanged(status: RequestStatus) {
+            when(status){
+                OK,CLEAR -> okSearchResult()
+                EMPTY -> emptySearchResult()
+                NETWORK_ERROR -> networkNotAvailable()
+                SERVER_ERROR -> serverErrorMessage()
+            }
+        this.adapter.notifyDataSetChanged()
+    }
+
+    private fun showToast(text:String){
+        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
+        toast.setGravity(
+            Gravity.TOP or Gravity.CENTER,
+            0,
+            0
+        )
+        toast.show()
     }
 
     private fun emptySearchResult(){
@@ -264,7 +231,7 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
         showKeyboard()
         this.adapter.setShowMode(SHOW_HISTORY)
         setTopMargin(this.recyclerView,R.dimen.dimen172dp)
-        setHeightConstraint(R.dimen.dimen240dp)
+        setHeightConstraint(R.dimen.dimen400dp)
         this.recyclerView.isVisible = true
         this.emptySearchViews.forEach{it.isVisible = false}
         this.networkNotAvailableViews.forEach{it.isVisible = false}
@@ -294,7 +261,19 @@ class SearchActivity : AppCompatActivity(), TrackListChangedListener, HistoryLis
     }
     private fun search(searchString: String){
         this.progressBar.isVisible=true
-        searchTrackService.findTrack(searchString)
+        searchTrackInteractor.findTrack(searchString,::dataIsChanged)
+    }
+
+    private fun setVisibility(){
+        if(historyService.getCount()==0){
+            historyHide()
+            showKeyboard()
+        }else{
+            historyShow()
+        }
+        this.emptySearchViews.forEach{it.isVisible = false}
+        this.networkNotAvailableViews.forEach{it.isVisible = false}
+
     }
 
 }

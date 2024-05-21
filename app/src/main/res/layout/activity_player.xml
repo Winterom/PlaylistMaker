@@ -6,7 +6,7 @@
     style="@style/activity_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.playeractivity.PlayerActivity">
+    tools:context=".presentation.playeractivity.PlayerActivity">
 
     <ImageView
         android:id="@+id/return_to_main"

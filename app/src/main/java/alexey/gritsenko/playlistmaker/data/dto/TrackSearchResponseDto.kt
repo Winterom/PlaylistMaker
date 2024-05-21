@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.model.dto
+package alexey.gritsenko.playlistmaker.data.dto
 
 
 import java.util.Date
