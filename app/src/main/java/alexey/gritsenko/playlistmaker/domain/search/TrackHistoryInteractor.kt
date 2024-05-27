@@ -1,7 +1,7 @@
-package alexey.gritsenko.playlistmaker.domain
+package alexey.gritsenko.playlistmaker.domain.search
 
 
-import alexey.gritsenko.playlistmaker.domain.entity.Track
+import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 
 interface TrackHistoryInteractor {
     fun addTrackToHistory(track: Track)

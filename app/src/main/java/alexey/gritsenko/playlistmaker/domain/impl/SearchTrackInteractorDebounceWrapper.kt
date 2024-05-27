@@ -1,7 +1,7 @@
 package alexey.gritsenko.playlistmaker.domain.impl
 
 
-import alexey.gritsenko.playlistmaker.domain.RequestStatus
+import alexey.gritsenko.playlistmaker.domain.search.RequestStatus
 import android.os.Handler
 import android.os.Looper
 

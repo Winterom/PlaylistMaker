@@ -1,7 +1,7 @@
-package alexey.gritsenko.playlistmaker.presentation.searchactivity
+package alexey.gritsenko.playlistmaker.ui.searchactivity
 
-import alexey.gritsenko.playlistmaker.domain.entity.Track
-import alexey.gritsenko.playlistmaker.presentation.playeractivity.PlayerActivity
+import alexey.gritsenko.playlistmaker.domain.search.entity.Track
+import alexey.gritsenko.playlistmaker.ui.playeractivity.PlayerActivity
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +13,7 @@ class StartPlayerActivityByDebounce(private val view: AppCompatActivity) {
     }
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
-    fun start(track:Track){
+    fun start(track: Track){
         if (isClickAllowed) {
             isClickAllowed = false
             handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)

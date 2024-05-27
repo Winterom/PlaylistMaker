@@ -1,35 +1,38 @@
-package alexey.gritsenko.playlistmaker.presentation.settingactivity
+package alexey.gritsenko.playlistmaker.ui.settingactivity.activity
 
-import alexey.gritsenko.playlistmaker.PlayListMakerApp
+
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.R.layout
 import alexey.gritsenko.playlistmaker.R.string
+import alexey.gritsenko.playlistmaker.ui.settingactivity.view_model.SettingsViewModel
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
+   private lateinit var settingsViewModel:SettingsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_settings)
+        settingsViewModel=
+            ViewModelProvider(this, SettingsViewModel.getViewModelFactory())[SettingsViewModel::class.java]
         initReturnButton()
         initShareButton()
         initSupportButton()
         initOfferButton()
         initMaterialSwitch()
-
     }
 
     private fun initMaterialSwitch() {
         val themeSwitcher: SwitchMaterial = findViewById(id.themeSwitcher)
-        val appContext:PlayListMakerApp = applicationContext as PlayListMakerApp
-        themeSwitcher.isChecked = appContext.darkTheme
+        themeSwitcher.isChecked = settingsViewModel.getTheme()
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            (appContext).switchTheme(checked)
+            settingsViewModel.setTheme(checked)
         }
     }
 

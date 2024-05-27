@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.domain.entity
+package alexey.gritsenko.playlistmaker.domain.search.entity
 
 import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
 import java.io.Serializable
@@ -19,7 +19,7 @@ data class Track(
     val previewUrl:String?,
     val artworkUrl100: String?):Serializable{
     companion object{
-        fun convertDtoToEntity(dtoResult: TrackSearchResponseDto.SearchResult):Track{
+        fun convertDtoToEntity(dtoResult: TrackSearchResponseDto.SearchResult): Track {
             val releaseDate = when{
                 dtoResult.releaseDate==null ->""
                 else -> {dtoResult.releaseDate.

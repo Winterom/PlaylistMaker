@@ -1,8 +1,8 @@
-package alexey.gritsenko.playlistmaker.presentation.playeractivity
+package alexey.gritsenko.playlistmaker.ui.playeractivity
 
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
-import alexey.gritsenko.playlistmaker.domain.entity.Track
+import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.ImageButton

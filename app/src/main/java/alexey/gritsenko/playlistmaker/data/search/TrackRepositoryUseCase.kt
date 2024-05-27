@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.data
+package alexey.gritsenko.playlistmaker.data.search
 
 import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
 import retrofit2.Call

@@ -1,8 +1,8 @@
 package alexey.gritsenko.playlistmaker.domain.impl
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
-import alexey.gritsenko.playlistmaker.domain.TrackHistoryInteractor
-import alexey.gritsenko.playlistmaker.domain.entity.Track
+import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor
+import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

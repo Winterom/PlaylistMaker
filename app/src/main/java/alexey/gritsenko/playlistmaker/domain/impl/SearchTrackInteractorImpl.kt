@@ -1,15 +1,15 @@
 package alexey.gritsenko.playlistmaker.domain.impl
 
-import alexey.gritsenko.playlistmaker.data.TrackRepositoryUseCase
+import alexey.gritsenko.playlistmaker.data.search.TrackRepositoryUseCase
 import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
 import alexey.gritsenko.playlistmaker.data.impl.TrackRepositoryUseCaseImpl
-import alexey.gritsenko.playlistmaker.domain.RequestStatus
-import alexey.gritsenko.playlistmaker.domain.RequestStatus.EMPTY
-import alexey.gritsenko.playlistmaker.domain.RequestStatus.NETWORK_ERROR
-import alexey.gritsenko.playlistmaker.domain.RequestStatus.OK
-import alexey.gritsenko.playlistmaker.domain.RequestStatus.SERVER_ERROR
-import alexey.gritsenko.playlistmaker.domain.SearchTrackInteractor
-import alexey.gritsenko.playlistmaker.domain.entity.Track
+import alexey.gritsenko.playlistmaker.domain.search.RequestStatus
+import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.EMPTY
+import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.NETWORK_ERROR
+import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.OK
+import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.SERVER_ERROR
+import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
+import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

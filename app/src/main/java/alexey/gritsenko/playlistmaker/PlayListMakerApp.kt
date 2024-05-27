@@ -1,8 +1,11 @@
 package alexey.gritsenko.playlistmaker
 
+import alexey.gritsenko.playlistmaker.creater.ServiceLocator
+import alexey.gritsenko.playlistmaker.data.settings.model.THEME
+import alexey.gritsenko.playlistmaker.data.settings.model.THEME.DARK
+import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 
@@ -11,36 +14,32 @@ class PlayListMakerApp : Application() {
     companion object {
         const val APP_PREFERENCES = "play_list_preferences"
         const val TRACK_HISTORY_KEY = "track_history"
-        const val THEME_KEY = "darkTheme"
+
     }
 
-    var darkTheme = false
-    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate() {
         super.onCreate()
-        sharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        val systemTheme = isDarkThemeEnabled()
-        val savedThemeKey = sharedPreferences.getBoolean(THEME_KEY, systemTheme)
-        switchTheme(savedThemeKey)
+        ServiceLocator.init(getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE))
+        val settingsInteractor = ServiceLocator.getService(SettingsInteractor::class.java)
+        val theme = settingsInteractor.getThemeSettings(isDarkThemeEnabled())
+        setTheme(theme.theme)
     }
-
-    fun switchTheme(darkThemeEnabled: Boolean) {
-        darkTheme = darkThemeEnabled
+    private fun setTheme(theme: THEME) {
         AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
+            if (theme== DARK) {
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-        sharedPreferences
-            .edit()
-            .putBoolean(THEME_KEY, darkThemeEnabled)
-            .apply()
     }
-    private fun isDarkThemeEnabled(): Boolean {
-        val defaultState: Int = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return defaultState == Configuration.UI_MODE_NIGHT_YES
+    private fun isDarkThemeEnabled(): THEME {
+        val defaultState: Int =
+            resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return when{
+            defaultState == Configuration.UI_MODE_NIGHT_YES->DARK
+            else ->THEME.WHITE
+        }
     }
 
 }
