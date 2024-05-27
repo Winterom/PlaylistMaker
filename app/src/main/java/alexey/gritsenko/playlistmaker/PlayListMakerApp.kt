@@ -1,8 +1,6 @@
 package alexey.gritsenko.playlistmaker
 
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
-import alexey.gritsenko.playlistmaker.data.settings.model.THEME
-import alexey.gritsenko.playlistmaker.data.settings.model.THEME.DARK
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 import android.app.Application
 import android.content.Context
@@ -21,25 +19,23 @@ class PlayListMakerApp : Application() {
         super.onCreate()
         ServiceLocator.init(getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE))
         val settingsInteractor = ServiceLocator.getService(SettingsInteractor::class.java)
-        val theme = settingsInteractor.getThemeSettings(isDarkThemeEnabled())
-        setTheme(theme.theme)
+        val theme = settingsInteractor.getThemeSettings(isDarkThemeEnabled()).isDark
+        setTheme(theme)
     }
-    private fun setTheme(theme: THEME) {
+    private fun setTheme(isDark: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
-            if (theme== DARK) {
+            if (isDark) {
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
     }
-    private fun isDarkThemeEnabled(): THEME {
+    private fun isDarkThemeEnabled(): Boolean {
         val defaultState: Int =
             resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return when{
-            defaultState == Configuration.UI_MODE_NIGHT_YES->DARK
-            else ->THEME.WHITE
-        }
+        return defaultState == Configuration.UI_MODE_NIGHT_YES
+
     }
 
 }

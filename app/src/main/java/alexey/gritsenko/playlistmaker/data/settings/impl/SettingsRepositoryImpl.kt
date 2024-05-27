@@ -1,8 +1,6 @@
 package alexey.gritsenko.playlistmaker.data.settings.impl
 
 import alexey.gritsenko.playlistmaker.data.settings.SettingsRepository
-import alexey.gritsenko.playlistmaker.data.settings.model.THEME
-import alexey.gritsenko.playlistmaker.data.settings.model.THEME.WHITE
 import alexey.gritsenko.playlistmaker.data.settings.model.ThemeSettings
 import android.content.SharedPreferences
 
@@ -12,20 +10,20 @@ class SettingsRepositoryImpl(private val sharedPreferences: SharedPreferences?):
 
     }
 
-    override fun getThemeSettings(currentTheme:THEME?): ThemeSettings {
-        var theme = currentTheme
+    override fun getThemeSettings(isDark:Boolean?): ThemeSettings {
+        var theme = isDark
         if(theme==null){
-            theme=WHITE
+            theme=false
         }
         return ThemeSettings(
-            THEME.valueOf(sharedPreferences!!.getString(THEME_KEY, theme.name)!!)
+            sharedPreferences!!.getBoolean(THEME_KEY, theme)
         )
     }
 
     override fun updateThemeSetting(settings: ThemeSettings) {
         sharedPreferences!!
             .edit()
-            .putString(THEME_KEY, settings.theme.name)
+            .putBoolean(THEME_KEY, settings.isDark)
             .apply()
     }
 }

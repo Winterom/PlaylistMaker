@@ -1,9 +1,7 @@
 package alexey.gritsenko.playlistmaker.ui.settingactivity.view_model
 
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
-import alexey.gritsenko.playlistmaker.data.settings.model.THEME
-import alexey.gritsenko.playlistmaker.data.settings.model.THEME.DARK
-import alexey.gritsenko.playlistmaker.data.settings.model.THEME.WHITE
+
 import alexey.gritsenko.playlistmaker.data.settings.model.ThemeSettings
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 import alexey.gritsenko.playlistmaker.domain.settings.SharingInteractor
@@ -47,22 +45,16 @@ class SettingsViewModel : ViewModel() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-        val theme = when{
-            isDarkTheme->DARK
-            else->WHITE
-        }
-        settingsInteractor.updateThemeSetting(ThemeSettings(theme))
+        settingsInteractor.updateThemeSetting(ThemeSettings(isDarkTheme))
     }
     fun  getTheme():Boolean{
-        return settingsInteractor.getThemeSettings(isDarkThemeEnabled()).theme==DARK
+        return settingsInteractor.getThemeSettings(isDarkThemeEnabled()).isDark
     }
-    private fun isDarkThemeEnabled(): THEME {
+    private fun isDarkThemeEnabled(): Boolean {
         val defaultState: Int =
             application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return when{
-            defaultState == Configuration.UI_MODE_NIGHT_YES->DARK
-            else ->WHITE
-        }
+        return defaultState == Configuration.UI_MODE_NIGHT_YES
+
     }
 
 }
