@@ -3,7 +3,9 @@ package alexey.gritsenko.playlistmaker.creater
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.data.settings.SettingsRepository
 import alexey.gritsenko.playlistmaker.data.settings.impl.SettingsRepositoryImpl
+import alexey.gritsenko.playlistmaker.domain.impl.SearchTrackInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.impl.TrackHistoryInteractorImpl
+import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
 import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 import alexey.gritsenko.playlistmaker.domain.settings.impl.SettingsInteractorImpl
@@ -58,6 +60,11 @@ object ServiceLocator :IServiceLocator{
             /*********************************************/
             TrackHistoryInteractor::class.java->{
                 val newObj= TrackHistoryInteractorImpl(application.getSharedPreferences(PlayListMakerApp.APP_PREFERENCES, Context.MODE_PRIVATE))
+                storage[clazz] = newObj
+                return newObj as T
+            }
+            SearchTrackInteractor::class.java->{
+                val newObj= SearchTrackInteractorImpl()
                 storage[clazz] = newObj
                 return newObj as T
             }
