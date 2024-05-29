@@ -1,13 +1,14 @@
-package alexey.gritsenko.playlistmaker.ui.searchactivity
+package alexey.gritsenko.playlistmaker.ui.searchactivity.activity
 
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
-import alexey.gritsenko.playlistmaker.ui.playeractivity.PlayerActivity
+import alexey.gritsenko.playlistmaker.ui.playeractivity.activity.PlayerActivity
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 
-class StartPlayerActivityByDebounce(private val view: AppCompatActivity) {
+
+class StartPlayerActivityByDebounce(private val view: ComponentActivity) {
     companion object{
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }

@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.domain.settings
+package alexey.gritsenko.playlistmaker.domain.sharing
 
 interface SharingInteractor {
     fun shareApp()

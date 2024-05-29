@@ -3,10 +3,8 @@ package alexey.gritsenko.playlistmaker
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 import android.app.Application
-import android.content.Context
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-
 
 class PlayListMakerApp : Application() {
     companion object {
@@ -17,7 +15,7 @@ class PlayListMakerApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ServiceLocator.init(getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE))
+        ServiceLocator.application=this
         val settingsInteractor = ServiceLocator.getService(SettingsInteractor::class.java)
         val theme = settingsInteractor.getThemeSettings(isDarkThemeEnabled()).isDark
         setTheme(theme)

@@ -1,85 +1,42 @@
 package alexey.gritsenko.playlistmaker.ui.settingactivity.activity
 
-
-import alexey.gritsenko.playlistmaker.R.id
-import alexey.gritsenko.playlistmaker.R.layout
-import alexey.gritsenko.playlistmaker.R.string
+import alexey.gritsenko.playlistmaker.databinding.ActivitySettingsBinding
 import alexey.gritsenko.playlistmaker.ui.settingactivity.view_model.SettingsViewModel
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.switchmaterial.SwitchMaterial
 
-class SettingsActivity : AppCompatActivity() {
-   private lateinit var settingsViewModel:SettingsViewModel
+class SettingsActivity: AppCompatActivity() {
+    private lateinit var settingsViewModel: SettingsViewModel
+    private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.activity_settings)
-        settingsViewModel=
-            ViewModelProvider(this, SettingsViewModel.getViewModelFactory())[SettingsViewModel::class.java]
-        initReturnButton()
-        initShareButton()
-        initSupportButton()
-        initOfferButton()
-        initMaterialSwitch()
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        settingsViewModel =
+            ViewModelProvider(
+                this,
+                SettingsViewModel.getViewModelFactory()
+            )[SettingsViewModel::class.java]
+        initialize()
     }
 
-    private fun initMaterialSwitch() {
-        val themeSwitcher: SwitchMaterial = findViewById(id.themeSwitcher)
-        themeSwitcher.isChecked = settingsViewModel.getTheme()
-        themeSwitcher.setOnCheckedChangeListener { _, checked ->
+    private fun initialize() {
+        binding.themeSwitcher.isChecked = settingsViewModel.getTheme()
+        binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
             settingsViewModel.setTheme(checked)
         }
-    }
-
-    private fun initReturnButton() {
-        val returnButton: ImageView = findViewById(id.return_to_main)
-        returnButton.setOnClickListener {
+        binding.returnToMain.setOnClickListener {
             finish()
         }
-    }
-
-    private fun initShareButton() {
-        val shareButton: ImageView = findViewById(id.share_button)
-        shareButton.setOnClickListener {
-            val message = getString(string.share_app_content)
-            Intent(Intent.ACTION_SEND).apply {
-                putExtra(Intent.EXTRA_TEXT, message)
-                type = "text/plain"
-                startActivity(Intent.createChooser(this, "Share"))
-            }
+        binding.shareButton.setOnClickListener {
+            settingsViewModel.shareApp()
         }
-    }
-
-    private fun initSupportButton() {
-        val supportButton: ImageView = findViewById(id.support_button)
-        supportButton.setOnClickListener {
-            Intent(Intent.ACTION_SENDTO).apply {
-                val message = getString(string.settings_support_message)
-                val subject = getString(string.settings_support_subject)
-                val mail = getString(string.settings_support_mail)
-                data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
-                putExtra(Intent.EXTRA_SUBJECT, subject)
-                putExtra(Intent.EXTRA_TEXT, message)
-                startActivity(this)
-            }
-
+        binding.supportButton.setOnClickListener {
+            settingsViewModel.openSupport()
         }
-    }
-
-    private fun initOfferButton() {
-        val offerButton: ImageView = findViewById(id.offer_button)
-        offerButton.setOnClickListener {
-            val uri = resources.getString(string.yandex_offer)
-            Intent(Intent.ACTION_VIEW, Uri.parse(uri)).apply {
-                startActivity(this)
-            }
-
+        binding.offerButton.setOnClickListener {
+            settingsViewModel.openTerms()
         }
     }
 }

@@ -1,12 +1,12 @@
-package alexey.gritsenko.playlistmaker.ui.searchactivity
+package alexey.gritsenko.playlistmaker.ui.searchactivity.activity
 
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.layout
 import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
 import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
-import alexey.gritsenko.playlistmaker.ui.searchactivity.ShowMode.SHOW_HISTORY
-import alexey.gritsenko.playlistmaker.ui.searchactivity.ShowMode.SHOW_SEARCH_RESULT
+import alexey.gritsenko.playlistmaker.ui.searchactivity.activity.ShowMode.SHOW_HISTORY
+import alexey.gritsenko.playlistmaker.ui.searchactivity.activity.ShowMode.SHOW_SEARCH_RESULT
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

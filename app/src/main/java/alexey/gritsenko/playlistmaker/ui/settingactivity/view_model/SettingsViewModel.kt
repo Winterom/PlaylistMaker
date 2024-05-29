@@ -1,21 +1,15 @@
 package alexey.gritsenko.playlistmaker.ui.settingactivity.view_model
 
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
-
 import alexey.gritsenko.playlistmaker.data.settings.model.ThemeSettings
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
-import alexey.gritsenko.playlistmaker.domain.settings.SharingInteractor
-import android.app.Application
-import android.content.res.Configuration
+import alexey.gritsenko.playlistmaker.domain.sharing.SharingInteractor
 import androidx.appcompat.app.AppCompatDelegate
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
 
 class SettingsViewModel : ViewModel() {
-    private lateinit var application: Application
     private lateinit var sharingInteractor: SharingInteractor
     private lateinit var settingsInteractor: SettingsInteractor
 
@@ -27,7 +21,6 @@ class SettingsViewModel : ViewModel() {
                 extras: CreationExtras,
             ): T {
                 val viewModel = SettingsViewModel().apply {
-                    application = checkNotNull(extras[APPLICATION_KEY])
                     settingsInteractor = ServiceLocator.getService(SettingsInteractor::class.java)
                     sharingInteractor = ServiceLocator.getService(SharingInteractor::class.java)
 
@@ -48,13 +41,19 @@ class SettingsViewModel : ViewModel() {
         settingsInteractor.updateThemeSetting(ThemeSettings(isDarkTheme))
     }
     fun  getTheme():Boolean{
-        return settingsInteractor.getThemeSettings(isDarkThemeEnabled()).isDark
+        return settingsInteractor.getThemeSettings(null).isDark
     }
-    private fun isDarkThemeEnabled(): Boolean {
-        val defaultState: Int =
-            application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return defaultState == Configuration.UI_MODE_NIGHT_YES
 
+    fun shareApp() {
+        sharingInteractor.shareApp()
+    }
+
+    fun openTerms() {
+        sharingInteractor.openTerms()
+    }
+
+    fun openSupport() {
+        sharingInteractor.openSupport()
     }
 
 }

@@ -1,15 +1,14 @@
 package alexey.gritsenko.playlistmaker.data.impl
 
+import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
 import alexey.gritsenko.playlistmaker.data.search.TrackNetworkClientUseCase
 import alexey.gritsenko.playlistmaker.data.search.TrackRepositoryUseCase
-import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
 
 class TrackRepositoryUseCaseImpl : TrackRepositoryUseCase {
     private var trackNetworkClientUseCase: TrackNetworkClientUseCase

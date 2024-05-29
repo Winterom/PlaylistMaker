@@ -8,7 +8,7 @@ import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 
 class SettingsInteractorImpl:SettingsInteractor {
     private val settingsRepository: SettingsRepository = ServiceLocator.getService(SettingsRepository::class.java)
-    override fun getThemeSettings(isDark: Boolean): ThemeSettings {
+    override fun getThemeSettings(isDark: Boolean?): ThemeSettings {
         return settingsRepository.getThemeSettings(isDark)
     }
 

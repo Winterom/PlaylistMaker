@@ -6,7 +6,9 @@ plugins {
 android {
     namespace = "alexey.gritsenko.playlistmaker"
     compileSdk = 33
-
+    buildFeatures {
+        viewBinding = true
+    }
     defaultConfig {
         applicationId = "com.example.playlistmaker"
         minSdk = 29
