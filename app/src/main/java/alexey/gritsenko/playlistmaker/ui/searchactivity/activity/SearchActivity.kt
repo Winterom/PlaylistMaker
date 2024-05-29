@@ -1,23 +1,18 @@
 package alexey.gritsenko.playlistmaker.ui.searchactivity.activity
 
+import alexey.gritsenko.playlistmaker.AbstractPlayListActivity
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.databinding.ActivitySearchBinding
-import alexey.gritsenko.playlistmaker.domain.impl.SearchTrackInteractorDebounceWrapper
-import alexey.gritsenko.playlistmaker.domain.impl.TrackHistoryInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.CLEAR
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.EMPTY
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.NETWORK_ERROR
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.OK
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.SERVER_ERROR
-import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
-import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor
-import alexey.gritsenko.playlistmaker.ui.searchactivity.activity.ShowMode.SHOW_HISTORY
-import alexey.gritsenko.playlistmaker.ui.searchactivity.activity.ShowMode.SHOW_SEARCH_RESULT
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.SearchViewModel
-import android.content.Context
+import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -28,19 +23,16 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.DimenRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.core.view.marginTop
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 
-class SearchActivity : AppCompatActivity() {
-    private val searchTrackInteractor: SearchTrackInteractor =
-        SearchTrackInteractorDebounceWrapper()
+class SearchActivity : AbstractPlayListActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchViewModel: SearchViewModel
-    private lateinit var historyService: TrackHistoryInteractor
+
 
     private lateinit var adapter: SearchTrackAdapter
 
@@ -55,14 +47,9 @@ class SearchActivity : AppCompatActivity() {
     private var searchText: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        PlayListMakerApp.currentActivity=this
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        historyService = TrackHistoryInteractorImpl(
-            getSharedPreferences(
-                PlayListMakerApp.APP_PREFERENCES,
-                Context.MODE_PRIVATE
-            )
-        )
         searchViewModel =
             ViewModelProvider(
                 this,
@@ -74,16 +61,15 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initView() {
         binding.trackRecycleView.layoutManager = LinearLayoutManager(this)
-        val startPlayerActivityByDebounce = StartPlayerActivityByDebounce(this)
         this.adapter =
-            SearchTrackAdapter(searchTrackInteractor, historyService, startPlayerActivityByDebounce)
+            SearchTrackAdapter(searchViewModel)
         binding.trackRecycleView.adapter = adapter
         binding.returnToMain.setOnClickListener {
             finish()
         }
         binding.clearText.setOnClickListener {
             binding.searchField.setText("")
-            searchTrackInteractor.findTrack("", ::dataIsChanged)
+            searchViewModel.findTrack("", ::dataIsChanged)
             closeKeyboard()
         }
         binding.searchField.requestFocus()
@@ -96,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
                 binding.clearText.isVisible = !empty
                 if (empty) {
                     closeKeyboard()
-                    searchTrackInteractor.clearTracks()
+                    searchViewModel.clearTracks()
                     adapter.notifyDataSetChanged()
                 } else {
                     search(binding.searchField.text.toString())
@@ -131,7 +117,7 @@ class SearchActivity : AppCompatActivity() {
         emptySearchViews.add(binding.emptySearchText)
         historyViews.add(binding.youHistoryText)
         binding.clearHistoryButton.setOnClickListener {
-            historyService.clearHistory()
+            searchViewModel.clearHistory()
             adapter.notifyDataSetChanged()
             historyHide()
         }
@@ -139,7 +125,7 @@ class SearchActivity : AppCompatActivity() {
 
         binding.internetNotAvailableButtonUpdate.setOnClickListener {
             if (binding.searchField.text.toString().isNotBlank()) {
-                searchTrackInteractor.findTrack(
+                searchViewModel.findTrack(
                     binding.searchField.text.toString(),
                     ::dataIsChanged
                 )
@@ -208,7 +194,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun okSearchResult() {
         binding.progressBar.isVisible = false
-        this.adapter.setShowMode(SHOW_SEARCH_RESULT)
+        this.adapter.setShowMode(ShowMode.SHOW_SEARCH_RESULT)
         setTopMargin(binding.trackRecycleView, R.dimen.dimen120dp)
         setHeightConstraint(R.dimen.dimen0dp)
         binding.trackRecycleView.marginTop
@@ -228,9 +214,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun historyShow() {
-        if (historyService.getCount() == 0) return
+        if (searchViewModel.getItemCount(ShowMode.SHOW_HISTORY) == 0) return
         showKeyboard()
-        this.adapter.setShowMode(SHOW_HISTORY)
+        this.adapter.setShowMode(ShowMode.SHOW_HISTORY)
         setTopMargin(binding.trackRecycleView, R.dimen.dimen172dp)
         setHeightConstraint(R.dimen.dimen400dp)
         binding.trackRecycleView.isVisible = true
@@ -265,11 +251,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun search(searchString: String) {
         binding.progressBar.isVisible = true
-        searchTrackInteractor.findTrack(searchString, ::dataIsChanged)
+        searchViewModel.findTrack(searchString, ::dataIsChanged)
     }
 
     private fun setVisibility() {
-        if (historyService.getCount() == 0) {
+        if (searchViewModel.getItemCount(ShowMode.SHOW_HISTORY) == 0) {
             historyHide()
             showKeyboard()
         } else {

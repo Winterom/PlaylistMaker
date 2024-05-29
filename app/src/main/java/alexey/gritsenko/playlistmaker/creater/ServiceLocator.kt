@@ -1,6 +1,8 @@
 package alexey.gritsenko.playlistmaker.creater
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
+import alexey.gritsenko.playlistmaker.data.impl.TrackRepositoryUseCaseImpl
+import alexey.gritsenko.playlistmaker.data.search.TrackRepositoryUseCase
 import alexey.gritsenko.playlistmaker.data.settings.SettingsRepository
 import alexey.gritsenko.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import alexey.gritsenko.playlistmaker.domain.impl.SearchTrackInteractorImpl
@@ -11,13 +13,16 @@ import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 import alexey.gritsenko.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.sharing.SharingInteractor
 import alexey.gritsenko.playlistmaker.domain.sharing.impl.SharingInteractorImpl
+import alexey.gritsenko.playlistmaker.platform.navigator.ExternalNavigator
+import alexey.gritsenko.playlistmaker.platform.navigator.impl.ExternalNavigatorImpl
 import alexey.gritsenko.playlistmaker.platform.player.TrackPlayer
 import alexey.gritsenko.playlistmaker.platform.player.impl.TrackPlayerImpl
-import alexey.gritsenko.playlistmaker.platform.sharing.ExternalNavigator
-import alexey.gritsenko.playlistmaker.platform.sharing.impl.ExternalNavigatorImpl
 import android.app.Application
 import android.content.Context
 
+/*Было бы интересно посмотреть как сделать это короче */
+//При первом вызове создаестся объект и помещается в мапу
+//Что то типа lazy
 object ServiceLocator :IServiceLocator{
     private val storage:MutableMap<Class<*>,Any> = HashMap()
     lateinit var application: Application
@@ -65,6 +70,11 @@ object ServiceLocator :IServiceLocator{
             }
             SearchTrackInteractor::class.java->{
                 val newObj= SearchTrackInteractorImpl()
+                storage[clazz] = newObj
+                return newObj as T
+            }
+            TrackRepositoryUseCase::class.java->{
+                val newObj= TrackRepositoryUseCaseImpl()
                 storage[clazz] = newObj
                 return newObj as T
             }

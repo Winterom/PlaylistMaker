@@ -2,7 +2,7 @@ package alexey.gritsenko.playlistmaker.domain.sharing.impl
 
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
 import alexey.gritsenko.playlistmaker.domain.sharing.SharingInteractor
-import alexey.gritsenko.playlistmaker.platform.sharing.ExternalNavigator
+import alexey.gritsenko.playlistmaker.platform.navigator.ExternalNavigator
 
 class SharingInteractorImpl: SharingInteractor {
     private var externalNavigator: ExternalNavigator =
