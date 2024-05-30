@@ -14,14 +14,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class SearchTrackAdapter(private val searchViewModel: SearchViewModel) :
     RecyclerView.Adapter<TrackListViewHolder>() {
-    private var showMode = ShowMode.SHOW_SEARCH_RESULT
-
-    fun setShowMode(newShowMode: ShowMode) {
-        if (showMode == newShowMode) return
-        showMode = newShowMode
-        notifyDataSetChanged()
-    }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
@@ -29,11 +21,11 @@ class SearchTrackAdapter(private val searchViewModel: SearchViewModel) :
     }
 
     override fun getItemCount(): Int {
-       return searchViewModel.getItemCount(showMode)
+       return searchViewModel.getItemCount()
     }
 
     override fun onBindViewHolder(holder: TrackListViewHolder, position: Int) {
-        val track: Track = searchViewModel.getTrackByPosition(position,showMode)
+        val track: Track = searchViewModel.getTrackByPosition(position)
         holder.bind(track)
         holder.itemView.setOnClickListener {
             searchViewModel.addTrackToHistory(track)

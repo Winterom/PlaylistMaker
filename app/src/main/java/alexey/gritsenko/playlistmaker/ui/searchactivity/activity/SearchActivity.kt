@@ -5,14 +5,16 @@ import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.databinding.ActivitySearchBinding
-import alexey.gritsenko.playlistmaker.domain.search.RequestStatus
-import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.CLEAR
-import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.EMPTY
-import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.NETWORK_ERROR
-import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.OK
-import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.SERVER_ERROR
+
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.SearchViewModel
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode
+import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.EMPTY_SEARCH_RESULT
+import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.LOADING
+import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.NETWORK_ERROR
+import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.NONE
+import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SERVER_ERROR
+import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SHOW_HISTORY
+import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SHOW_SEARCH_RESULT
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -26,19 +28,31 @@ import androidx.annotation.DimenRes
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.core.view.marginTop
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 
 class SearchActivity : AbstractPlayListActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchViewModel: SearchViewModel
-
-
     private lateinit var adapter: SearchTrackAdapter
 
     private val emptySearchViews = ArrayList<View>()
     private val networkNotAvailableViews = ArrayList<View>()
     private val historyViews = ArrayList<View>()
+
+    val showModeObserver = Observer<ShowMode> { newMode ->
+        when (newMode) {
+            SHOW_SEARCH_RESULT -> okSearchResult()
+            EMPTY_SEARCH_RESULT -> emptySearchResult()
+            SHOW_HISTORY -> historyShow()
+            LOADING -> binding.progressBar.isVisible = true
+            NONE -> historyHide()
+            NETWORK_ERROR -> networkNotAvailable()
+            SERVER_ERROR -> serverErrorMessage()
+        }
+
+    }
 
     companion object {
         const val TEXT_STORED_KEY = "searchText"
@@ -47,7 +61,7 @@ class SearchActivity : AbstractPlayListActivity() {
     private var searchText: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        PlayListMakerApp.currentActivity=this
+        PlayListMakerApp.currentActivity = this
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         searchViewModel =
@@ -56,7 +70,7 @@ class SearchActivity : AbstractPlayListActivity() {
                 SearchViewModel.getViewModelFactory()
             )[SearchViewModel::class.java]
         initView()
-        setVisibility()
+        searchViewModel.getShowMode().observe(this,showModeObserver)
     }
 
     private fun initView() {
@@ -69,7 +83,7 @@ class SearchActivity : AbstractPlayListActivity() {
         }
         binding.clearText.setOnClickListener {
             binding.searchField.setText("")
-            searchViewModel.findTrack("", ::dataIsChanged)
+            searchViewModel.findTrack("")
             closeKeyboard()
         }
         binding.searchField.requestFocus()
@@ -82,12 +96,14 @@ class SearchActivity : AbstractPlayListActivity() {
                 binding.clearText.isVisible = !empty
                 if (empty) {
                     closeKeyboard()
-                    searchViewModel.clearTracks()
+                    searchViewModel.clearResultSearch()
                     adapter.notifyDataSetChanged()
                 } else {
                     search(binding.searchField.text.toString())
                 }
-                if (binding.searchField.hasFocus() && s?.isEmpty() == true) historyShow() else historyHide()
+                if (binding.searchField.hasFocus() && s?.isEmpty() == true) searchViewModel.setShowMode(
+                    SHOW_HISTORY
+                ) else searchViewModel.setShowMode(NONE)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -108,7 +124,9 @@ class SearchActivity : AbstractPlayListActivity() {
             true
         }
         binding.searchField.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && binding.searchField.text.isEmpty()) historyShow() else historyHide()
+            if (hasFocus && binding.searchField.text.isEmpty()) searchViewModel.setShowMode(
+                SHOW_HISTORY
+            ) else searchViewModel.setShowMode(NONE)
         }
         networkNotAvailableViews.add(binding.internetNotAvailableButtonUpdate)
         networkNotAvailableViews.add(binding.internetNotAvailableImage)
@@ -119,15 +137,13 @@ class SearchActivity : AbstractPlayListActivity() {
         binding.clearHistoryButton.setOnClickListener {
             searchViewModel.clearHistory()
             adapter.notifyDataSetChanged()
-            historyHide()
         }
         historyViews.add(binding.clearHistoryButton)
 
         binding.internetNotAvailableButtonUpdate.setOnClickListener {
             if (binding.searchField.text.toString().isNotBlank()) {
                 searchViewModel.findTrack(
-                    binding.searchField.text.toString(),
-                    ::dataIsChanged
+                    binding.searchField.text.toString()
                 )
             } else {
                 showToast(getString(R.string.empty_search_field))
@@ -159,18 +175,7 @@ class SearchActivity : AbstractPlayListActivity() {
             val inputManager =
                 getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputManager.showSoftInput(binding.searchField, InputMethodManager.SHOW_IMPLICIT)
-            println("keyboard show")
         }
-    }
-
-    private fun dataIsChanged(status: RequestStatus) {
-        when (status) {
-            OK, CLEAR -> okSearchResult()
-            EMPTY -> emptySearchResult()
-            NETWORK_ERROR -> networkNotAvailable()
-            SERVER_ERROR -> serverErrorMessage()
-        }
-        this.adapter.notifyDataSetChanged()
     }
 
     private fun showToast(text: String) {
@@ -194,7 +199,6 @@ class SearchActivity : AbstractPlayListActivity() {
 
     private fun okSearchResult() {
         binding.progressBar.isVisible = false
-        this.adapter.setShowMode(ShowMode.SHOW_SEARCH_RESULT)
         setTopMargin(binding.trackRecycleView, R.dimen.dimen120dp)
         setHeightConstraint(R.dimen.dimen0dp)
         binding.trackRecycleView.marginTop
@@ -202,6 +206,7 @@ class SearchActivity : AbstractPlayListActivity() {
         this.emptySearchViews.forEach { it.isVisible = false }
         this.networkNotAvailableViews.forEach { it.isVisible = false }
         this.historyViews.forEach { it.isVisible = false }
+        adapter.notifyDataSetChanged()
     }
 
     private fun networkNotAvailable() {
@@ -214,9 +219,7 @@ class SearchActivity : AbstractPlayListActivity() {
     }
 
     private fun historyShow() {
-        if (searchViewModel.getItemCount(ShowMode.SHOW_HISTORY) == 0) return
         showKeyboard()
-        this.adapter.setShowMode(ShowMode.SHOW_HISTORY)
         setTopMargin(binding.trackRecycleView, R.dimen.dimen172dp)
         setHeightConstraint(R.dimen.dimen400dp)
         binding.trackRecycleView.isVisible = true
@@ -250,11 +253,10 @@ class SearchActivity : AbstractPlayListActivity() {
     }
 
     private fun search(searchString: String) {
-        binding.progressBar.isVisible = true
-        searchViewModel.findTrack(searchString, ::dataIsChanged)
+        searchViewModel.findTrack(searchString)
     }
 
-    private fun setVisibility() {
+    /*private fun setVisibility() {
         if (searchViewModel.getItemCount(ShowMode.SHOW_HISTORY) == 0) {
             historyHide()
             showKeyboard()
@@ -263,5 +265,5 @@ class SearchActivity : AbstractPlayListActivity() {
         }
         this.emptySearchViews.forEach { it.isVisible = false }
         this.networkNotAvailableViews.forEach { it.isVisible = false }
-    }
+    }*/
 }

@@ -45,12 +45,8 @@ class TrackHistoryInteractorImpl(private val sharedPreferences: SharedPreference
         history.clear()
     }
 
-    override fun getTrackByPosition(position: Int): Track {
-        return history[position]
-    }
-
-    override fun getCount(): Int {
-        return history.size
+    override fun getTrackHistory(): List<Track> {
+        return history
     }
 
     private fun serialize(): String {

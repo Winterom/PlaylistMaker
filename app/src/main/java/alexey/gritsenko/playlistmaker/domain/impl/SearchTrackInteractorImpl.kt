@@ -52,12 +52,8 @@ open class SearchTrackInteractorImpl : SearchTrackInteractor {
         tracks.clear()
     }
 
-    override fun getTrackByPosition(position: Int): Track {
-        return tracks[position]
-    }
-
-    override fun getCount(): Int {
-        return tracks.size
+    override fun getSearchResult(): List<Track> {
+        return tracks
     }
 
     private fun findTrackTask(searchString: String, callbackFunction: (status: RequestStatus) -> Unit) {
