@@ -41,6 +41,9 @@ class PlayerActivity :  AbstractPlayListActivity() {
                 STARTED->binding.pauseStartButton.setImageResource(R.drawable.pause)
             }
         }
+        viewModel.timerLiveData().observe(this){
+            binding.trackTimerTextView.text=it
+        }
     }
 
     private fun initViews() {
