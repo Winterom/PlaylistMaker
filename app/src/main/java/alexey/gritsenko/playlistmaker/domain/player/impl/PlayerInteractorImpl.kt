@@ -7,7 +7,7 @@ import alexey.gritsenko.playlistmaker.domain.player.TimerObserver
 import alexey.gritsenko.playlistmaker.platform.player.TrackPlayer
 import android.os.Handler
 import android.os.Looper
-import java.util.Locale
+
 
 class PlayerInteractorImpl:PlayerInteractor {
     companion object{

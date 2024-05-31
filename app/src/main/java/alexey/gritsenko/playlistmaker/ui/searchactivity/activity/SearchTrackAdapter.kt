@@ -4,7 +4,6 @@ import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.databinding.TrackItemBinding
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.SearchViewModel
-import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
