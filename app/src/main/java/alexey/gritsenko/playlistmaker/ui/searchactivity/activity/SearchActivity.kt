@@ -27,7 +27,7 @@ import android.widget.Toast
 import androidx.annotation.DimenRes
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
-import androidx.core.view.marginTop
+
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,13 +41,16 @@ class SearchActivity : AbstractPlayListActivity() {
     private val networkNotAvailableViews = ArrayList<View>()
     private val historyViews = ArrayList<View>()
 
-    val showModeObserver = Observer<ShowMode> { newMode ->
+    private val showModeObserver = Observer<ShowMode> { newMode ->
+        if (newMode==null){
+            return@Observer
+        }
         when (newMode) {
             SHOW_SEARCH_RESULT -> okSearchResult()
             EMPTY_SEARCH_RESULT -> emptySearchResult()
             SHOW_HISTORY -> historyShow()
             LOADING -> binding.progressBar.isVisible = true
-            NONE -> historyHide()
+            NONE -> showNone()
             NETWORK_ERROR -> networkNotAvailable()
             SERVER_ERROR -> serverErrorMessage()
         }
@@ -85,6 +88,7 @@ class SearchActivity : AbstractPlayListActivity() {
             binding.searchField.setText("")
             searchViewModel.findTrack("")
             closeKeyboard()
+            searchViewModel.setShowMode(SHOW_HISTORY)
         }
         binding.searchField.requestFocus()
         val simpleTextWatcher = object : TextWatcher {
@@ -201,7 +205,6 @@ class SearchActivity : AbstractPlayListActivity() {
         binding.progressBar.isVisible = false
         setTopMargin(binding.trackRecycleView, R.dimen.dimen120dp)
         setHeightConstraint(R.dimen.dimen0dp)
-        binding.trackRecycleView.marginTop
         binding.trackRecycleView.isVisible = true
         this.emptySearchViews.forEach { it.isVisible = false }
         this.networkNotAvailableViews.forEach { it.isVisible = false }
@@ -226,16 +229,21 @@ class SearchActivity : AbstractPlayListActivity() {
         this.emptySearchViews.forEach { it.isVisible = false }
         this.networkNotAvailableViews.forEach { it.isVisible = false }
         this.historyViews.forEach { it.isVisible = true }
+        binding.progressBar.isVisible = false
     }
 
-    private fun historyHide() {
+    private fun showNone() {
+        this.emptySearchViews.forEach { it.isVisible = false }
+        this.networkNotAvailableViews.forEach { it.isVisible = false }
         this.historyViews.forEach { it.isVisible = false }
         binding.trackRecycleView.isVisible = false
+        binding.progressBar.isVisible = false
     }
 
     private fun serverErrorMessage() {
+        showNone()
         showToast("Что то пошло не так!")
-        emptySearchResult()
+
     }
 
     private fun setTopMargin(view: View, @DimenRes id: Int) {
@@ -256,14 +264,4 @@ class SearchActivity : AbstractPlayListActivity() {
         searchViewModel.findTrack(searchString)
     }
 
-    /*private fun setVisibility() {
-        if (searchViewModel.getItemCount(ShowMode.SHOW_HISTORY) == 0) {
-            historyHide()
-            showKeyboard()
-        } else {
-            historyShow()
-        }
-        this.emptySearchViews.forEach { it.isVisible = false }
-        this.networkNotAvailableViews.forEach { it.isVisible = false }
-    }*/
 }
