@@ -6,7 +6,6 @@ import alexey.gritsenko.playlistmaker.databinding.ActivityPlayerBinding
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.COMPLETED
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.PAUSE
-import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.PREPARED
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.STARTED
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerViewModel
 import android.os.Bundle
@@ -32,12 +31,13 @@ class PlayerActivity :  AbstractPlayListActivity() {
         viewModel =
             ViewModelProvider(
                 this,
-                PlayerViewModel.getViewModelFactory(track)
+                PlayerViewModel.getViewModelFactory(track.previewUrl!!)
             )[PlayerViewModel::class.java]
         initViews()
-        viewModel.getScreenStateLiveData().observe(this){screeState->
-            when(screeState.playerState){
-                PREPARED,PAUSE,COMPLETED->binding.pauseStartButton.setImageResource(R.drawable.play)
+        viewModel.stateLiveData().observe(this){screeState->
+            if(screeState==null) return@observe
+            when(screeState){
+                PAUSE,COMPLETED->binding.pauseStartButton.setImageResource(R.drawable.play)
                 STARTED->binding.pauseStartButton.setImageResource(R.drawable.pause)
             }
         }

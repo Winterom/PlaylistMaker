@@ -2,12 +2,10 @@ package alexey.gritsenko.playlistmaker.ui.playeractivity.view_model
 
 
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
-import alexey.gritsenko.playlistmaker.domain.search.entity.Track
-import alexey.gritsenko.playlistmaker.platform.player.StatusObserver
-import alexey.gritsenko.playlistmaker.platform.player.TrackPlayer
+import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
+import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.COMPLETED
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.PAUSE
-import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.PREPARED
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.STARTED
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,54 +13,54 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 
-class PlayerViewModel(private val track: Track): ViewModel() {
+class PlayerViewModel : ViewModel() {
 
-    private var screenStateMutableLiveData= MutableLiveData(TrackScreenState())
-    private val trackPlayer =ServiceLocator.getService(TrackPlayer::class.java)
+    private var playerState= MutableLiveData(COMPLETED)
+    private lateinit var playerInteractor:PlayerInteractor
 
     companion object {
         @Suppress("UNCHECKED_CAST")
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+        fun getViewModelFactory(previewUrl: String): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(
                 modelClass: Class<T>,
                 extras: CreationExtras,
             ): T {
-                val viewModel = PlayerViewModel(track).apply {
-
+                val viewModel = PlayerViewModel().apply {
+                    playerInteractor=ServiceLocator.getService(PlayerInteractor::class.java)
+                    playerInteractor.prepare(previewUrl,observer)
                 }
                 return viewModel as T
             }
         }
     }
-    fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateMutableLiveData
+    fun stateLiveData(): LiveData<PlayerState> = playerState
     fun changePlayerState(){
-        val state = screenStateMutableLiveData.value
-        when(state?.playerState){
-            PREPARED-> track.previewUrl?.let { trackPlayer.play(it,observer) }
-            STARTED-> trackPlayer.pause()
-            COMPLETED->trackPlayer.release()
-            PAUSE->trackPlayer.seek(state.currentPosition)
-            null -> return
+        val value = playerState.value ?: return
+        when (value){
+            COMPLETED, PAUSE -> playerInteractor.play()
+            STARTED -> playerInteractor.pause()
         }
-
     }
 
-    private val observer: StatusObserver=object:StatusObserver{
-        override fun onProgress(progress: Int) {
-            screenStateMutableLiveData.value?.currentPosition=progress
-        }
-
-        override fun onStop() {
-            screenStateMutableLiveData.value?.playerState=PAUSE
+    private val observer: StatusObserver =object:StatusObserver{
+        override fun onComplete() {
+            playerState.postValue(COMPLETED)
         }
 
         override fun onPlay() {
-            screenStateMutableLiveData.value?.playerState=STARTED
+            playerState.postValue(STARTED)
+        }
+
+        override fun onPause() {
+            playerState.postValue(PAUSE)
         }
     }
 
     override fun onCleared() {
         super.onCleared()
-        trackPlayer.release()
+        playerInteractor.release()
     }
+}
+enum class PlayerState{
+    STARTED,PAUSE,COMPLETED
 }

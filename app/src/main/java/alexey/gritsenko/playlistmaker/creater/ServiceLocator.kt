@@ -7,6 +7,8 @@ import alexey.gritsenko.playlistmaker.data.settings.SettingsRepository
 import alexey.gritsenko.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import alexey.gritsenko.playlistmaker.domain.impl.SearchTrackInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.impl.TrackHistoryInteractorImpl
+import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
+import alexey.gritsenko.playlistmaker.domain.player.impl.PlayerInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
 import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
@@ -58,6 +60,11 @@ object ServiceLocator :IServiceLocator{
             /**********************************************/
             TrackPlayer::class.java->{
                 val newObj= TrackPlayerImpl()
+                storage[clazz] = newObj
+                return newObj as T
+            }
+            PlayerInteractor::class.java->{
+                val newObj= PlayerInteractorImpl()
                 storage[clazz] = newObj
                 return newObj as T
             }
