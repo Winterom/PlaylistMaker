@@ -1,31 +1,32 @@
 package alexey.gritsenko.playlistmaker.data.settings.impl
 
-import alexey.gritsenko.playlistmaker.data.settings.SettingsRepository
-import alexey.gritsenko.playlistmaker.data.settings.model.ThemeSettings
+import alexey.gritsenko.playlistmaker.domain.settings.SettingsRepository
+import alexey.gritsenko.playlistmaker.domain.settings.model.ThemeSettings
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 
-class SettingsRepositoryImpl(private val sharedPreferences: SharedPreferences?):SettingsRepository {
+class SettingsRepositoryImpl(private val sharedPreferences: SharedPreferences):
+    SettingsRepository {
     companion object{
-        const val THEME_KEY = "darkTheme"
+        private const val THEME_KEY = "darkTheme"
 
     }
     private val gson = Gson()
     override fun getThemeSettings(isDark:Boolean?): ThemeSettings {
         val rawObject:String
        if(isDark==null){
-           rawObject = sharedPreferences!!.getString(THEME_KEY, null) ?: return ThemeSettings(false)
+           rawObject = sharedPreferences.getString(THEME_KEY, null) ?: return ThemeSettings(false)
            return deserialize(rawObject)
        }
-       rawObject = sharedPreferences!!.getString(THEME_KEY, null) ?: return ThemeSettings(isDark)
+       rawObject = sharedPreferences.getString(THEME_KEY, null) ?: return ThemeSettings(isDark)
        return deserialize(rawObject)
     }
 
     override fun updateThemeSetting(settings: ThemeSettings) {
-        sharedPreferences!!
+        sharedPreferences
             .edit()
             .putString(THEME_KEY, serialize(settings))
             .apply()

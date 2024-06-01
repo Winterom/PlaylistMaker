@@ -11,7 +11,7 @@ import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.SERVER_ERROR
 import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
 import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
-import alexey.gritsenko.playlistmaker.platform.navigator.ExternalNavigator
+import alexey.gritsenko.playlistmaker.data.navigator.ExternalNavigator
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.NONE
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SHOW_HISTORY
 import androidx.lifecycle.LiveData

@@ -1,6 +1,5 @@
 package alexey.gritsenko.playlistmaker.ui.playeractivity.activity
 
-import alexey.gritsenko.playlistmaker.AbstractPlayListActivity
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.databinding.ActivityPlayerBinding
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
@@ -9,12 +8,13 @@ import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.P
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.STARTED
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerViewModel
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 
-class PlayerActivity :  AbstractPlayListActivity() {
+class PlayerActivity :  AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var viewModel: PlayerViewModel
     private lateinit var track:Track

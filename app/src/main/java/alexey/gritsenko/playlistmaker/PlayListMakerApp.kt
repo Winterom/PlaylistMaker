@@ -4,14 +4,13 @@ import alexey.gritsenko.playlistmaker.creater.ServiceLocator
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 import android.app.Application
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
+
 import androidx.appcompat.app.AppCompatDelegate
 
 class PlayListMakerApp : Application() {
     companion object {
         const val APP_PREFERENCES = "play_list_preferences"
         const val TRACK_HISTORY_KEY = "track_history"
-        lateinit var currentActivity:AppCompatActivity
     }
 
     override fun onCreate() {

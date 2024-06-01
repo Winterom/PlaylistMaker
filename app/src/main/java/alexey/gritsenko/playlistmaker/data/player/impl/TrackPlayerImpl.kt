@@ -1,11 +1,11 @@
-package alexey.gritsenko.playlistmaker.platform.player.impl
+package alexey.gritsenko.playlistmaker.data.player.impl
 
 
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
-import alexey.gritsenko.playlistmaker.platform.player.TrackPlayer
+import alexey.gritsenko.playlistmaker.data.player.TrackPlayer
 import android.media.MediaPlayer
 
-class TrackPlayerImpl:TrackPlayer {
+class TrackPlayerImpl: TrackPlayer {
     private var player:MediaPlayer?=null
     private lateinit var statusObserver: StatusObserver
 

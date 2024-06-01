@@ -4,7 +4,7 @@ import alexey.gritsenko.playlistmaker.creater.ServiceLocator
 import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
 import alexey.gritsenko.playlistmaker.domain.player.TimerObserver
-import alexey.gritsenko.playlistmaker.platform.player.TrackPlayer
+import alexey.gritsenko.playlistmaker.data.player.TrackPlayer
 import android.os.Handler
 import android.os.Looper
 

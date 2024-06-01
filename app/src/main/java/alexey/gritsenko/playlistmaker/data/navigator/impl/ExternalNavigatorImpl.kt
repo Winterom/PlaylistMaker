@@ -1,11 +1,10 @@
-package alexey.gritsenko.playlistmaker.platform.navigator.impl
+package alexey.gritsenko.playlistmaker.data.navigator.impl
 
 
 
-import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.R.string
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
-import alexey.gritsenko.playlistmaker.platform.navigator.ExternalNavigator
+import alexey.gritsenko.playlistmaker.data.navigator.ExternalNavigator
 import alexey.gritsenko.playlistmaker.ui.playeractivity.activity.PlayerActivity
 import android.app.Application
 import android.content.Intent
@@ -26,14 +25,15 @@ class ExternalNavigatorImpl(private val application: Application): ExternalNavig
             putExtra(Intent.EXTRA_TEXT, message)
             type = "text/plain"
         },"Share")
-        PlayListMakerApp.currentActivity.startActivity(intent)
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+        application.applicationContext.startActivity(intent)
     }
 
     override fun openLink(){
         val uri = application.resources.getString(string.yandex_offer)
         val intent=Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
-        PlayListMakerApp.currentActivity.startActivity(intent)
+        application.applicationContext.startActivity(intent)
     }
 
     override fun openEmail() {
@@ -46,7 +46,8 @@ class ExternalNavigatorImpl(private val application: Application): ExternalNavig
             putExtra(Intent.EXTRA_SUBJECT, subject)
             putExtra(Intent.EXTRA_TEXT, message)
         }
-        PlayListMakerApp.currentActivity.startActivity(intent)
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+        application.applicationContext.startActivity(intent)
     }
 
     override fun startPlayerActivity(track: Track) {
@@ -58,9 +59,10 @@ class ExternalNavigatorImpl(private val application: Application): ExternalNavig
         }else{
             return
         }
-        val intent = Intent(PlayListMakerApp.currentActivity, PlayerActivity::class.java)
+        val intent = Intent(application.applicationContext, PlayerActivity::class.java)
         intent.putExtra(PlayerActivity.TRACK,track)
-        PlayListMakerApp.currentActivity.startActivity(intent)
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+        application.applicationContext.startActivity(intent)
     }
 
 

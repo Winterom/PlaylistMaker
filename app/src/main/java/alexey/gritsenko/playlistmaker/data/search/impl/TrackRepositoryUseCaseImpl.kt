@@ -1,6 +1,6 @@
-package alexey.gritsenko.playlistmaker.data.impl
+package alexey.gritsenko.playlistmaker.data.search.impl
 
-import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
+import alexey.gritsenko.playlistmaker.data.search.dto.TrackSearchResponseDto
 import alexey.gritsenko.playlistmaker.data.search.TrackNetworkClientUseCase
 import alexey.gritsenko.playlistmaker.data.search.TrackRepositoryUseCase
 import com.google.gson.GsonBuilder

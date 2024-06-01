@@ -1,7 +1,6 @@
 package alexey.gritsenko.playlistmaker.ui.searchactivity.activity
 
-import alexey.gritsenko.playlistmaker.AbstractPlayListActivity
-import alexey.gritsenko.playlistmaker.PlayListMakerApp
+
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.databinding.ActivitySearchBinding
@@ -25,6 +24,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.DimenRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 
@@ -32,7 +32,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 
-class SearchActivity : AbstractPlayListActivity() {
+class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var adapter: SearchTrackAdapter
@@ -64,7 +64,6 @@ class SearchActivity : AbstractPlayListActivity() {
     private var searchText: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        PlayListMakerApp.currentActivity = this
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         searchViewModel =

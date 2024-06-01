@@ -1,7 +1,7 @@
-package alexey.gritsenko.playlistmaker.domain.impl
+package alexey.gritsenko.playlistmaker.domain.search.impl
 
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
-import alexey.gritsenko.playlistmaker.data.dto.TrackSearchResponseDto
+import alexey.gritsenko.playlistmaker.data.search.dto.TrackSearchResponseDto
 import alexey.gritsenko.playlistmaker.data.search.TrackRepositoryUseCase
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.EMPTY

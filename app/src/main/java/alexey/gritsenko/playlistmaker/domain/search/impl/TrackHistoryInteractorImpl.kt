@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.domain.impl
+package alexey.gritsenko.playlistmaker.domain.search.impl
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
 import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor

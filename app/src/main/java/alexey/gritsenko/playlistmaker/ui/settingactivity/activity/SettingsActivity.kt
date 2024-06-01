@@ -1,12 +1,12 @@
 package alexey.gritsenko.playlistmaker.ui.settingactivity.activity
 
-import alexey.gritsenko.playlistmaker.AbstractPlayListActivity
 import alexey.gritsenko.playlistmaker.databinding.ActivitySettingsBinding
 import alexey.gritsenko.playlistmaker.ui.settingactivity.view_model.SettingsViewModel
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
-class SettingsActivity: AbstractPlayListActivity() {
+class SettingsActivity: AppCompatActivity() {
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {

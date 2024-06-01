@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.platform.player
+package alexey.gritsenko.playlistmaker.data.player
 
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
 
