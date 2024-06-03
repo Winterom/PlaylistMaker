@@ -18,29 +18,7 @@ data class Track(
     val country: String,
     val previewUrl:String?,
     val artworkUrl100: String?):Serializable{
-    companion object{
-        fun convertDtoToEntity(dtoResult: TrackSearchResponseDto.SearchResult): Track {
-            val releaseDate = when{
-                dtoResult.releaseDate==null ->""
-                else -> {dtoResult.releaseDate.
-                toInstant().
-                    atZone(ZoneId.of("UTC"))
-                        .year.toString()}
-            }
-            val trackTime = SimpleDateFormat("mm:ss", Locale.getDefault())
-                .format(dtoResult.trackTimeMillis)
-            return Track(dtoResult.trackId,
-                dtoResult.trackName?:"",
-                dtoResult.artistName?:"",
-                trackTime,
-                dtoResult.collectionName,
-                releaseDate,
-                dtoResult.primaryGenreName?:"",
-                dtoResult.country?:"",
-                dtoResult.previewUrl,
-                dtoResult.artworkUrl100)
-        }
-    }
+
     fun getCoverArtwork() = artworkUrl100?.replaceAfterLast('/',"512x512bb.jpg")
 
     override fun equals(other: Any?): Boolean {

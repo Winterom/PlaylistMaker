@@ -3,4 +3,6 @@
     <color name="svgColor">#FFFFFFFF</color>
     <color name="switchTrackColor">#9FBBF3</color>
     <color name="switchKnobColor">#3772E7</color>
+    <color name="searchFieldColor">#FFFFFFFF</color>
+    <color name="closeAndSearchSvg">#1A1B22</color>
 </resources>

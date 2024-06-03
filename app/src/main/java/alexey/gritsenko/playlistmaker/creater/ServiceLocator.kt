@@ -1,8 +1,7 @@
 package alexey.gritsenko.playlistmaker.creater
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
-import alexey.gritsenko.playlistmaker.data.search.impl.TrackRepositoryUseCaseImpl
-import alexey.gritsenko.playlistmaker.data.search.TrackRepositoryUseCase
+import alexey.gritsenko.playlistmaker.domain.search.TrackRepositoryUseCase
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsRepository
 import alexey.gritsenko.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import alexey.gritsenko.playlistmaker.domain.search.impl.SearchTrackInteractorImpl
@@ -19,6 +18,7 @@ import alexey.gritsenko.playlistmaker.data.navigator.ExternalNavigator
 import alexey.gritsenko.playlistmaker.data.navigator.impl.ExternalNavigatorImpl
 import alexey.gritsenko.playlistmaker.data.player.TrackPlayer
 import alexey.gritsenko.playlistmaker.data.player.impl.TrackPlayerImpl
+import alexey.gritsenko.playlistmaker.data.search.impl.TrackRepositoryUseCaseImpl
 import android.app.Application
 import android.content.Context
 

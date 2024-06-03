@@ -4,7 +4,6 @@ package alexey.gritsenko.playlistmaker.ui.playeractivity.view_model
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
 import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
-import alexey.gritsenko.playlistmaker.domain.player.TimerObserver
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.COMPLETED
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.PAUSE
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.STARTED
@@ -30,7 +29,7 @@ class PlayerViewModel : ViewModel() {
             ): T {
                 val viewModel = PlayerViewModel().apply {
                     playerInteractor=ServiceLocator.getService(PlayerInteractor::class.java)
-                    playerInteractor.prepare(previewUrl,statusObserver,timerObserver)
+                    playerInteractor.prepare(previewUrl,statusObserver)
                 }
                 return viewModel as T
             }
@@ -59,10 +58,8 @@ class PlayerViewModel : ViewModel() {
         override fun onPause() {
             playerState.postValue(PAUSE)
         }
-    }
 
-    private val timerObserver :TimerObserver = object : TimerObserver {
-        override fun changeValue(newValue: Int) {
+        override fun changeTimer(newValue: Int) {
             var seconds = newValue/ 1000
             val minutes = seconds / 60
             seconds %= 60
@@ -70,6 +67,7 @@ class PlayerViewModel : ViewModel() {
             timerValue.postValue(value)
         }
     }
+
     override fun onCleared() {
         super.onCleared()
         playerInteractor.release()

@@ -57,14 +57,14 @@ class SearchViewModel: ViewModel() {
 
     fun getShowMode(): LiveData<ShowMode> = showMode
     fun findTrack(searchString: String) {
-        if(searchString.isNotEmpty())showMode.postValue(ShowMode.LOADING)
+        if(searchString.isBlank())return
         searchTrackInteractor.findTrack(searchString) { status ->
             when (status) {
-                OK, CLEAR -> {
+                OK -> {
                     showMode.postValue(ShowMode.SHOW_SEARCH_RESULT)
                     tracksSearchStore=searchTrackInteractor.getSearchResult()
                 }
-
+                CLEAR->{showMode.postValue(NONE)}
                 EMPTY -> {
                     showMode.postValue(ShowMode.EMPTY_SEARCH_RESULT)
                     tracksSearchStore=emptyList()
@@ -126,7 +126,7 @@ enum class ShowMode {
     SHOW_SEARCH_RESULT,
     EMPTY_SEARCH_RESULT,
     SHOW_HISTORY,
-    LOADING,NONE,
+    NONE,
     NETWORK_ERROR,
     SERVER_ERROR
 }

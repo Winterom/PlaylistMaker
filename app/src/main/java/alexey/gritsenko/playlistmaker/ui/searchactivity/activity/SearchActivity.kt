@@ -8,13 +8,14 @@ import alexey.gritsenko.playlistmaker.databinding.ActivitySearchBinding
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.SearchViewModel
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.EMPTY_SEARCH_RESULT
-import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.LOADING
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.NETWORK_ERROR
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.NONE
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SERVER_ERROR
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SHOW_HISTORY
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SHOW_SEARCH_RESULT
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -33,6 +34,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 
 class SearchActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var adapter: SearchTrackAdapter
@@ -40,7 +42,9 @@ class SearchActivity : AppCompatActivity() {
     private val emptySearchViews = ArrayList<View>()
     private val networkNotAvailableViews = ArrayList<View>()
     private val historyViews = ArrayList<View>()
-
+    private val token = Any()
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var  searchRunnable: Runnable
     private val showModeObserver = Observer<ShowMode> { newMode ->
         if (newMode==null){
             return@Observer
@@ -49,7 +53,6 @@ class SearchActivity : AppCompatActivity() {
             SHOW_SEARCH_RESULT -> okSearchResult()
             EMPTY_SEARCH_RESULT -> emptySearchResult()
             SHOW_HISTORY -> historyShow()
-            LOADING -> binding.progressBar.isVisible = true
             NONE -> showNone()
             NETWORK_ERROR -> networkNotAvailable()
             SERVER_ERROR -> serverErrorMessage()
@@ -59,6 +62,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val TEXT_STORED_KEY = "searchText"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
     private var searchText: String = ""
@@ -228,7 +232,6 @@ class SearchActivity : AppCompatActivity() {
         this.emptySearchViews.forEach { it.isVisible = false }
         this.networkNotAvailableViews.forEach { it.isVisible = false }
         this.historyViews.forEach { it.isVisible = true }
-        binding.progressBar.isVisible = false
     }
 
     private fun showNone() {
@@ -241,7 +244,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun serverErrorMessage() {
         showNone()
-        showToast("Что то пошло не так!")
+        showToast(getString(R.string.bad_response))
 
     }
 
@@ -260,7 +263,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search(searchString: String) {
-        searchViewModel.findTrack(searchString)
+        searchRunnable=Runnable{
+            binding.progressBar.isVisible = true
+            searchViewModel.findTrack(searchString)}
+        if(searchString.isBlank()){
+            handler.removeCallbacks(searchRunnable, token)
+            return
+        }
+        handler.removeCallbacks(searchRunnable, token)
+        handler.postDelayed(searchRunnable, token, SEARCH_DEBOUNCE_DELAY)
     }
 
 }
