@@ -3,8 +3,8 @@ package alexey.gritsenko.playlistmaker.data.navigator.impl
 
 
 import alexey.gritsenko.playlistmaker.R.string
+import alexey.gritsenko.playlistmaker.domain.sharing.ExternalNavigator
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
-import alexey.gritsenko.playlistmaker.data.navigator.ExternalNavigator
 import alexey.gritsenko.playlistmaker.ui.playeractivity.activity.PlayerActivity
 import android.app.Application
 import android.content.Intent

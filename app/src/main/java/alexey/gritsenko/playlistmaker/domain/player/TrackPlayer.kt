@@ -1,7 +1,4 @@
-package alexey.gritsenko.playlistmaker.data.player
-
-import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
-
+package alexey.gritsenko.playlistmaker.domain.player
 
 interface TrackPlayer {
    fun prepare(previewUrl: String, statusObserver: StatusObserver)

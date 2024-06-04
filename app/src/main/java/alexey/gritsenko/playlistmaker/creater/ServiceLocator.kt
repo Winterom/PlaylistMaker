@@ -1,24 +1,24 @@
 package alexey.gritsenko.playlistmaker.creater
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
-import alexey.gritsenko.playlistmaker.domain.search.TrackRepositoryUseCase
-import alexey.gritsenko.playlistmaker.domain.settings.SettingsRepository
+import alexey.gritsenko.playlistmaker.domain.sharing.ExternalNavigator
+import alexey.gritsenko.playlistmaker.data.navigator.impl.ExternalNavigatorImpl
+import alexey.gritsenko.playlistmaker.data.player.impl.TrackPlayerImpl
+import alexey.gritsenko.playlistmaker.data.search.impl.TrackRepositoryUseCaseImpl
 import alexey.gritsenko.playlistmaker.data.settings.impl.SettingsRepositoryImpl
-import alexey.gritsenko.playlistmaker.domain.search.impl.SearchTrackInteractorImpl
-import alexey.gritsenko.playlistmaker.domain.search.impl.TrackHistoryInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
+import alexey.gritsenko.playlistmaker.domain.player.TrackPlayer
 import alexey.gritsenko.playlistmaker.domain.player.impl.PlayerInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
 import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor
+import alexey.gritsenko.playlistmaker.domain.search.TrackRepositoryUseCase
+import alexey.gritsenko.playlistmaker.domain.search.impl.SearchTrackInteractorImpl
+import alexey.gritsenko.playlistmaker.domain.search.impl.TrackHistoryInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
+import alexey.gritsenko.playlistmaker.domain.settings.SettingsRepository
 import alexey.gritsenko.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.sharing.SharingInteractor
 import alexey.gritsenko.playlistmaker.domain.sharing.impl.SharingInteractorImpl
-import alexey.gritsenko.playlistmaker.data.navigator.ExternalNavigator
-import alexey.gritsenko.playlistmaker.data.navigator.impl.ExternalNavigatorImpl
-import alexey.gritsenko.playlistmaker.data.player.TrackPlayer
-import alexey.gritsenko.playlistmaker.data.player.impl.TrackPlayerImpl
-import alexey.gritsenko.playlistmaker.data.search.impl.TrackRepositoryUseCaseImpl
 import android.app.Application
 import android.content.Context
 

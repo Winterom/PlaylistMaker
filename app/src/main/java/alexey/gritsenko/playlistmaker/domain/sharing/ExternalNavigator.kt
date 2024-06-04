@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.data.navigator
+package alexey.gritsenko.playlistmaker.domain.sharing
 
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 

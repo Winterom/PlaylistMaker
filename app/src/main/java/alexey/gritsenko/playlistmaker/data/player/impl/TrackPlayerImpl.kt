@@ -2,7 +2,7 @@ package alexey.gritsenko.playlistmaker.data.player.impl
 
 
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
-import alexey.gritsenko.playlistmaker.data.player.TrackPlayer
+import alexey.gritsenko.playlistmaker.domain.player.TrackPlayer
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper

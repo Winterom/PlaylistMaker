@@ -1,8 +1,8 @@
 package alexey.gritsenko.playlistmaker.ui.settingactivity.view_model
 
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
-import alexey.gritsenko.playlistmaker.domain.settings.model.ThemeSettings
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
+import alexey.gritsenko.playlistmaker.domain.settings.model.ThemeSettings
 import alexey.gritsenko.playlistmaker.domain.sharing.SharingInteractor
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel

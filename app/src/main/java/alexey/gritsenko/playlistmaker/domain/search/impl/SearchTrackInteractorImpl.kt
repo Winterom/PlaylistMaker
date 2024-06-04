@@ -1,15 +1,12 @@
 package alexey.gritsenko.playlistmaker.domain.search.impl
 
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
-
-import alexey.gritsenko.playlistmaker.domain.search.TrackRepositoryUseCase
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus
 import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
+import alexey.gritsenko.playlistmaker.domain.search.TrackRepositoryUseCase
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 
-
-
-open class SearchTrackInteractorImpl : SearchTrackInteractor {
+class SearchTrackInteractorImpl : SearchTrackInteractor {
     private val trackRepositoryUseCase: TrackRepositoryUseCase
             = ServiceLocator.getService(TrackRepositoryUseCase::class.java)
     private var tracks: List<Track> = emptyList()

@@ -1,8 +1,8 @@
 package alexey.gritsenko.playlistmaker.data.search.impl
 
-import alexey.gritsenko.playlistmaker.data.search.dto.TrackSearchResponseDto
 import alexey.gritsenko.playlistmaker.data.search.TrackNetworkClientUseCase
 import alexey.gritsenko.playlistmaker.data.search.dto.DtoToEntityMapper
+import alexey.gritsenko.playlistmaker.data.search.dto.TrackSearchResponseDto
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.EMPTY
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.NETWORK_ERROR

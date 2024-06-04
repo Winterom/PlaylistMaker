@@ -4,7 +4,7 @@ import alexey.gritsenko.playlistmaker.creater.ServiceLocator
 import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
 
-import alexey.gritsenko.playlistmaker.data.player.TrackPlayer
+import alexey.gritsenko.playlistmaker.domain.player.TrackPlayer
 
 
 class PlayerInteractorImpl : PlayerInteractor {

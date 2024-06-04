@@ -263,11 +263,14 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search(searchString: String) {
+        showNone()
+        binding.progressBar.isVisible = true
         searchRunnable=Runnable{
             binding.progressBar.isVisible = true
             searchViewModel.findTrack(searchString)}
         if(searchString.isBlank()){
             handler.removeCallbacks(searchRunnable, token)
+            binding.progressBar.isVisible = false
             return
         }
         handler.removeCallbacks(searchRunnable, token)
