@@ -3,7 +3,7 @@ package alexey.gritsenko.playlistmaker.ui.searchactivity.view_model
 
 
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
-import alexey.gritsenko.playlistmaker.domain.sharing.ExternalNavigator
+import alexey.gritsenko.playlistmaker.domain.sharing.AppNavigator
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.CLEAR
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.EMPTY
 import alexey.gritsenko.playlistmaker.domain.search.RequestStatus.NETWORK_ERROR
@@ -23,7 +23,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 class SearchViewModel: ViewModel() {
     private lateinit var searchTrackInteractor: SearchTrackInteractor
     private lateinit var trackHistoryInteractor: TrackHistoryInteractor
-    private lateinit var externalNavigator: ExternalNavigator
+    private lateinit var appNavigator: AppNavigator
     private var showMode: MutableLiveData<ShowMode> = MutableLiveData(SHOW_HISTORY)
     private lateinit var tracksHistoryStore: List<Track>
     private var tracksSearchStore: List<Track> = emptyList()
@@ -40,7 +40,7 @@ class SearchViewModel: ViewModel() {
                         ServiceLocator.getService(SearchTrackInteractor::class.java)
                     trackHistoryInteractor =
                         ServiceLocator.getService(TrackHistoryInteractor::class.java)
-                    externalNavigator = ServiceLocator.getService(ExternalNavigator::class.java)
+                    appNavigator = ServiceLocator.getService(AppNavigator::class.java)
                     val trackHistory = trackHistoryInteractor.getTrackHistory()
                     if (trackHistory.isEmpty()) {
                         showMode.value = NONE
@@ -111,7 +111,7 @@ class SearchViewModel: ViewModel() {
         fun addTrackToHistory(track: Track) {
             trackHistoryInteractor.addTrackToHistory(track)
             tracksHistoryStore =trackHistoryInteractor.getTrackHistory()
-            externalNavigator.startPlayerActivity(track)
+            appNavigator.startPlayerActivity(track)
         }
         fun setShowMode(showMode: ShowMode){
             if(showMode== SHOW_HISTORY && tracksHistoryStore.isEmpty()){

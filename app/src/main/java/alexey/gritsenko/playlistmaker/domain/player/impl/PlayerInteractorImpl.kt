@@ -3,7 +3,6 @@ package alexey.gritsenko.playlistmaker.domain.player.impl
 import alexey.gritsenko.playlistmaker.creater.ServiceLocator
 import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
-
 import alexey.gritsenko.playlistmaker.domain.player.TrackPlayer
 
 

@@ -1,9 +1,9 @@
-package alexey.gritsenko.playlistmaker.data.navigator.impl
+package alexey.gritsenko.playlistmaker.data.navigator
 
 
 
 import alexey.gritsenko.playlistmaker.R.string
-import alexey.gritsenko.playlistmaker.domain.sharing.ExternalNavigator
+import alexey.gritsenko.playlistmaker.domain.sharing.AppNavigator
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 import alexey.gritsenko.playlistmaker.ui.playeractivity.activity.PlayerActivity
 import android.app.Application
@@ -13,7 +13,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 
-class ExternalNavigatorImpl(private val application: Application): ExternalNavigator {
+class AppNavigatorImpl(private val application: Application): AppNavigator {
     companion object{
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }

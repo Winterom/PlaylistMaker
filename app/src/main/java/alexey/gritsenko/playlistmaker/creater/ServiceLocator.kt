@@ -1,16 +1,18 @@
 package alexey.gritsenko.playlistmaker.creater
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
-import alexey.gritsenko.playlistmaker.domain.sharing.ExternalNavigator
-import alexey.gritsenko.playlistmaker.data.navigator.impl.ExternalNavigatorImpl
-import alexey.gritsenko.playlistmaker.data.player.impl.TrackPlayerImpl
+import alexey.gritsenko.playlistmaker.domain.sharing.AppNavigator
+import alexey.gritsenko.playlistmaker.data.navigator.AppNavigatorImpl
+import alexey.gritsenko.playlistmaker.data.player.TrackPlayerImpl
+import alexey.gritsenko.playlistmaker.data.search.impl.TrackHistoryRepositoryImpl
 import alexey.gritsenko.playlistmaker.data.search.impl.TrackRepositoryUseCaseImpl
-import alexey.gritsenko.playlistmaker.data.settings.impl.SettingsRepositoryImpl
+import alexey.gritsenko.playlistmaker.data.settings.SettingsRepositoryImpl
 import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
 import alexey.gritsenko.playlistmaker.domain.player.TrackPlayer
 import alexey.gritsenko.playlistmaker.domain.player.impl.PlayerInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
 import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor
+import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryRepository
 import alexey.gritsenko.playlistmaker.domain.search.TrackRepositoryUseCase
 import alexey.gritsenko.playlistmaker.domain.search.impl.SearchTrackInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.search.impl.TrackHistoryInteractorImpl
@@ -37,7 +39,7 @@ object ServiceLocator :IServiceLocator{
             /*Settings*/
             /**********************************************/
             SettingsRepository::class.java-> {
-                val newObj=SettingsRepositoryImpl(application.getSharedPreferences(PlayListMakerApp.APP_PREFERENCES, Context.MODE_PRIVATE))
+                val newObj= SettingsRepositoryImpl(application.getSharedPreferences(PlayListMakerApp.APP_PREFERENCES, Context.MODE_PRIVATE))
                 storage[clazz] = newObj
                 return newObj as T
             }
@@ -51,8 +53,8 @@ object ServiceLocator :IServiceLocator{
                 storage[clazz] = newObj
                 return newObj as T
             }
-            ExternalNavigator::class.java->{
-                val newObj= ExternalNavigatorImpl(application)
+            AppNavigator::class.java->{
+                val newObj= AppNavigatorImpl(application)
                 storage[clazz] = newObj
                 return newObj as T
             }
@@ -71,7 +73,7 @@ object ServiceLocator :IServiceLocator{
             /*Search*/
             /*********************************************/
             TrackHistoryInteractor::class.java->{
-                val newObj= TrackHistoryInteractorImpl(application.getSharedPreferences(PlayListMakerApp.APP_PREFERENCES, Context.MODE_PRIVATE))
+                val newObj= TrackHistoryInteractorImpl()
                 storage[clazz] = newObj
                 return newObj as T
             }
@@ -82,6 +84,11 @@ object ServiceLocator :IServiceLocator{
             }
             TrackRepositoryUseCase::class.java->{
                 val newObj= TrackRepositoryUseCaseImpl()
+                storage[clazz] = newObj
+                return newObj as T
+            }
+            TrackHistoryRepository::class.java->{
+                val newObj= TrackHistoryRepositoryImpl(application.getSharedPreferences(PlayListMakerApp.APP_PREFERENCES, Context.MODE_PRIVATE))
                 storage[clazz] = newObj
                 return newObj as T
             }

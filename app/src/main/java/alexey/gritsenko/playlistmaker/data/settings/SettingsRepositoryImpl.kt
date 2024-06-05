@@ -1,4 +1,4 @@
-package alexey.gritsenko.playlistmaker.data.settings.impl
+package alexey.gritsenko.playlistmaker.data.settings
 
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsRepository
 import alexey.gritsenko.playlistmaker.domain.settings.model.ThemeSettings

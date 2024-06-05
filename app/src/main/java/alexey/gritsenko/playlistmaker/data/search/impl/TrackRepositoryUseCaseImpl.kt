@@ -19,7 +19,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-open class TrackRepositoryUseCaseImpl : TrackRepositoryUseCase {
+class TrackRepositoryUseCaseImpl : TrackRepositoryUseCase {
     private var trackNetworkClientUseCase: TrackNetworkClientUseCase
     companion object {
         const val BASE_URL: String = "https://itunes.apple.com"
