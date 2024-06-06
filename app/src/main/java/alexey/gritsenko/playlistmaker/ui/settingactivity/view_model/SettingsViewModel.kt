@@ -1,34 +1,17 @@
 package alexey.gritsenko.playlistmaker.ui.settingactivity.view_model
 
-import alexey.gritsenko.playlistmaker.creater.ServiceLocator
+
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 import alexey.gritsenko.playlistmaker.domain.settings.model.ThemeSettings
 import alexey.gritsenko.playlistmaker.domain.sharing.SharingInteractor
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
 
-class SettingsViewModel : ViewModel() {
-    private lateinit var sharingInteractor: SharingInteractor
-    private lateinit var settingsInteractor: SettingsInteractor
 
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun getViewModelFactory(): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>,
-                extras: CreationExtras,
-            ): T {
-                val viewModel = SettingsViewModel().apply {
-                    settingsInteractor = ServiceLocator.getService(SettingsInteractor::class.java)
-                    sharingInteractor = ServiceLocator.getService(SharingInteractor::class.java)
+class SettingsViewModel(
+    private  var sharingInteractor: SharingInteractor,
+    private  var settingsInteractor: SettingsInteractor) : ViewModel() {
 
-                }
-                return viewModel as T
-            }
-        }
-    }
 
     fun setTheme(isDarkTheme:Boolean){
         AppCompatDelegate.setDefaultNightMode(

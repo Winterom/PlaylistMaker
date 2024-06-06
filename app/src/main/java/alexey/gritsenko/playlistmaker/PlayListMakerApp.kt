@@ -1,13 +1,18 @@
 package alexey.gritsenko.playlistmaker
 
-import alexey.gritsenko.playlistmaker.creater.ServiceLocator
+
+import alexey.gritsenko.playlistmaker.di.appModules
 import alexey.gritsenko.playlistmaker.domain.settings.SettingsInteractor
 import android.app.Application
 import android.content.res.Configuration
 
 import androidx.appcompat.app.AppCompatDelegate
+import org.koin.android.ext.android.getKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 
 class PlayListMakerApp : Application() {
+
     companion object {
         const val APP_PREFERENCES = "play_list_preferences"
         const val TRACK_HISTORY_KEY = "track_history"
@@ -15,8 +20,12 @@ class PlayListMakerApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ServiceLocator.application=this
-        val settingsInteractor = ServiceLocator.getService(SettingsInteractor::class.java)
+        startKoin {
+            androidContext(this@PlayListMakerApp)
+            modules(appModules)
+        }
+
+        val settingsInteractor:SettingsInteractor=getKoin().get()
         val theme = settingsInteractor.getThemeSettings(isDarkThemeEnabled()).isDark
         setTheme(theme)
     }

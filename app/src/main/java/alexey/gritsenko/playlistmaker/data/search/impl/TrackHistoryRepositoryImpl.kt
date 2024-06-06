@@ -9,14 +9,14 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.util.LinkedList
 
-class TrackHistoryRepositoryImpl(private val sharedPreferences: SharedPreferences):TrackHistoryRepository {
+class TrackHistoryRepositoryImpl(private val sharedPreferences: SharedPreferences,private val gson:Gson):TrackHistoryRepository {
 
     companion object {
         private const val HISTORY_CAPACITY = 10
     }
 
     private val history: LinkedList<Track>
-    private val gson = Gson()
+
 
     init {
         val rawHistory = sharedPreferences.getString(PlayListMakerApp.TRACK_HISTORY_KEY, null)

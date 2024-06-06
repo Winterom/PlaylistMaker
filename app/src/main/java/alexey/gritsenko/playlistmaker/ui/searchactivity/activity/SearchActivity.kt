@@ -4,7 +4,6 @@ package alexey.gritsenko.playlistmaker.ui.searchactivity.activity
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.databinding.ActivitySearchBinding
-
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.SearchViewModel
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.EMPTY_SEARCH_RESULT
@@ -28,15 +27,14 @@ import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
-
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var adapter: SearchTrackAdapter
 
     private val emptySearchViews = ArrayList<View>()
@@ -70,11 +68,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        searchViewModel =
-            ViewModelProvider(
-                this,
-                SearchViewModel.getViewModelFactory()
-            )[SearchViewModel::class.java]
         initView()
         searchViewModel.getShowMode().observe(this,showModeObserver)
     }
