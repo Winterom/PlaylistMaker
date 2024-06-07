@@ -20,7 +20,7 @@ class PlayerActivity :  AppCompatActivity() {
     private lateinit var track:Track
     companion object {
         const val TRACK = "TRACK"
-
+        const val TIMER_START_VALUE="0:00"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +33,9 @@ class PlayerActivity :  AppCompatActivity() {
         viewModel.stateLiveData().observe(this){screeState->
             if(screeState==null) return@observe
             when(screeState){
-                PAUSE,COMPLETED->binding.pauseStartButton.setImageResource(R.drawable.play)
+                COMPLETED-> {binding.pauseStartButton.setImageResource(R.drawable.play)
+                    binding.trackTimerTextView.text= TIMER_START_VALUE}
+                PAUSE ->binding.pauseStartButton.setImageResource(R.drawable.play)
                 STARTED->binding.pauseStartButton.setImageResource(R.drawable.pause)
             }
         }
@@ -74,6 +76,10 @@ class PlayerActivity :  AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.playerPause()
+    }
 
 
 

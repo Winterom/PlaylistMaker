@@ -25,6 +25,7 @@ class TrackPlayerImpl(private var player:MediaPlayer): TrackPlayer {
         player.setDataSource(previewUrl)
         player.prepareAsync()
         player.setOnCompletionListener {
+            timerHandler.removeCallbacks(timerRunnable)
             statusObserver.onComplete()
         }
     }

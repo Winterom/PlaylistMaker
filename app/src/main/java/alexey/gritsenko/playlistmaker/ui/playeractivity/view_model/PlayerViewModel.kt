@@ -54,6 +54,9 @@ class PlayerViewModel(private var playerInteractor:PlayerInteractor) : ViewModel
         }
     }
 
+    fun playerPause(){
+        playerInteractor.pause()
+    }
     override fun onCleared() {
         super.onCleared()
         playerInteractor.release()
