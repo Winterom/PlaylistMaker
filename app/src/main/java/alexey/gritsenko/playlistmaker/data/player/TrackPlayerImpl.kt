@@ -7,7 +7,7 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 
-class TrackPlayerImpl(private var player:MediaPlayer): TrackPlayer {
+class TrackPlayerImpl(private val player:MediaPlayer): TrackPlayer {
     companion object{
         private const val DELAY_MILLIS:Long=300
     }
