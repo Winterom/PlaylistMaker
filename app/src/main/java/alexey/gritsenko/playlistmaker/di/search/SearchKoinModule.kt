@@ -4,11 +4,11 @@ import alexey.gritsenko.playlistmaker.data.navigator.AppNavigatorImpl
 import alexey.gritsenko.playlistmaker.data.search.TrackNetworkClientUseCase
 import alexey.gritsenko.playlistmaker.data.search.impl.TrackHistoryRepositoryImpl
 import alexey.gritsenko.playlistmaker.data.search.impl.TrackRepositoryUseCaseImpl
-import alexey.gritsenko.playlistmaker.domain.search.SearchTrackInteractor
+import alexey.gritsenko.playlistmaker.domain.search.SearchTrackUseCase
 import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryInteractor
 import alexey.gritsenko.playlistmaker.domain.search.TrackHistoryRepository
 import alexey.gritsenko.playlistmaker.domain.search.TrackRepositoryUseCase
-import alexey.gritsenko.playlistmaker.domain.search.impl.SearchTrackInteractorImpl
+import alexey.gritsenko.playlistmaker.domain.search.impl.SearchTrackUseCaseImpl
 import alexey.gritsenko.playlistmaker.domain.search.impl.TrackHistoryInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.sharing.AppNavigator
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.SearchViewModel
@@ -38,8 +38,8 @@ val searchKoinModule = module {
             .client(client)
             .build().create(TrackNetworkClientUseCase::class.java)
     }
-    single<SearchTrackInteractor> {
-        SearchTrackInteractorImpl(get())
+    single<SearchTrackUseCase> {
+        SearchTrackUseCaseImpl(get())
     }
     single<TrackRepositoryUseCase> {
         TrackRepositoryUseCaseImpl(get())
