@@ -4,7 +4,6 @@ package alexey.gritsenko.playlistmaker.ui.searchactivity.activity
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.R.id
 import alexey.gritsenko.playlistmaker.databinding.ActivitySearchBinding
-
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.SearchViewModel
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.EMPTY_SEARCH_RESULT
@@ -12,10 +11,10 @@ import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.NETW
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.NONE
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SERVER_ERROR
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SHOW_HISTORY
+import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SHOW_PROGRESS_BAR
 import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.ShowMode.SHOW_SEARCH_RESULT
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -28,23 +27,20 @@ import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
-
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var adapter: SearchTrackAdapter
 
     private val emptySearchViews = ArrayList<View>()
     private val networkNotAvailableViews = ArrayList<View>()
     private val historyViews = ArrayList<View>()
-    private val token = Any()
-    private val handler = Handler(Looper.getMainLooper())
-    private lateinit var  searchRunnable: Runnable
+
     private val showModeObserver = Observer<ShowMode> { newMode ->
         if (newMode==null){
             return@Observer
@@ -56,13 +52,14 @@ class SearchActivity : AppCompatActivity() {
             NONE -> showNone()
             NETWORK_ERROR -> networkNotAvailable()
             SERVER_ERROR -> serverErrorMessage()
+            SHOW_PROGRESS_BAR->binding.progressBar.isVisible=true
         }
 
     }
-
+    private var lastSearch:String?=null
+    private lateinit var  searchDebounce:SearchDebounce
     companion object {
         const val TEXT_STORED_KEY = "searchText"
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
     private var searchText: String = ""
@@ -70,13 +67,9 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        searchViewModel =
-            ViewModelProvider(
-                this,
-                SearchViewModel.getViewModelFactory()
-            )[SearchViewModel::class.java]
         initView()
         searchViewModel.getShowMode().observe(this,showModeObserver)
+        searchDebounce = SearchDebounce(searchViewModel)
     }
 
     private fun initView() {
@@ -89,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
         }
         binding.clearText.setOnClickListener {
             binding.searchField.setText("")
-            searchViewModel.findTrack("")
+            searchDebounce.removeCallback()
             closeKeyboard()
             searchViewModel.setShowMode(SHOW_HISTORY)
         }
@@ -205,6 +198,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun okSearchResult() {
+        if(binding.searchField.text.isNullOrEmpty()) return
         binding.progressBar.isVisible = false
         setTopMargin(binding.trackRecycleView, R.dimen.dimen120dp)
         setHeightConstraint(R.dimen.dimen0dp)
@@ -263,18 +257,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search(searchString: String) {
-        showNone()
-        binding.progressBar.isVisible = true
-        searchRunnable=Runnable{
-            binding.progressBar.isVisible = true
-            searchViewModel.findTrack(searchString)}
-        if(searchString.isBlank()){
-            handler.removeCallbacks(searchRunnable, token)
-            binding.progressBar.isVisible = false
-            return
-        }
-        handler.removeCallbacks(searchRunnable, token)
-        handler.postDelayed(searchRunnable, token, SEARCH_DEBOUNCE_DELAY)
+        if(lastSearch.equals(searchString)) return
+        lastSearch=searchString
+        searchDebounce.searchTrack(searchString)
     }
 
 }

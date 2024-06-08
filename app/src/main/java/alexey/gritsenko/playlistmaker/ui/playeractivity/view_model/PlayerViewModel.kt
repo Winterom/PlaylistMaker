@@ -1,40 +1,23 @@
 package alexey.gritsenko.playlistmaker.ui.playeractivity.view_model
 
 
-import alexey.gritsenko.playlistmaker.creater.ServiceLocator
+
 import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
+import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.COMPLETED
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.PAUSE
 import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerState.STARTED
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
 import java.util.Locale
 
-class PlayerViewModel : ViewModel() {
+class PlayerViewModel(private var playerInteractor:PlayerInteractor) : ViewModel() {
 
     private var playerState= MutableLiveData(COMPLETED)
     private var timerValue = MutableLiveData("0:00")
-    private lateinit var playerInteractor:PlayerInteractor
 
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun getViewModelFactory(previewUrl: String): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>,
-                extras: CreationExtras,
-            ): T {
-                val viewModel = PlayerViewModel().apply {
-                    playerInteractor=ServiceLocator.getService(PlayerInteractor::class.java)
-                    playerInteractor.prepare(previewUrl,statusObserver)
-                }
-                return viewModel as T
-            }
-        }
-    }
     fun stateLiveData(): LiveData<PlayerState> = playerState
 
     fun timerLiveData(): LiveData<String> = timerValue
@@ -46,6 +29,9 @@ class PlayerViewModel : ViewModel() {
         }
     }
 
+    fun prepare(track: Track){
+        track.previewUrl?.let { playerInteractor.prepare(it,statusObserver) }
+    }
     private val statusObserver: StatusObserver =object:StatusObserver{
         override fun onComplete() {
             playerState.postValue(COMPLETED)
@@ -68,6 +54,9 @@ class PlayerViewModel : ViewModel() {
         }
     }
 
+    fun playerPause(){
+        playerInteractor.pause()
+    }
     override fun onCleared() {
         super.onCleared()
         playerInteractor.release()

@@ -1,12 +1,10 @@
 package alexey.gritsenko.playlistmaker.domain.sharing.impl
 
-import alexey.gritsenko.playlistmaker.creater.ServiceLocator
+
 import alexey.gritsenko.playlistmaker.domain.sharing.AppNavigator
 import alexey.gritsenko.playlistmaker.domain.sharing.SharingInteractor
 
-class SharingInteractorImpl: SharingInteractor {
-    private var appNavigator: AppNavigator =
-        ServiceLocator.getService(AppNavigator::class.java)
+class SharingInteractorImpl( private var appNavigator: AppNavigator): SharingInteractor {
     override fun shareApp() {
         appNavigator.shareLink()
     }

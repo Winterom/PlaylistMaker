@@ -10,17 +10,17 @@ import alexey.gritsenko.playlistmaker.ui.playeractivity.view_model.PlayerViewMod
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity :  AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel()
     private lateinit var track:Track
     companion object {
         const val TRACK = "TRACK"
-
+        const val TIMER_START_VALUE="0:00"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,16 +28,14 @@ class PlayerActivity :  AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         track = intent.getSerializableExtra(TRACK) as Track
-        viewModel =
-            ViewModelProvider(
-                this,
-                PlayerViewModel.getViewModelFactory(track.previewUrl!!)
-            )[PlayerViewModel::class.java]
+        viewModel.prepare(track)
         initViews()
         viewModel.stateLiveData().observe(this){screeState->
             if(screeState==null) return@observe
             when(screeState){
-                PAUSE,COMPLETED->binding.pauseStartButton.setImageResource(R.drawable.play)
+                COMPLETED-> {binding.pauseStartButton.setImageResource(R.drawable.play)
+                    binding.trackTimerTextView.text= TIMER_START_VALUE}
+                PAUSE ->binding.pauseStartButton.setImageResource(R.drawable.play)
                 STARTED->binding.pauseStartButton.setImageResource(R.drawable.pause)
             }
         }
@@ -78,6 +76,10 @@ class PlayerActivity :  AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.playerPause()
+    }
 
 
 

@@ -7,38 +7,36 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 
-class TrackPlayerImpl: TrackPlayer {
+class TrackPlayerImpl(private val player:MediaPlayer): TrackPlayer {
     companion object{
         private const val DELAY_MILLIS:Long=300
     }
 
     private val timerHandler = Handler(Looper.getMainLooper())
-    private var player:MediaPlayer?=null
     private lateinit var statusObserver: StatusObserver
     private var timerRunnable: Runnable = object : Runnable {
         override fun run() {
-            player?.currentPosition?.let { statusObserver.changeTimer(it) }
+            statusObserver.changeTimer(player.currentPosition)
             timerHandler.postDelayed(this, DELAY_MILLIS)
         }
     }
     override fun prepare(previewUrl: String, statusObserver: StatusObserver,) {
-
         this.statusObserver = statusObserver
-        player= MediaPlayer()
-        player?.setDataSource(previewUrl)
-        player?.prepareAsync()
-        player?.setOnCompletionListener {
+        player.setDataSource(previewUrl)
+        player.prepareAsync()
+        player.setOnCompletionListener {
+            timerHandler.removeCallbacks(timerRunnable)
             statusObserver.onComplete()
         }
     }
     override fun play() {
-        player!!.start()
+        player.start()
         statusObserver.onPlay()
         timerHandler.postDelayed(timerRunnable, DELAY_MILLIS)
     }
 
     override fun pause() {
-        player?.pause()
+        player.pause()
         statusObserver.onPause()
         timerHandler.removeCallbacks(timerRunnable)
     }
@@ -46,8 +44,7 @@ class TrackPlayerImpl: TrackPlayer {
 
     override fun release() {
         timerHandler.removeCallbacks(timerRunnable)
-        player?.release()
-        player=null
+        player.release()
     }
 
 

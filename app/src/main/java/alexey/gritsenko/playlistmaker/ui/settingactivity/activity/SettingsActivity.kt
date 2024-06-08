@@ -4,20 +4,15 @@ import alexey.gritsenko.playlistmaker.databinding.ActivitySettingsBinding
 import alexey.gritsenko.playlistmaker.ui.settingactivity.view_model.SettingsViewModel
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity: AppCompatActivity() {
-    private lateinit var settingsViewModel: SettingsViewModel
+    private val settingsViewModel: SettingsViewModel by viewModel()
     private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        settingsViewModel =
-            ViewModelProvider(
-                this,
-                SettingsViewModel.getViewModelFactory()
-            )[SettingsViewModel::class.java]
         initialize()
     }
 

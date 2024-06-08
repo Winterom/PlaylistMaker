@@ -8,13 +8,13 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 
-class SettingsRepositoryImpl(private val sharedPreferences: SharedPreferences):
+class SettingsRepositoryImpl(private val sharedPreferences: SharedPreferences,private val gson :Gson):
     SettingsRepository {
     companion object{
         private const val THEME_KEY = "darkTheme"
 
     }
-    private val gson = Gson()
+
     override fun getThemeSettings(isDark:Boolean?): ThemeSettings {
         val rawObject:String
        if(isDark==null){
