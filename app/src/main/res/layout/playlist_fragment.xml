@@ -28,7 +28,6 @@
         android:id="@+id/placeholder_no_tracks_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center"
         android:src="@drawable/empty_search_result"
         android:layout_marginTop="@dimen/dimen48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,12 +38,13 @@
         android:id="@+id/placeholder_no_tracks_text"
         style="@style/TitleTextStyle"
         android:textAlignment="center"
-        android:layout_width="@dimen/dimen164dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen16dp"
-        android:maxLines="2"
+        android:minLines="2"
         android:text="@string/empty_playlists"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/placeholder_no_tracks_image" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
