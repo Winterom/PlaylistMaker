@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/common_ll.settingsActivity">
 
     <LinearLayout
@@ -11,7 +10,7 @@
         android:paddingTop="16dp">
 
         <ImageView
-            android:id="@+id/return_to_main"
+            android:id="@+id/return_to_previous"
             android:layout_width="@dimen/dimen24dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"

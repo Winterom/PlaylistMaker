@@ -45,7 +45,7 @@ class PlayerActivity :  AppCompatActivity() {
     }
 
     private fun initViews() {
-        binding.returnToMain.setOnClickListener {
+        binding.returnToPrevious.setOnClickListener {
             finish()
         }
         binding.playlistIsCreatedTextView.isVisible = false
