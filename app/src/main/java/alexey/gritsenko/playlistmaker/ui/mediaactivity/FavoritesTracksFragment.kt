@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesTracksFragment : Fragment() {
+    companion object {
+        fun newInstance() = FavoritesTracksFragment()
+    }
     private lateinit var binding: FavoritiesTracksFragmentBinding
     private val viewModel: FavoritesTracksFragmentViewModel by viewModel()
     override fun onCreateView(

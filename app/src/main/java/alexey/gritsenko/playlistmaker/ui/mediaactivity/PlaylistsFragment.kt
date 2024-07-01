@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
+    companion object {
+        fun newInstance() = PlaylistsFragment()
+    }
     private lateinit var binding: PlaylistFragmentBinding
     private val viewModel: PlaylistsFragmentViewModel by viewModel()
 
