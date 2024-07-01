@@ -9,7 +9,7 @@
     tools:context=".ui.playeractivity.activity.PlayerActivity">
 
     <ImageView
-        android:id="@+id/return_to_main"
+        android:id="@+id/return_to_previous"
         android:layout_width="@dimen/dimen48dp"
         android:layout_height="@dimen/dimen48dp"
         android:clickable="true"

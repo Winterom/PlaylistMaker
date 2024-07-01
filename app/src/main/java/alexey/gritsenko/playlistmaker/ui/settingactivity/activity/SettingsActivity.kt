@@ -21,7 +21,7 @@ class SettingsActivity: AppCompatActivity() {
         binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
             settingsViewModel.setTheme(checked)
         }
-        binding.returnToMain.setOnClickListener {
+        binding.returnToPrevious.setOnClickListener {
             finish()
         }
         binding.shareButton.setOnClickListener {

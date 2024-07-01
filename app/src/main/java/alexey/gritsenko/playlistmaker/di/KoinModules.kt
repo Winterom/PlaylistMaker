@@ -1,6 +1,7 @@
 package alexey.gritsenko.playlistmaker.di
 
 import alexey.gritsenko.playlistmaker.PlayListMakerApp
+import alexey.gritsenko.playlistmaker.di.media.mediaLibrary
 import alexey.gritsenko.playlistmaker.di.player.playerKoinModule
 import alexey.gritsenko.playlistmaker.di.search.searchKoinModule
 import alexey.gritsenko.playlistmaker.di.settings.settingsModule
@@ -14,5 +15,5 @@ val appModules = module {
         androidContext().getSharedPreferences(PlayListMakerApp.APP_PREFERENCES, Context.MODE_PRIVATE)
     }
     factory { Gson() }
-    includes(settingsModule, searchKoinModule, playerKoinModule)
+    includes(settingsModule, searchKoinModule, playerKoinModule,mediaLibrary)
 }

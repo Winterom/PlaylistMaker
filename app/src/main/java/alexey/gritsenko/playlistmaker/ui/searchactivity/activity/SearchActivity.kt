@@ -77,7 +77,7 @@ class SearchActivity : AppCompatActivity() {
         this.adapter =
             SearchTrackAdapter(searchViewModel)
         binding.trackRecycleView.adapter = adapter
-        binding.returnToMain.setOnClickListener {
+        binding.returnToPrevious.setOnClickListener {
             finish()
         }
         binding.clearText.setOnClickListener {

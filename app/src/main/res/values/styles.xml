@@ -80,4 +80,20 @@
     <style name="activity_background">
         <item name="android:background">@color/yp_white</item>
     </style>
+    <style name="TitleTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">@dimen/dimen18sp</item>
+    </style>
+    <style name="TabLayout">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/dimen14sp</item>
+        <item name="tabTextColor">@color/yp_black</item>
+        <item name="tabMode">fixed</item>
+        <item name="fontWeight">500</item>
+        <item name="tabIndicatorColor">@color/yp_black</item>
+    </style>
+    <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
 </resources>
