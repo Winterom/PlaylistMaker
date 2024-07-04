@@ -11,7 +11,7 @@ import alexey.gritsenko.playlistmaker.domain.search.TrackRepositoryUseCase
 import alexey.gritsenko.playlistmaker.domain.search.impl.SearchTrackUseCaseImpl
 import alexey.gritsenko.playlistmaker.domain.search.impl.TrackHistoryInteractorImpl
 import alexey.gritsenko.playlistmaker.domain.sharing.AppNavigator
-import alexey.gritsenko.playlistmaker.ui.searchactivity.view_model.SearchViewModel
+import alexey.gritsenko.playlistmaker.ui.search.view_model.SearchViewModel
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
