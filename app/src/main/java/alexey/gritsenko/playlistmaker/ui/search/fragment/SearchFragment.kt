@@ -36,7 +36,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment:Fragment() {
     companion object {
-        fun newInstance() = SearchFragment()
         const val TEXT_STORED_KEY = "searchText"
     }
     private lateinit var binding: FragmentSearchBinding
@@ -74,6 +73,7 @@ class SearchFragment:Fragment() {
         initialize()
         searchViewModel.getShowMode().observe(viewLifecycleOwner,showModeObserver)
         searchDebounce = SearchDebounce(searchViewModel)
+
         return binding.root
     }
 
@@ -154,13 +154,13 @@ class SearchFragment:Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(SearchActivity.TEXT_STORED_KEY, searchText)
+        outState.putString(TEXT_STORED_KEY, searchText)
         super.onSaveInstanceState(outState)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        searchText = savedInstanceState?.getString(SearchActivity.TEXT_STORED_KEY) ?: ""
+        searchText = savedInstanceState?.getString(TEXT_STORED_KEY) ?: ""
     }
 
     private fun closeKeyboard() {

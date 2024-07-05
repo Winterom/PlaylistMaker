@@ -12,16 +12,9 @@
         android:id="@+id/searchFragment"
         android:name="alexey.gritsenko.playlistmaker.ui.search.fragment.SearchFragment"
         android:label="SearchFragment" >
-        <action
-            android:id="@+id/action_searchFragment_to_playerFragment"
-            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="alexey.gritsenko.playlistmaker.ui.settings.fragment.SettingsFragment"
         android:label="SettingsFragment" />
-    <fragment
-        android:id="@+id/playerFragment"
-        android:name="alexey.gritsenko.playlistmaker.ui.player.fragment.PlayerFragment"
-        android:label="PlayerFragment" />
 </navigation>

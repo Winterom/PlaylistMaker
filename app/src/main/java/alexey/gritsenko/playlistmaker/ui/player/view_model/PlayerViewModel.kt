@@ -1,7 +1,5 @@
 package alexey.gritsenko.playlistmaker.ui.player.view_model
 
-
-
 import alexey.gritsenko.playlistmaker.domain.player.PlayerInteractor
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
@@ -13,26 +11,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.Locale
 
-class PlayerViewModel(private var playerInteractor:PlayerInteractor) : ViewModel() {
+class PlayerViewModel(private var playerInteractor: PlayerInteractor) : ViewModel() {
 
-    private var playerState= MutableLiveData(COMPLETED)
+    private var playerState = MutableLiveData(COMPLETED)
     private var timerValue = MutableLiveData("0:00")
 
     fun stateLiveData(): LiveData<PlayerState> = playerState
 
     fun timerLiveData(): LiveData<String> = timerValue
-    fun changePlayerState(){
+    fun changePlayerState() {
         val value = playerState.value ?: return
-        when (value){
+        when (value) {
             COMPLETED, PAUSE -> playerInteractor.play()
             STARTED -> playerInteractor.pause()
         }
     }
 
-    fun prepare(track: Track){
-        track.previewUrl?.let { playerInteractor.prepare(it,statusObserver) }
+    fun prepare(track: Track) {
+        playerInteractor.prepare(track.previewUrl!!, statusObserver)
     }
-    private val statusObserver: StatusObserver =object:StatusObserver{
+
+    private val statusObserver: StatusObserver = object : StatusObserver {
         override fun onComplete() {
             playerState.postValue(COMPLETED)
         }
@@ -46,22 +45,27 @@ class PlayerViewModel(private var playerInteractor:PlayerInteractor) : ViewModel
         }
 
         override fun changeTimer(newValue: Int) {
-            var seconds = newValue/ 1000
+            var seconds = newValue / 1000
             val minutes = seconds / 60
             seconds %= 60
-            val value = String.format(Locale("ru"),"%d:%02d", minutes, seconds)
+            val value = String.format(Locale("ru"), "%d:%02d", minutes, seconds)
             timerValue.postValue(value)
         }
     }
 
-    fun playerPause(){
+    fun playerPause() {
         playerInteractor.pause()
     }
+
     override fun onCleared() {
         super.onCleared()
         playerInteractor.release()
     }
+    fun playerRelease(){
+        playerInteractor.release()
+    }
 }
-enum class PlayerState{
-    STARTED,PAUSE,COMPLETED
+
+enum class PlayerState {
+    STARTED, PAUSE, COMPLETED
 }

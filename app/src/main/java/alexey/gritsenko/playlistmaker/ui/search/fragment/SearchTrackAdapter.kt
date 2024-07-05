@@ -3,9 +3,11 @@ package alexey.gritsenko.playlistmaker.ui.search.fragment
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.databinding.TrackItemBinding
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
+import alexey.gritsenko.playlistmaker.ui.navigate
 import alexey.gritsenko.playlistmaker.ui.search.view_model.SearchViewModel
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
@@ -20,7 +22,7 @@ class SearchTrackAdapter(private val searchViewModel: SearchViewModel) :
     }
 
     override fun getItemCount(): Int {
-       return searchViewModel.getItemCount()
+        return searchViewModel.getItemCount()
     }
 
     override fun onBindViewHolder(holder: TrackListViewHolder, position: Int) {
@@ -34,7 +36,7 @@ class SearchTrackAdapter(private val searchViewModel: SearchViewModel) :
 }
 
 class TrackListViewHolder(private val binding:TrackItemBinding )
- : RecyclerView.ViewHolder(binding.root) {
+    : RecyclerView.ViewHolder(binding.root) {
     fun bind(track: Track) {
         binding.trackNameTextView.text = track.trackName
         binding.artistNameTextView.text = track.artistName
@@ -50,4 +52,3 @@ class TrackListViewHolder(private val binding:TrackItemBinding )
         }
     }
 }
-

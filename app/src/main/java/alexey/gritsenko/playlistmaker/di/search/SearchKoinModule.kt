@@ -55,6 +55,6 @@ val searchKoinModule = module {
         AppNavigatorImpl(androidContext())
     }
     viewModel {
-        SearchViewModel(get(), get(), get())
+        SearchViewModel(get(), get(),get())
     }
 }

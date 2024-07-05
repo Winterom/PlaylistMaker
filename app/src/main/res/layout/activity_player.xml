@@ -5,8 +5,7 @@
     android:id="@+id/main"
     style="@style/activity_background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.player.fragment.PlayerFragment">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/return_to_previous"

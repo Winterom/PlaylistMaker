@@ -12,9 +12,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class MediaLibraryFragment:Fragment() {
 
-    companion object {
-        fun newInstance() = MediaLibraryFragment()
-    }
     private lateinit var binding: FragmentMediaLibraryBinding
     private lateinit var tabMediator: TabLayoutMediator
     override fun onCreateView(

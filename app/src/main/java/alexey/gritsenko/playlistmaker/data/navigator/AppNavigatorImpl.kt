@@ -5,6 +5,7 @@ package alexey.gritsenko.playlistmaker.data.navigator
 import alexey.gritsenko.playlistmaker.R.string
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 import alexey.gritsenko.playlistmaker.domain.sharing.AppNavigator
+import alexey.gritsenko.playlistmaker.ui.player.activity.PlayerActivity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
@@ -50,7 +51,7 @@ class AppNavigatorImpl(private val context: Context): AppNavigator {
     }
 
     override fun startPlayerActivity(track: Track) {
-        /*if (isClickAllowed) {
+        if (isClickAllowed) {
             isClickAllowed = false
             handler.postDelayed({ isClickAllowed = true },
                 CLICK_DEBOUNCE_DELAY
@@ -61,7 +62,7 @@ class AppNavigatorImpl(private val context: Context): AppNavigator {
         val intent = Intent(context.applicationContext, PlayerActivity::class.java)
         intent.putExtra(PlayerActivity.TRACK,track)
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
-        context.applicationContext.startActivity(intent)*/
+        context.applicationContext.startActivity(intent)
     }
 
 
