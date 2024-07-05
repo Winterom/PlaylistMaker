@@ -61,9 +61,6 @@ class PlayerViewModel(private var playerInteractor: PlayerInteractor) : ViewMode
         super.onCleared()
         playerInteractor.release()
     }
-    fun playerRelease(){
-        playerInteractor.release()
-    }
 }
 
 enum class PlayerState {

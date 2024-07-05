@@ -3,11 +3,9 @@ package alexey.gritsenko.playlistmaker.ui.search.fragment
 import alexey.gritsenko.playlistmaker.R
 import alexey.gritsenko.playlistmaker.databinding.TrackItemBinding
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
-import alexey.gritsenko.playlistmaker.ui.navigate
 import alexey.gritsenko.playlistmaker.ui.search.view_model.SearchViewModel
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
