@@ -1,7 +1,7 @@
 package alexey.gritsenko.playlistmaker.di.media
 
-import alexey.gritsenko.playlistmaker.ui.mediaactivity.FavoritesTracksFragmentViewModel
-import alexey.gritsenko.playlistmaker.ui.mediaactivity.PlaylistsFragmentViewModel
+import alexey.gritsenko.playlistmaker.ui.media.FavoritesTracksFragmentViewModel
+import alexey.gritsenko.playlistmaker.ui.media.PlaylistsFragmentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

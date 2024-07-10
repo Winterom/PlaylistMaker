@@ -5,7 +5,7 @@ package alexey.gritsenko.playlistmaker.data.navigator
 import alexey.gritsenko.playlistmaker.R.string
 import alexey.gritsenko.playlistmaker.domain.search.entity.Track
 import alexey.gritsenko.playlistmaker.domain.sharing.AppNavigator
-import alexey.gritsenko.playlistmaker.ui.playeractivity.activity.PlayerActivity
+import alexey.gritsenko.playlistmaker.ui.player.activity.PlayerActivity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK

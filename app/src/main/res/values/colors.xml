@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources >
     <color name="yp_white">#FFFFFFFF</color>
     <color name="yp_blue">#3772E7</color>
     <color name="yp_black">#1A1B22</color>
@@ -15,4 +15,6 @@
     <color name="searchFieldColor">#E6E8EB</color>
     <color name="closeAndSearchSvg">#AEAFB4</color>
     <color name="player_mini_button">#FFFFFFFF</color>
+    <color name="white_to_black">#FFFFFFFF</color>
+    <color name="black_to_white">#1A1B22</color>
 </resources>

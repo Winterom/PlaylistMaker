@@ -8,7 +8,7 @@ import alexey.gritsenko.playlistmaker.domain.settings.impl.SettingsInteractorImp
 import alexey.gritsenko.playlistmaker.domain.sharing.AppNavigator
 import alexey.gritsenko.playlistmaker.domain.sharing.SharingInteractor
 import alexey.gritsenko.playlistmaker.domain.sharing.impl.SharingInteractorImpl
-import alexey.gritsenko.playlistmaker.ui.settingactivity.view_model.SettingsViewModel
+import alexey.gritsenko.playlistmaker.ui.settings.view_model.SettingsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

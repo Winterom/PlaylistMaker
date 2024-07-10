@@ -1,15 +1,14 @@
 package alexey.gritsenko.playlistmaker.data.player
 
-
 import alexey.gritsenko.playlistmaker.domain.player.StatusObserver
 import alexey.gritsenko.playlistmaker.domain.player.TrackPlayer
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 
-class TrackPlayerImpl(private val player:MediaPlayer): TrackPlayer {
-    companion object{
-        private const val DELAY_MILLIS:Long=300
+class TrackPlayerImpl(private var player: MediaPlayer) : TrackPlayer {
+    companion object {
+        private const val DELAY_MILLIS: Long = 300
     }
 
     private val timerHandler = Handler(Looper.getMainLooper())
@@ -20,7 +19,8 @@ class TrackPlayerImpl(private val player:MediaPlayer): TrackPlayer {
             timerHandler.postDelayed(this, DELAY_MILLIS)
         }
     }
-    override fun prepare(previewUrl: String, statusObserver: StatusObserver,) {
+
+    override fun prepare(previewUrl: String, statusObserver: StatusObserver) {
         this.statusObserver = statusObserver
         player.setDataSource(previewUrl)
         player.prepareAsync()
@@ -29,6 +29,7 @@ class TrackPlayerImpl(private val player:MediaPlayer): TrackPlayer {
             statusObserver.onComplete()
         }
     }
+
     override fun play() {
         player.start()
         statusObserver.onPlay()
@@ -41,11 +42,8 @@ class TrackPlayerImpl(private val player:MediaPlayer): TrackPlayer {
         timerHandler.removeCallbacks(timerRunnable)
     }
 
-
     override fun release() {
         timerHandler.removeCallbacks(timerRunnable)
         player.release()
     }
-
-
 }

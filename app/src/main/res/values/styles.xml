@@ -29,6 +29,7 @@
     </style>
 
     <style name="header.settingsActivity">
+        <item name="android:layout_marginStart">@dimen/dimen12dp</item>
         <item name="android:textColor">@color/yp_black</item>
     </style>
 
